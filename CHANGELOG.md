@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **ordersFBS**: `getOrdersArchive()` documented on the module page with the
+  3-month-window guidance — `orders()` returns only assembly orders created
+  less than 3 months ago (effective the night of 2026-08-05→06, moved from
+  the originally announced date); older orders are available only via the
+  archive endpoint. Method itself existed previously; docs + JSDoc date
+  corrected (task-206).
+
+### Added
+
+
 - **analytics**: real-time Order Feed report via new `getOrderFeed(data)`
   (POST `/api/analytics/v1/order-feed`, WB news 2026-09) — orders and buyouts
   unified in one method: statuses `created`/`buyout`/`cancel`/`return`/

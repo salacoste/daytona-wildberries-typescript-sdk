@@ -239,7 +239,8 @@ export class OrdersFbsModule {
    * Returns assembly task information without their current status.
    * Data can be retrieved for a given period, up to 30 calendar days per request.
    *
-   * **3-month window:** From 2026-07-21, returns only assembly orders created LESS than
+   * **3-month window:** effective since the night of 2026-08-05→06 (date moved from the
+   * originally announced 2026-07-21), returns only assembly orders created LESS than
    * 3 months ago. For older orders, use `getOrdersArchive()` (`GET /api/marketplace/v3/fbs/orders/archive`).
    *
    * @param options - Query parameters for pagination and date filtering
