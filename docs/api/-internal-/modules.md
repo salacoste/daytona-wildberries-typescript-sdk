@@ -44,11 +44,11 @@
 | [Period](interfaces/Period.md) | Текущий период |
 | [PastPeriod](interfaces/PastPeriod.md) | Прошлый период для сравнения. Количество дней — меньше или равно `currentPeriod` |
 | [CommonResponseProperties](interfaces/CommonResponseProperties.md) | Результат запроса |
-| [SalesFunnelProductReq](interfaces/SalesFunnelProductReq.md) | - |
-| [SalesFunnelGroupReq](interfaces/SalesFunnelGroupReq.md) | - |
-| [SearchReportGroupReq](interfaces/SearchReportGroupReq.md) | - |
-| [SearchReportProductReq](interfaces/SearchReportProductReq.md) | - |
-| [SearchReportTextReq](interfaces/SearchReportTextReq.md) | - |
+| [SalesFunnelProductReq](interfaces/SalesFunnelProductReq.md) | DETAIL_HISTORY_REPORT: С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов. |
+| [SalesFunnelGroupReq](interfaces/SalesFunnelGroupReq.md) | GROUPED_HISTORY_REPORT: С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов. |
+| [SearchReportGroupReq](interfaces/SearchReportGroupReq.md) | SEARCH_QUERIES_PREMIUM_REPORT_GROUP: С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов. |
+| [SearchReportProductReq](interfaces/SearchReportProductReq.md) | SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT: С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов. |
+| [SearchReportTextReq](interfaces/SearchReportTextReq.md) | SEARCH_QUERIES_PREMIUM_REPORT_TEXT: С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов. С 2026-10-12 только SEARCH_QUERIES_PREMIUM_REPORT_TEXT не содержит колонок OpenCardPercentile, AddToCartPercentile, OpenToCartPercentile, OrdersPercentile, CartToOrderPercentile. Остальные поля и варианты отчёта сохраняются. Это параметры генерации, а не тип строки CSV; скачивание возвращает ArrayBuffer. |
 | [StocksReportReq](interfaces/StocksReportReq.md) | - |
 | [InventoryHistoryReportReq](interfaces/InventoryHistoryReportReq.md) | Параметры запроса для отчёта по истории запасов (reportType `STOCK_HISTORY_DAILY_CSV`). |
 | [NmReportRetryReportRequest](interfaces/NmReportRetryReportRequest.md) | - |
@@ -223,7 +223,6 @@
 | [DBSAddress](interfaces/DBSAddress.md) | Address information for DBS delivery Contains full address and GPS coordinates for delivery routing |
 | [DBSOrderNew](interfaces/DBSOrderNew.md) | New DBS order (assembly task) awaiting processing Contains delivery window, customer address, and required metadata |
 | [DBSOrder](interfaces/DBSOrder.md) | Completed DBS order information Returned by getOrders for completed/cancelled orders |
-| [DBSClientInfo](interfaces/DBSClientInfo.md) | Customer contact information for DBS orders Returned by getClientInfo |
 | [DBSOrderStatusBulk](interfaces/DBSOrderStatusBulk.md) | Order status from bulk status info endpoint |
 | [DBSCheckMetaValidationResponse](interfaces/DBSCheckMetaValidationResponse.md) | Response from [OrdersDbsModule.checkMetaValidation](../classes/OrdersDbsModule.md#checkmetavalidation) (POST .../meta/details). Per-order marking-metadata validation results. Use before status/deliver to avoid the 409 MetaValidationFail guess-and-retry loop. |
 | [StatusSetResponse](interfaces/StatusSetResponse-1.md) | Response item for bulk status change operations |
@@ -232,7 +231,6 @@
 | [GetNewOrdersResponse](interfaces/GetNewOrdersResponse.md) | Response from getNewOrders |
 | [GetOrdersParams](interfaces/GetOrdersParams.md) | Parameters for getOrders |
 | [GetOrdersResponse](interfaces/GetOrdersResponse.md) | Response from getOrders |
-| [GetClientInfoResponse](interfaces/GetClientInfoResponse.md) | Response from getClientInfo |
 | [GetStatusInfoResponse](interfaces/GetStatusInfoResponse-1.md) | Response from bulk status info endpoint |
 | [BulkStatusChangeResponse](interfaces/BulkStatusChangeResponse-1.md) | Response from bulk status change operations |
 | [GetB2BInfoResponse](interfaces/GetB2BInfoResponse.md) | Response from B2B info endpoint |
@@ -336,6 +334,8 @@
 | [SupplyShippingMethodError](interfaces/SupplyShippingMethodError.md) | Per-supply error entry in the shipping-method response. Maps to swagger schema: ReplyBatchError |
 | [UpdatedSupplies](interfaces/UpdatedSupplies.md) | Per-supply processing result. Maps to swagger schema: UpdatedSupplies |
 | [UpdateSuppliesResponse](interfaces/UpdateSuppliesResponse.md) | Response for PATCH /api/marketplace/v3/fbs/supplies/shipping-method Maps to swagger schema: UpdateSuppliesResponse |
+| [UpdateSupplyWaybill](interfaces/UpdateSupplyWaybill.md) | Per-supply electronic waybill (ETrN) entry. Maps to swagger schema: UpdateSupplyWaybill |
+| [UpdateSuppliesWaybillRequest](interfaces/UpdateSuppliesWaybillRequest.md) | Request body for PATCH /api/marketplace/v3/fbs/supplies/waybill Maps to swagger schema: UpdateSuppliesWaybill |
 | [ModelsTransitTariff](interfaces/ModelsTransitTariff.md) | Auto-generated TypeScript types for orders-fbw module Generated from: wildberries_api_doc/07-orders-fbw.yaml |
 | [ModelsVolumeTariff](interfaces/ModelsVolumeTariff.md) | - |
 | [ModelsBox](interfaces/ModelsBox.md) | - |
@@ -552,6 +552,9 @@
 | [BannedProductsShadowedResponse](interfaces/BannedProductsShadowedResponse.md) | Response for getBannedProductsShadowed |
 | [GoodsReturnItem](interfaces/GoodsReturnItem.md) | Goods return report item |
 | [GoodsReturnResponse](interfaces/GoodsReturnResponse.md) | Response for getAnalyticsGoodsReturn |
+| [GetAnalyticsV1GoodsReturnParams](interfaces/GetAnalyticsV1GoodsReturnParams.md) | Query parameters for getAnalyticsV1GoodsReturn |
+| [GoodsReturnV1Item](interfaces/GoodsReturnV1Item.md) | Item of the goods-return report (v1, analytics) |
+| [GoodsReturnV1Response](interfaces/GoodsReturnV1Response.md) | Response for getAnalyticsV1GoodsReturn |
 | [MeasurementPenaltiesParams](interfaces/MeasurementPenaltiesParams.md) | Parameters for getMeasurementPenalties |
 | [WarehouseMeasurementsV2Params](interfaces/WarehouseMeasurementsV2Params.md) | Parameters for getWarehouseMeasurementsV2 |
 | [DeductionsParams](interfaces/DeductionsParams.md) | Parameters for getDeductions |
@@ -618,7 +621,7 @@
 | [SpotStatus](type-aliases/SpotStatus.md) | SPOT status — stage of the DOPP (Declaration of Upcoming Supply) formation. Maps to swagger schema: SupplySpotData.status |
 | [ShippingPointCargoType](type-aliases/ShippingPointCargoType.md) | Type of items a shipping point can accept: - `1` — small-sized items - `2` — over dimensional cargo (ODC) - `3` — dimensional cargo+ (CD+) Maps to swagger schema: ShippingPoint.cargoTypes items |
 | [ShippingPointOfficeType](type-aliases/ShippingPointOfficeType.md) | Shipping point type: - `sc` — sorting center - `sw` — warehouse - `pp` — pickup point Maps to swagger schema: ShippingPoint.officeType |
-| [SupplyShippingType](type-aliases/SupplyShippingType.md) | Type of shipping to the shipping point: - `selfShipping` — shipping at the seller's expense - `transportCompany` — delivery via a transport company. For this shipping type the electronic waybill ID (ETrN) must also be attached to the supply — WB is still developing the corresponding waybill method (`PATCH /api/marketplace/v3/fbs/supplies/waybill`) Maps to swagger schema: UpdateSupplyShippingMethod.shippingType |
+| [SupplyShippingType](type-aliases/SupplyShippingType.md) | Type of shipping to the shipping point: - `selfShipping` — shipping at the seller's expense - `transportCompany` — delivery via a transport company. For this shipping type the electronic waybill ID (ETrN) must also be attached to the supply — see `updateSuppliesWaybill()` Maps to swagger schema: UpdateSupplyShippingMethod.shippingType |
 | [ModelsHandySupplyStatus](type-aliases/ModelsHandySupplyStatus.md) | - |
 | [Goods](type-aliases/Goods.md) | Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно. |
 | [SizeGoodsBody](type-aliases/SizeGoodsBody.md) | Размеры и цены для них. Максимум 1 000 размеров. |
@@ -637,3 +640,4 @@
 | [SetRecommendationsRequest](type-aliases/SetRecommendationsRequest.md) | Request body for POST /api/content/v1/recommendations/set — array of per-product assignments. |
 | [ModelsExciseReportResponseData](type-aliases/ModelsExciseReportResponseData.md) | - |
 | [ResponsePaidStorage](type-aliases/ResponsePaidStorage.md) | - |
+| [GoodsReturnStatus](type-aliases/GoodsReturnStatus.md) | Return status filter for the goods-return report (v1, analytics) |

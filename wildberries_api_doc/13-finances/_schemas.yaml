@@ -1,3 +1,29 @@
+SalesReportsDetailedRes:
+  type: object
+  description: |
+    Общая строка ответа двух операций детализации v1. Официальная схема
+    помечает три поля ниже обязательными; SDK оставляет их optional, потому
+    что параметр fields может исключить их из выборочной проекции.
+  required:
+    - buyerTaxRegistrationReasonCode
+    - utdUcdNumber
+    - utdUcdDate
+  additionalProperties: true
+  properties:
+    buyerTaxRegistrationReasonCode:
+      type: string
+      description: КПП покупателя B2B
+      example: '770101001'
+    utdUcdNumber:
+      type: string
+      description: Номер УПД/УКД
+      example: UPD-2026-0001
+    utdUcdDate:
+      type: string
+      format: date
+      description: Дата УПД/УКД
+      example: '2026-10-11'
+
 requestDownload:
   type: object
   properties:

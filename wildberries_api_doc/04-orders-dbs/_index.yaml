@@ -16,5 +16,9 @@ _shards:
     domain: Метаданные DBS
     endpoints: 13
     description: DBS Metadata
+  - file: sandbox-dbs.yaml
+    domain: Песочница DBS
+    endpoints: 1
+    description: DBS Sandbox Test Orders
 _shared_schemas: _schemas.yaml
-_total_endpoints: 32
+_total_endpoints: 33

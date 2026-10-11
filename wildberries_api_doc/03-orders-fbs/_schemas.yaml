@@ -992,6 +992,32 @@ components:
           maxItems: 100
           items:
             $ref: "#/components/schemas/UpdateSupplyShippingMethod"
+    UpdateSuppliesWaybill:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/UpdateSupplyWaybill"
+    UpdateSupplyWaybill:
+      type: object
+      required:
+        - supplyId
+        - waybillUuid
+      properties:
+        supplyId:
+          example: WB-GI-100
+          type: string
+          description: Supply ID
+        waybillUuid:
+          type: string
+          description: Electronic waybill ID
+          format: uuid
+          example: 550e8400-e29b-41d4-a716-445676543567
     UpdateSuppliesResponse:
       type: object
       required:
@@ -1630,6 +1656,41 @@ components:
             error:
               code: 400
               detail: FulfillmentRequired
+          - supplyId: WB-GI-600
+            success: false
+            error:
+              code: 409
+              detail: SupplyAlreadyScanned
+    UpdatedSuppliesWaybill:
+      value:
+        results:
+          - supplyId: WB-GI-100
+            success: true
+          - supplyId: ax12
+            success: false
+            error:
+              code: 400
+              detail: IncorrectRequestBody
+          - supplyId: WB-GI-99999999
+            success: false
+            error:
+              code: 404
+              detail: NotFound
+          - supplyId: WB-GI-300
+            success: false
+            error:
+              code: 409
+              detail: SupplyShippingRequired
+          - supplyId: WB-GI-400
+            success: false
+            error:
+              code: 409
+              detail: UnsuitableShippingType
+          - supplyId: WB-GI-500
+            success: false
+            error:
+              code: 409
+              detail: WaybillUUIDIsProcessing
           - supplyId: WB-GI-600
             success: false
             error:

@@ -1,0 +1,5 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 npx
+npm notice run 'tsc' --noEmit --strict --module ESNext --moduleResolution Bundler --target ES2022 --types node --skipLibCheck false tests/fixtures/docs/english-products-guide-parity.mts
+TN VED and OKPD2 Directories: match=true, sha256=f7749515a9cd3c328d9b878c3d2d9b80ce57926d630a2d936ca4a40b0670eabc
+Additional GTIN: match=true, sha256=f96da924b2adcbad3f4d8da9bed4ed16ece93d4c01735f90ab64f3acd4e4e1f4
+exact_fence_match=2/2

@@ -16,6 +16,14 @@ layout: doc
 
 ---
 
+## Свежесть данных с 2026-09-24
+
+Wildberries обновляет данные **раз в 2 часа** для `getSalesFunnelProducts()`, `getSalesFunnelProductsHistory()` и `getSalesFunnelGroupedHistory()`, а также CSV-выгрузок `DETAIL_HISTORY_REPORT` и `GROUPED_HISTORY_REPORT`, создаваемых через `createNmReportDownload()`.
+
+Это периодичность обновления данных, а не лимит запросов. Более частый опрос или повторная генерация CSV не гарантируют более свежие метрики. Лента заказов Order Feed (`getOrderFeed()`) заменяет только данные заказов и выкупов; просмотры, добавления в корзину и метрики конверсии она не заменяет.
+
+Источники: [Воронка продаж](https://dev.wildberries.ru/docs/openapi/analytics/#tag/salesFunnel/operation/postV3SalesFunnelProducts), [CSV-отчёты](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/postV2NmReportDownloads).
+
 ## Содержание
 
 1. [Что такое воронка продаж](#что-такое-воронка-продаж)

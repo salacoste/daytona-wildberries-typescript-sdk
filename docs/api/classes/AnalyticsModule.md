@@ -2,7 +2,7 @@
 
 # Class: AnalyticsModule
 
-Defined in: [modules/analytics/index.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L57)
+Defined in: [modules/analytics/index.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L57)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/analytics/index.ts:57](https://github.com/salacoste/daytona
 new AnalyticsModule(client: BaseClient): AnalyticsModule;
 ```
 
-Defined in: [modules/analytics/index.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L58)
+Defined in: [modules/analytics/index.ts:58](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L58)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ getNmReportDownloads(options?: {
 }): Promise<NmReportGetReportsResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:78](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L78)
+Defined in: [modules/analytics/index.ts:78](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L78)
 
 Получить список отчётов
 
@@ -97,7 +97,7 @@ createNmReportDownload(data?:
 | InventoryHistoryReportReq): Promise<NmReportCreateReportResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:113](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L113)
+Defined in: [modules/analytics/index.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L116)
 
 Создать отчёт
 
@@ -105,6 +105,9 @@ Defined in: [modules/analytics/index.ts:113](https://github.com/salacoste/dayton
 Вы можете создать CSV-версии отчётов по воронке продаж или параметрам поиска с группировкой по артикулам WB, предметам, брендам и ярлыкам.
 В отчётах по воронке продаж можно группировать данные по дням, неделям или месяцам.
 Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
+
+DETAIL_HISTORY_REPORT и GROUPED_HISTORY_REPORT: С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов. Order Feed заменяет только данные заказов и выкупов, но не просмотры, добавления в корзину или метрики конверсии.
+SEARCH_QUERIES_PREMIUM_REPORT_GROUP, SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT и SEARCH_QUERIES_PREMIUM_REPORT_TEXT: С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
 
 Rate limit: 3 requests/minute, 20-second interval, burst 3
 
@@ -163,7 +166,7 @@ console.log(result);
 createDownloadsRetry(data: NmReportRetryReportRequest): Promise<NmReportRetryReportResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:149](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L149)
+Defined in: [modules/analytics/index.ts:152](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L152)
 
 Сгенерировать отчёт повторно
 
@@ -219,13 +222,16 @@ console.log(result);
 getDownloadsFile(downloadId: string): Promise<ArrayBuffer>;
 ```
 
-Defined in: [modules/analytics/index.ts:179](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L179)
+Defined in: [modules/analytics/index.ts:185](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L185)
 
 Получить отчёт
 
 Метод возвращает отчёт с расширенной аналитикой продавца по ID задания на генерацию.
 Можно получить отчёт, который сгенерирован за последние 48 часов.
 Отчёт будет загружен внутри архива ZIP в формате CSV.
+
+С 2026-10-12 только SEARCH_QUERIES_PREMIUM_REPORT_TEXT не содержит колонок OpenCardPercentile, AddToCartPercentile, OpenToCartPercentile, OrdersPercentile, CartToOrderPercentile. Остальные поля и варианты отчёта сохраняются.
+SDK возвращает ZIP как ArrayBuffer; CSV-парсер и обязательные колонки в SDK отсутствуют.
 
 Rate limit: 3 requests/minute, 20-second interval, burst 3
 
@@ -278,12 +284,14 @@ createSearchReportReport(data: MainRequest): Promise<CommonResponseProperties & 
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:205](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L205)
+Defined in: [modules/analytics/index.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L213)
 
 Основная страница
 
 Метод формирует набор данных для основной страницы отчёта по поисковым запросам с общей информацией, позициями товаров, данными по видимости и переходам в карточку, данными для таблицы по группам.
 Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
+
+С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
 
 Rate limit: 3 requests/minute, 20-second interval, burst 3
 
@@ -338,13 +346,15 @@ createTableGroup(data: TableGroupRequest): Promise<CommonResponseProperties & {
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:235](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L235)
+Defined in: [modules/analytics/index.ts:245](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L245)
 
 Пагинация по группам
 
 Метод формирует дополнительные данные к основному отчёту с пагинацией по группам.
 Пагинация возможна только при наличии фильтра по бренду, предмету или ярлыку.
 Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
+
+С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
 
 Rate limit: 3 requests/minute, 20-second interval, burst 3
 
@@ -399,13 +409,15 @@ createTableDetail(data: TableDetailsRequest): Promise<CommonResponseProperties &
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:265](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L265)
+Defined in: [modules/analytics/index.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L277)
 
 Пагинация по товарам в группе
 
 Метод формирует дополнительные данные к основному отчёту с пагинацией по товарам в группе.
 Пагинация возможна вне зависимости от наличия фильтров.
 Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
+
+С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
 
 Rate limit: 3 requests/minute, 20-second interval, burst 3
 
@@ -460,12 +472,14 @@ createProductSearchText(data: ProductSearchTextsRequest): Promise<CommonResponse
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:294](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L294)
+Defined in: [modules/analytics/index.ts:308](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L308)
 
 Поисковые запросы по товару
 
 Метод формирует топ поисковых запросов по товару.
 Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
+
+С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
 
 Rate limit: 3 requests/minute, 20-second interval, burst 3
 
@@ -520,11 +534,13 @@ createProductOrder(data: ProductOrdersRequest): Promise<CommonResponseProperties
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:322](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L322)
+Defined in: [modules/analytics/index.ts:338](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L338)
 
 Заказы и позиции по поисковым запросам товара
 
 Метод формирует данные для таблицы по количеству заказов и позиций в поиске по запросам покупателя.
+
+С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
 
 Rate limit: 3 requests/minute, 20-second interval, burst 3
 
@@ -579,7 +595,7 @@ createProductsGroup(data: TableGroupRequestSt): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:355](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L355)
+Defined in: [modules/analytics/index.ts:371](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L371)
 
 Данные по группам
 
@@ -643,7 +659,7 @@ createProductsProduct(data: TableProductRequest): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:386](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L386)
+Defined in: [modules/analytics/index.ts:402](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L402)
 
 Данные по товарам
 
@@ -707,7 +723,7 @@ createProductsSize(data: CommonSizeFilters): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:418](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L418)
+Defined in: [modules/analytics/index.ts:434](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L434)
 
 Данные по размерам
 
@@ -772,7 +788,7 @@ createStocksReportOffice(data: CommonShippingOfficeFilters): Promise<{
 }>;
 ```
 
-Defined in: [modules/analytics/index.ts:449](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L449)
+Defined in: [modules/analytics/index.ts:465](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L465)
 
 Данные по складам
 
@@ -834,12 +850,15 @@ console.log(result);
 getSalesFunnelProducts(data: SalesFunnelProductsRequest): Promise<SalesFunnelProductsResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:485](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L485)
+Defined in: [modules/analytics/index.ts:504](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L504)
 
 Статистика карточек товаров за период (v3)
 
 Возвращает отчёт о товарах с ключевыми показателями — переходы в карточку,
 добавления в корзину, заказы — за текущий и прошлый периоды.
+
+С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+Order Feed заменяет только данные заказов и выкупов, но не просмотры, добавления в корзину или метрики конверсии.
 
 Rate limit: 3 requests/minute, 20-second interval, 3-request burst
 
@@ -895,11 +914,14 @@ console.log(result.products);
 getSalesFunnelProductsHistory(data: SalesFunnelProductsHistoryRequest): Promise<SalesFunnelProductsHistoryResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:517](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L517)
+Defined in: [modules/analytics/index.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L539)
 
 Статистика карточек товаров по дням (v3)
 
 Возвращает статистику карточек товаров по дням или неделям.
+
+С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+Order Feed заменяет только данные заказов и выкупов, но не просмотры, добавления в корзину или метрики конверсии.
 
 Rate limit: 3 requests/minute, 20-second interval, 3-request burst
 
@@ -954,11 +976,14 @@ console.log(result);
 getSalesFunnelGroupedHistory(data: SalesFunnelGroupedHistoryRequest): Promise<SalesFunnelGroupedHistoryResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:548](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L548)
+Defined in: [modules/analytics/index.ts:573](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L573)
 
 Статистика групп карточек товаров по дням (v3)
 
 Возвращает статистику карточек товаров по дням, сгруппированных по предметам, брендам и ярлыкам.
+
+С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+Order Feed заменяет только данные заказов и выкупов, но не просмотры, добавления в корзину или метрики конверсии.
 
 Rate limit: 3 requests/minute, 20-second interval, 3-request burst
 
@@ -1012,7 +1037,7 @@ console.log(result);
 getWbWarehousesStock(data?: WbWarehousesStockRequest): Promise<WbWarehousesStockResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:604](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L604)
+Defined in: [modules/analytics/index.ts:629](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L629)
 
 Текущие остатки на складах WB
 
@@ -1092,7 +1117,7 @@ const page = await sdk.analytics.getWbWarehousesStock({
 getSellerWarehousesStock(data?: SellerWarehousesStockRequest): Promise<SellerWarehousesStockResponse>;
 ```
 
-Defined in: [modules/analytics/index.ts:658](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L658)
+Defined in: [modules/analytics/index.ts:683](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L683)
 
 Текущие остатки на складах продавца
 
@@ -1172,7 +1197,7 @@ const page = await sdk.analytics.getSellerWarehousesStock({
 getOrderFeed(data: OrderFeedRequest): Promise<OrderFeedResponseWrapper>;
 ```
 
-Defined in: [modules/analytics/index.ts:745](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L745)
+Defined in: [modules/analytics/index.ts:770](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L770)
 
 Лента заказов — заказы и продажи в одном отчёте (реальном времени)
 
@@ -1281,7 +1306,7 @@ while (offset < 5000) { // пока не собрано всё (лимит за�
 getItemRatingV2(data: ItemRatingV2Request): Promise<ItemRatingV2ResponseWrapper>;
 ```
 
-Defined in: [modules/analytics/index.ts:781](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L781)
+Defined in: [modules/analytics/index.ts:806](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L806)
 
 Get the v2 item-rating report, including catalog visibility.
 
@@ -1347,7 +1372,7 @@ console.log(hiddenProducts.data.items[0]?.isShadowed);
 getItemRating(data: ItemRatingRequest): Promise<ItemRatingResponseWrapper>;
 ```
 
-Defined in: [modules/analytics/index.ts:842](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/analytics/index.ts#L842)
+Defined in: [modules/analytics/index.ts:867](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/analytics/index.ts#L867)
 
 Get item rating with feedback distribution.
 

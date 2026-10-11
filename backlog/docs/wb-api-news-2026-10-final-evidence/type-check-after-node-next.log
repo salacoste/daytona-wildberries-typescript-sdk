@@ -1,0 +1,6 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 type-check
+npm notice run tsc --noEmit
+tests/fixtures/docs/english-products-guide-parity.mts(78,6): error TS6196: '_CreateGtinIsOptionalNonNullString' is declared but never used.
+tests/fixtures/docs/english-products-guide-parity.mts(81,6): error TS6196: '_UpdateGtinIsOptionalNonNullString' is declared but never used.
+tests/fixtures/docs/english-products-guide-parity.mts(84,6): error TS6196: '_AddGtinIsOptionalNonNullString' is declared but never used.
+tests/fixtures/docs/english-products-guide-parity.mts(85,6): error TS6196: '_ListGtinIsOptionalNonNullString' is declared but never used.

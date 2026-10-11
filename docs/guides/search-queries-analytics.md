@@ -16,6 +16,24 @@ This guide covers the Search Queries report in the Wildberries Analytics module.
 
 ---
 
+## Search Queries data freshness from 2026-10-12
+
+Wildberries refreshes data **once every two hours** for these five API operations and three CSV exports:
+
+| API method | Endpoint |
+|---|---|
+| `createSearchReportReport()` | `POST /api/v2/search-report/report` |
+| `createTableGroup()` | `POST /api/v2/search-report/table/groups` |
+| `createTableDetail()` | `POST /api/v2/search-report/table/details` |
+| `createProductSearchText()` | `POST /api/v2/search-report/product/search-texts` |
+| `createProductOrder()` | `POST /api/v2/search-report/product/orders` |
+
+The CSV types are `SEARCH_QUERIES_PREMIUM_REPORT_GROUP`, `SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT` and `SEARCH_QUERIES_PREMIUM_REPORT_TEXT`, created with `createNmReportDownload()`.
+
+This is data freshness, not a request-rate limit or a guarantee that every request returns new data. It is separate from the removal of five percentile columns in the TEXT CSV; other report schemas and request limits are unchanged by this cadence announcement.
+
+Sources: [Search Queries](https://dev.wildberries.ru/docs/openapi/analytics/#tag/searchQueriesForYourItems/operation/postV2SearchReportReport), [CSV reports](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/postV2NmReportDownloads).
+
 ## Table of Contents
 
 1. [What is Search Query Analytics](#what-is-search-query-analytics)

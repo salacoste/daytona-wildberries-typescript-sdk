@@ -653,6 +653,9 @@ export interface ResponseError {
   }[];
 }
 
+/**
+ * DETAIL_HISTORY_REPORT: С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+ */
 export interface SalesFunnelProductReq {
   /** ID отчёта в UUID-формате. Генерируется продавцом самостоятельно */
   id: string;
@@ -683,6 +686,9 @@ export interface SalesFunnelProductReq {
   };
 }
 
+/**
+ * GROUPED_HISTORY_REPORT: С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+ */
 export interface SalesFunnelGroupReq {
   /** ID отчёта в UUID-формате. Генерируется продавцом самостоятельно */
   id: string;
@@ -711,6 +717,9 @@ export interface SalesFunnelGroupReq {
   };
 }
 
+/**
+ * SEARCH_QUERIES_PREMIUM_REPORT_GROUP: С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+ */
 export interface SearchReportGroupReq {
   /** ID отчёта в UUID-формате. Генерируется продавцом самостоятельно */
   id: string;
@@ -739,6 +748,9 @@ export interface SearchReportGroupReq {
   };
 }
 
+/**
+ * SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT: С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+ */
 export interface SearchReportProductReq {
   /** ID отчёта в UUID-формате. Генерируется продавцом самостоятельно */
   id: string;
@@ -767,6 +779,11 @@ export interface SearchReportProductReq {
   };
 }
 
+/**
+ * SEARCH_QUERIES_PREMIUM_REPORT_TEXT: С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+ * С 2026-10-12 только SEARCH_QUERIES_PREMIUM_REPORT_TEXT не содержит колонок OpenCardPercentile, AddToCartPercentile, OpenToCartPercentile, OrdersPercentile, CartToOrderPercentile. Остальные поля и варианты отчёта сохраняются.
+ * Это параметры генерации, а не тип строки CSV; скачивание возвращает ArrayBuffer.
+ */
 export interface SearchReportTextReq {
   /** ID отчёта в UUID-формате. Генерируется продавцом самостоятельно */
   id: string;

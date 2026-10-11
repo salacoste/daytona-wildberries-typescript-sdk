@@ -917,6 +917,80 @@ export interface GetDirectoryCountriesResponse {
   additionalErrors?: string;
 }
 
+/** Supported response language for the full TN VED directory. */
+export type TnvedDirectoryLocale = 'ru' | 'en';
+
+/** Supported response language for the subject-specific OKPD2 directory. */
+export type OkpdDirectoryLocale = 'ru';
+
+/** Supported response language for the full OKPD2 directory. */
+export type OkpdFullDirectoryLocale = 'ru';
+
+/** Query parameters for GET /api/content/v2/directory/tnved/all. */
+export interface GetDirectoryTnvedAllOptions {
+  /** First digits of a TN VED code. The upstream schema declares an integer. */
+  search?: number;
+  /** Response language. Defaults to `ru`. */
+  locale?: TnvedDirectoryLocale;
+}
+
+/** Query parameters for GET /api/content/v2/directory/okpd. */
+export interface GetDirectoryOkpdOptions {
+  /** WB subject ID. */
+  subjectId: number;
+  /** OKPD2 code fragment, including dotted prefixes such as `61.06`. */
+  search?: string;
+  /** Response language. Defaults to `ru`. */
+  locale?: OkpdDirectoryLocale;
+}
+
+/** Query parameters for GET /api/content/v2/directory/okpd/all. */
+export interface GetDirectoryOkpdAllOptions {
+  /**
+   * Numeric OKPD2 prefix as displayed by the official schema.
+   * The same official documentation describes dotted text prefixes, so the SDK preserves the
+   * displayed numeric type until WB resolves that ambiguity.
+   */
+  search?: number;
+  /** Response language. Defaults to `ru`. */
+  locale?: OkpdFullDirectoryLocale;
+}
+
+/** TN VED entry returned by GET /api/content/v2/directory/tnved/all. */
+export interface TnvedDirectoryEntry {
+  /** TN VED code. */
+  tnved: string;
+  /** Description of the goods covered by the code. */
+  description: string;
+}
+
+/** OKPD2 entry returned by the OKPD2 directory methods. */
+export interface OkpdDirectoryEntry {
+  /** OKPD2 code. */
+  okpd2: string;
+  /** Description of the goods covered by the code. */
+  description: string;
+}
+
+/** Successful full TN VED directory response. */
+export interface GetDirectoryTnvedAllResponse {
+  data: TnvedDirectoryEntry[];
+  error: boolean;
+  errorText: string;
+  additionalErrors: string | null;
+}
+
+/** Successful OKPD2 directory response. */
+export interface GetDirectoryOkpdResponse {
+  data: OkpdDirectoryEntry[];
+  error: boolean;
+  errorText: string;
+  additionalErrors: string | null;
+}
+
+/** Successful full OKPD2 directory response. */
+export type GetDirectoryOkpdAllResponse = GetDirectoryOkpdResponse;
+
 /**
  * Ярлык (тег контента)
  *

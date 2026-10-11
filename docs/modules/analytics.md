@@ -30,6 +30,34 @@ The **Analytics** module provides access to sales funnel analytics, search query
 
 ---
 
+## Data freshness from 2026-09-24
+
+Wildberries refreshes data **once every two hours** for `getSalesFunnelProducts()`, `getSalesFunnelProductsHistory()` and `getSalesFunnelGroupedHistory()`, and for the `DETAIL_HISTORY_REPORT` and `GROUPED_HISTORY_REPORT` CSV exports created with `createNmReportDownload()`.
+
+This is the data refresh cadence, not a request-rate limit. Polling or generating another CSV sooner does not guarantee newer metrics. Order Feed (`getOrderFeed()`) can replace only order and buyout data; it does not replace views, cart additions or conversion metrics.
+
+Sources: [Sales Funnel](https://dev.wildberries.ru/docs/openapi/analytics/#tag/salesFunnel/operation/postV3SalesFunnelProducts), [CSV reports](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/postV2NmReportDownloads).
+
+## Search Queries data freshness from 2026-10-12
+
+Wildberries refreshes data **once every two hours** for these five API operations and three CSV exports:
+
+| API method | Endpoint |
+|---|---|
+| `createSearchReportReport()` | `POST /api/v2/search-report/report` |
+| `createTableGroup()` | `POST /api/v2/search-report/table/groups` |
+| `createTableDetail()` | `POST /api/v2/search-report/table/details` |
+| `createProductSearchText()` | `POST /api/v2/search-report/product/search-texts` |
+| `createProductOrder()` | `POST /api/v2/search-report/product/orders` |
+
+The CSV types are `SEARCH_QUERIES_PREMIUM_REPORT_GROUP`, `SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT` and `SEARCH_QUERIES_PREMIUM_REPORT_TEXT`, created with `createNmReportDownload()`.
+
+This is data freshness, not a request-rate limit or a guarantee that every request returns new data. It is separate from the removal of five percentile columns in the TEXT CSV; other report schemas and request limits are unchanged by this cadence announcement.
+
+Sources: [Search Queries](https://dev.wildberries.ru/docs/openapi/analytics/#tag/searchQueriesForYourItems/operation/postV2SearchReportReport), [CSV reports](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/postV2NmReportDownloads).
+
+For the separate five-column TEXT CSV change, see [TEXT CSV columns](../guides/seller-analytics-csv.md#text-csv-columns-from-2026-10-12).
+
 ## Quick Start
 
 ```typescript

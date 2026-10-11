@@ -534,7 +534,7 @@ export class WildberriesSDK {
    * Returns aggregator module (since v3.10.0)
    *
    * Unified return analytics across FBO + FBS + Finance sources:
-   * - Fetches FBO returns via `sdk.reports.getAnalyticsGoodsReturn()`
+   * - Fetches active and archived FBO returns via `sdk.reports.getAnalyticsV1GoodsReturn()`
    * - Enriches records with financial amounts from `sdk.finances.getSalesReportsDetailed()`
    * - Partial-failure tolerant: one source failing does not abort the response
    *
@@ -710,12 +710,20 @@ export { UserManagementModule } from './modules/user-management';
 //   import type { PinReviewItem } from 'daytona-wildberries-typescript-sdk/communications';
 //   import type { IncomesItem } from 'daytona-wildberries-typescript-sdk/reports';
 //
-// Modules without subpath exports (products, orders-fbs, orders-fbw, orders-dbs,
+// Modules without subpath exports (products, orders-fbs, orders-fbw,
 // promotion, tariffs, in-store-pickup, general, user-management) currently have no public
 // type access path — track via WL-4.
 
 // Orders DBS types (no name conflicts with global types)
-export type { MetaValidationDetail } from './types/orders-dbs.types';
+export type {
+  DBSClientInfo,
+  GetClientInfoResponse,
+  MetaValidationDetail,
+  DbsTestDeliveryType,
+  CreateTestDbsOrderItem,
+  CreateTestDbsOrdersAddress,
+  CreateTestDbsOrdersRequest,
+} from './types/orders-dbs.types';
 
 // Orders FBS public types (since v3.15.0 — MetaDetail referenced in migration guide Pattern A)
 export type {
@@ -760,6 +768,21 @@ export type {
 export type {
   DeleteCardsFromTrashRequest,
   DeleteCardsFromTrashResponse,
+} from './types/products.types';
+
+// Products classification directory types (WB news 2026-10)
+export type {
+  TnvedDirectoryLocale,
+  OkpdDirectoryLocale,
+  OkpdFullDirectoryLocale,
+  GetDirectoryTnvedAllOptions,
+  GetDirectoryOkpdOptions,
+  GetDirectoryOkpdAllOptions,
+  TnvedDirectoryEntry,
+  OkpdDirectoryEntry,
+  GetDirectoryTnvedAllResponse,
+  GetDirectoryOkpdResponse,
+  GetDirectoryOkpdAllResponse,
 } from './types/products.types';
 
 // Products card documents types (v4.3.0 — WB news 2026-09: dedicated documents object)

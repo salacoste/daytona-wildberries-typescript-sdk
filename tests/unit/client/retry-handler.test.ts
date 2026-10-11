@@ -163,6 +163,24 @@ describe('RetryHandler', () => {
       expect(operation).toHaveBeenCalledTimes(2);
     });
 
+    it.each([
+      'products.getDirectoryTnvedAll',
+      'products.getDirectoryOkpd',
+      'products.getDirectoryOkpdAll',
+    ])('should retry transient failures for read-only operation key %s', async (operationKey) => {
+      const handler = new RetryHandler({ maxRetries: 1 });
+      const operation = vi
+        .fn()
+        .mockRejectedValueOnce(new NetworkError('Service Unavailable', false, 503))
+        .mockResolvedValueOnce('success');
+
+      const promise = handler.executeWithRetry(operation, operationKey, { operationKey });
+      await vi.runAllTimersAsync();
+
+      await expect(promise).resolves.toBe('success');
+      expect(operation).toHaveBeenCalledTimes(2);
+    });
+
     it('should retry on NetworkError with 502 status', async () => {
       const handler = new RetryHandler({ maxRetries: 1 });
       const operation = vi

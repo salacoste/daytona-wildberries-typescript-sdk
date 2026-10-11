@@ -1,0 +1,522 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 test:integration
+npm notice run vitest run --config vitest.integration.config.ts --reporter=dot
+
+ RUN  v4.1.10 /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk
+
+··························✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Full Pipeline - YAML to TypeScript > should generate TypeScript types from OpenAPI spec
+⚠ No operations found in test for rate limit generation
+
+✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Transient 500 error recovery > should retry and succeed after transient 500 error
+{"timestamp":"2026-10-11T19:27:25.774Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 401 authentication error
+{"timestamp":"2026-10-11T19:27:25.782Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://content-api.wildberries.ru/content/v2/object/parent/all"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:25.784Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/parent/all"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > createInvite > should throw AuthenticationError on 401 response
+{"timestamp":"2026-10-11T19:27:25.788Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://user-management-api.wildberries.ru/api/v1/invite"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 401 Unauthorized to AuthenticationError
+{"timestamp":"2026-10-11T19:27:25.792Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > createInvite > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:25.793Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/invite"}}
+
+······stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 429 Too Many Requests to RateLimitError
+{"timestamp":"2026-10-11T19:27:25.794Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/orders-fbw.integration.test.ts > OrdersFBW Integration Tests > Error Handling > should handle 401 authentication error
+{"timestamp":"2026-10-11T19:27:25.808Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://supplies-api.wildberries.ru/api/v1/warehouses"}}
+
+stderr | tests/integration/orders-fbw.integration.test.ts > OrdersFBW Integration Tests > Error Handling > should handle 400 validation error for acceptance options
+{"timestamp":"2026-10-11T19:27:25.811Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":400,"url":"https://supplies-api.wildberries.ru/api/v1/acceptance/options"}}
+
+stderr | tests/integration/orders-fbw.integration.test.ts > OrdersFBW Integration Tests > Error Handling > should handle 404 not found for non-existent supply
+{"timestamp":"2026-10-11T19:27:25.812Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":404,"url":"https://supplies-api.wildberries.ru/api/v1/supplies/999999"}}
+
+stderr | tests/integration/orders-fbw.integration.test.ts > OrdersFBW Integration Tests > Error Handling > should handle 429 rate limit with retry information
+{"timestamp":"2026-10-11T19:27:25.813Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://supplies-api.wildberries.ru/api/v1/warehouses"}}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 401 to AuthenticationError
+{"timestamp":"2026-10-11T19:27:25.813Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 429 to RateLimitError
+{"timestamp":"2026-10-11T19:27:25.816Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+··································································stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > createInvite > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:25.891Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/invite"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:25.892Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/parent/all"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Transient 500 error recovery > should retry multiple times before succeeding
+{"timestamp":"2026-10-11T19:27:25.893Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 429 Too Many Requests to RateLimitError
+{"timestamp":"2026-10-11T19:27:25.896Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 429 to RateLimitError
+{"timestamp":"2026-10-11T19:27:25.920Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Transient 500 error recovery > should retry multiple times before succeeding
+{"timestamp":"2026-10-11T19:27:25.941Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+·························stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > 429 Rate Limit recovery > should retry after 429 rate limit error
+{"timestamp":"2026-10-11T19:27:26.045Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:26.076Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/parent/all"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 429 Too Many Requests to RateLimitError
+{"timestamp":"2026-10-11T19:27:26.092Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > createInvite > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:26.106Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/invite"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > createInvite > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:26.106Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for POST https://user-management-api.wildberries.ru/api/v1/invite after 2 attempts","operationName":"POST https://user-management-api.wildberries.ru/api/v1/invite","attempts":2,"maxRetries":2,"finalError":"Rate limit exceeded. Retry after 10000ms"}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > createInvite > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:26.108Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://user-management-api.wildberries.ru/api/v1/invite"}}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 429 to RateLimitError
+{"timestamp":"2026-10-11T19:27:26.127Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+·-stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Permanent error - no retry > should NOT retry on 401 authentication error
+{"timestamp":"2026-10-11T19:27:26.164Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Permanent error - no retry > should NOT retry on 400 validation error
+{"timestamp":"2026-10-11T19:27:26.171Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":400,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Permanent error - no retry > should NOT retry on 404 not found error
+{"timestamp":"2026-10-11T19:27:26.173Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":404,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry exhaustion > should throw error after all retries exhausted
+{"timestamp":"2026-10-11T19:27:26.179Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > createInvite > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:26.213Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://user-management-api.wildberries.ru/api/v1/invite"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry exhaustion > should throw error after all retries exhausted
+{"timestamp":"2026-10-11T19:27:26.230Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+····stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry exhaustion > should throw error after all retries exhausted
+{"timestamp":"2026-10-11T19:27:26.340Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry exhaustion > should throw error after all retries exhausted
+{"timestamp":"2026-10-11T19:27:26.340Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://test-api.wildberries.ru/api/v1/test after 2 attempts","operationName":"GET https://test-api.wildberries.ru/api/v1/test","attempts":2,"maxRetries":2,"finalError":"Server error: 503"}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry exhaustion > should preserve error details after retry exhaustion
+{"timestamp":"2026-10-11T19:27:26.341Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry exhaustion > should preserve error details after retry exhaustion
+{"timestamp":"2026-10-11T19:27:26.396Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry exhaustion > should preserve error details after retry exhaustion
+{"timestamp":"2026-10-11T19:27:26.396Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://test-api.wildberries.ru/api/v1/test after 1 attempts","operationName":"GET https://test-api.wildberries.ru/api/v1/test","attempts":1,"maxRetries":1,"finalError":"Server error: 503"}
+
+·stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > BaseClient integration with all HTTP methods > should retry POST requests on transient failures
+{"timestamp":"2026-10-11T19:27:26.397Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > createInvite > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:26.407Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://user-management-api.wildberries.ru/api/v1/invite"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > createInvite > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:26.408Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for POST https://user-management-api.wildberries.ru/api/v1/invite after 2 attempts","operationName":"POST https://user-management-api.wildberries.ru/api/v1/invite","attempts":2,"maxRetries":2,"finalError":"Server error: 500"}
+
+·stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > getUsers > should throw AuthenticationError on 401 response
+{"timestamp":"2026-10-11T19:27:26.416Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://user-management-api.wildberries.ru/api/v1/users"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > getUsers > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:26.417Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/users"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > BaseClient integration with all HTTP methods > should retry PUT requests on transient failures
+{"timestamp":"2026-10-11T19:27:26.444Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":502,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:26.478Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/parent/all"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:26.478Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://content-api.wildberries.ru/content/v2/object/parent/all after 3 attempts","operationName":"GET https://content-api.wildberries.ru/content/v2/object/parent/all","attempts":3,"maxRetries":3,"finalError":"Rate limit exceeded. Retry after 5000ms"}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 500 network error
+{"timestamp":"2026-10-11T19:27:26.480Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://content-api.wildberries.ru/content/v2/object/parent/all"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > BaseClient integration with all HTTP methods > should retry PATCH requests on transient failures
+{"timestamp":"2026-10-11T19:27:26.494Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 429 to RateLimitError
+{"timestamp":"2026-10-11T19:27:26.505Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 429 to RateLimitError
+{"timestamp":"2026-10-11T19:27:26.506Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://marketplace-api.wildberries.ru/api/v3/orders/new after 3 attempts","operationName":"GET https://marketplace-api.wildberries.ru/api/v3/orders/new","attempts":3,"maxRetries":3,"finalError":"Rate limit exceeded. Retry after 5000ms"}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 500 to NetworkError
+{"timestamp":"2026-10-11T19:27:26.506Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+·······stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > getUsers > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:26.514Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/users"}}
+
+···stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > BaseClient integration with all HTTP methods > should retry DELETE requests on transient failures
+{"timestamp":"2026-10-11T19:27:26.543Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":504,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+·stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 500 network error
+{"timestamp":"2026-10-11T19:27:26.581Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://content-api.wildberries.ru/content/v2/object/parent/all"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry configuration > should respect custom maxRetries setting
+{"timestamp":"2026-10-11T19:27:26.595Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry configuration > should respect custom maxRetries setting
+{"timestamp":"2026-10-11T19:27:26.606Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+·stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 500 to NetworkError
+{"timestamp":"2026-10-11T19:27:26.611Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry configuration > should respect custom maxRetries setting
+{"timestamp":"2026-10-11T19:27:26.626Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+··stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry configuration > should respect custom maxRetries setting
+{"timestamp":"2026-10-11T19:27:26.669Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > getUsers > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:26.726Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/users"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > getUsers > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:26.726Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://user-management-api.wildberries.ru/api/v1/users after 2 attempts","operationName":"GET https://user-management-api.wildberries.ru/api/v1/users","attempts":2,"maxRetries":2,"finalError":"Rate limit exceeded. Retry after 30000ms"}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > getUsers > should throw NetworkError on 503 response
+{"timestamp":"2026-10-11T19:27:26.728Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://user-management-api.wildberries.ru/api/v1/users"}}
+
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Full Pipeline - YAML to TypeScript > should generate valid TypeScript that compiles without errors
+⚠ No operations found in test for rate limit generation
+
+··✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Full Pipeline - YAML to TypeScript > should preserve JSDoc comments from OpenAPI descriptions
+⚠ No operations found in test for rate limit generation
+
+✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Full Pipeline - YAML to TypeScript > should correctly mark required vs optional properties
+⚠ No operations found in test for rate limit generation
+
+✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Full Pipeline - YAML to TypeScript > should handle enum types correctly
+⚠ No operations found in test for rate limit generation
+
+✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Full Pipeline - YAML to TypeScript > should resolve $ref references correctly
+⚠ No operations found in test for rate limit generation
+
+✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Full Pipeline - YAML to TypeScript > should handle array types correctly
+⚠ No operations found in test for rate limit generation
+
+⚠ No schemas found in empty
+⚠ No operations found in empty
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Empty Schema Handling > should handle specs with no schemas gracefully
+⚠ No operations found in empty for rate limit generation
+
+✓ Generated 4 types for complex → src/types/complex.types.ts
+⚠ No operations found in complex
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Complex Schema Features > should handle allOf composition
+⚠ No operations found in complex for rate limit generation
+
+✓ Generated 4 types for complex → src/types/complex.types.ts
+⚠ No operations found in complex
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Complex Schema Features > should handle oneOf composition
+⚠ No operations found in complex for rate limit generation
+
+✓ Generated 4 types for complex → src/types/complex.types.ts
+⚠ No operations found in complex
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Complex Schema Features > should handle nested objects
+⚠ No operations found in complex for rate limit generation
+
+✗ Error generating SDK from /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/tests/fixtures/integration/non-existent.yaml:
+  Failed to parse OpenAPI spec from /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/tests/fixtures/integration/non-existent.yaml: ENOENT: no such file or directory, open '/Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/tests/fixtures/integration/non-existent.yaml'
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry configuration > should respect custom maxRetries setting
+{"timestamp":"2026-10-11T19:27:26.752Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+✗ Error generating SDK from /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/tests/fixtures/integration/malformed.yaml:
+  Failed to parse OpenAPI spec from /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/tests/fixtures/integration/malformed.yaml: unexpected end of the stream within a flow collection in "/Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/tests/fixtures/integration/malformed.yaml" (5:1)
+
+ 2 | info:
+ 3 |   title: Broken
+ 4 |   invalid: [unclosed array
+ 5 |
+-----^
+✗ Error generating SDK from /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/tests/fixtures/integration/invalid-version.yaml:
+  Failed to parse OpenAPI spec from /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/tests/fixtures/integration/invalid-version.yaml: parsed.openapi.startsWith is not a function
+✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > File Header and Metadata > should include header comment in generated file
+⚠ No operations found in test for rate limit generation
+
+✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > File Header and Metadata > should reference source YAML file in header
+⚠ No operations found in test for rate limit generation
+
+✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+✓ Generated 4 types for complex → src/types/complex.types.ts
+⚠ No operations found in complex
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Multi-file Generation > should generate separate files for different modules
+⚠ No operations found in test for rate limit generation
+⚠ No operations found in complex for rate limit generation
+
+✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 500 network error
+{"timestamp":"2026-10-11T19:27:26.769Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://content-api.wildberries.ru/content/v2/object/parent/all"}}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 500 to NetworkError
+{"timestamp":"2026-10-11T19:27:26.820Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > getUsers > should throw NetworkError on 503 response
+{"timestamp":"2026-10-11T19:27:26.825Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://user-management-api.wildberries.ru/api/v1/users"}}
+
+·stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry configuration > should respect custom maxRetries setting
+{"timestamp":"2026-10-11T19:27:26.903Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry configuration > should respect custom maxRetries setting
+{"timestamp":"2026-10-11T19:27:26.904Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://test-api.wildberries.ru/api/v1/test after 5 attempts","operationName":"GET https://test-api.wildberries.ru/api/v1/test","attempts":5,"maxRetries":5,"finalError":"Server error: 500"}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > Retry configuration > should work with retries disabled (maxRetries: 0)
+{"timestamp":"2026-10-11T19:27:26.904Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > 502 Bad Gateway recovery > should retry and recover from 502 error
+{"timestamp":"2026-10-11T19:27:26.905Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":502,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+stderr | tests/integration/retry-handler.integration.test.ts > RetryHandler Integration Tests > 504 Gateway Timeout recovery > should retry and recover from 504 error
+{"timestamp":"2026-10-11T19:27:26.955Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":504,"url":"https://test-api.wildberries.ru/api/v1/test"}}
+
+····stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > getUsers > should throw NetworkError on 503 response
+{"timestamp":"2026-10-11T19:27:27.040Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://user-management-api.wildberries.ru/api/v1/users"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > getUsers > should throw NetworkError on 503 response
+{"timestamp":"2026-10-11T19:27:27.040Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://user-management-api.wildberries.ru/api/v1/users after 2 attempts","operationName":"GET https://user-management-api.wildberries.ru/api/v1/users","attempts":2,"maxRetries":2,"finalError":"Server error: 503"}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > updateUserAccess > should throw AuthenticationError on 401 response
+{"timestamp":"2026-10-11T19:27:27.044Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://user-management-api.wildberries.ru/api/v1/users/access"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > updateUserAccess > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:27.044Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/users/access"}}
+
+·····stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > updateUserAccess > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:27.155Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/users/access"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 500 network error
+{"timestamp":"2026-10-11T19:27:27.164Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://content-api.wildberries.ru/content/v2/object/parent/all"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getParentAll() - Parent Categories > should handle 500 network error
+{"timestamp":"2026-10-11T19:27:27.164Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://content-api.wildberries.ru/content/v2/object/parent/all after 3 attempts","operationName":"GET https://content-api.wildberries.ru/content/v2/object/parent/all","attempts":3,"maxRetries":3,"finalError":"Server error: 500"}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectAll() - Categories/Subjects > should handle 401 authentication error
+{"timestamp":"2026-10-11T19:27:27.168Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://content-api.wildberries.ru/content/v2/object/all"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectAll() - Categories/Subjects > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:27.169Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/all"}}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 500 to NetworkError
+{"timestamp":"2026-10-11T19:27:27.247Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Error Transformation > should transform 500 to NetworkError
+{"timestamp":"2026-10-11T19:27:27.247Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://marketplace-api.wildberries.ru/api/v3/orders/new after 3 attempts","operationName":"GET https://marketplace-api.wildberries.ru/api/v3/orders/new","attempts":3,"maxRetries":3,"finalError":"Server error: 500"}
+
+stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Retry Logic > should retry on transient 503 and succeed
+{"timestamp":"2026-10-11T19:27:27.248Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+······stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > TypeScript Strict Mode Compliance > should generate code that passes strict TypeScript checks
+⚠ No operations found in test for rate limit generation
+
+················✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectAll() - Categories/Subjects > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:27.270Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/all"}}
+
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > TypeScript Strict Mode Compliance > should not use any implicit any types
+⚠ No operations found in test for rate limit generation
+
+✓ Generated 4 types for test → src/types/test.types.ts
+⚠ No operations found in test
+stderr | tests/integration/type-generator.integration.test.ts > Type Generator Integration > Performance > should generate types in reasonable time (<5s for small spec)
+⚠ No operations found in test for rate limit generation
+
+··stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Retry Logic > should retry on transient 503 and succeed
+{"timestamp":"2026-10-11T19:27:27.347Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > updateUserAccess > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:27.350Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/users/access"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > updateUserAccess > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:27.350Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for PUT https://user-management-api.wildberries.ru/api/v1/users/access after 2 attempts","operationName":"PUT https://user-management-api.wildberries.ru/api/v1/users/access","attempts":2,"maxRetries":2,"finalError":"Rate limit exceeded. Retry after 15000ms"}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > updateUserAccess > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:27.351Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://user-management-api.wildberries.ru/api/v1/users/access"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > updateUserAccess > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:27.461Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://user-management-api.wildberries.ru/api/v1/users/access"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectAll() - Categories/Subjects > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:27.477Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/all"}}
+
+·stderr | tests/integration/orders-fbs.integration.test.ts > OrdersFbsModule Integration Tests > Retry Logic > should not retry on 400 Bad Request
+{"timestamp":"2026-10-11T19:27:27.549Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":400,"url":"https://marketplace-api.wildberries.ru/api/v3/orders/new"}}
+
+···stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > updateUserAccess > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:27.667Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://user-management-api.wildberries.ru/api/v1/users/access"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > updateUserAccess > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:27.667Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for PUT https://user-management-api.wildberries.ru/api/v1/users/access after 2 attempts","operationName":"PUT https://user-management-api.wildberries.ru/api/v1/users/access","attempts":2,"maxRetries":2,"finalError":"Server error: 500"}
+
+·stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > deleteUser > should throw AuthenticationError on 401 response
+{"timestamp":"2026-10-11T19:27:27.669Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://user-management-api.wildberries.ru/api/v1/user"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > deleteUser > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:27.670Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/user"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > deleteUser > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:27.774Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/user"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectAll() - Categories/Subjects > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:27.912Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/all"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectAll() - Categories/Subjects > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:27.912Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://content-api.wildberries.ru/content/v2/object/all after 3 attempts","operationName":"GET https://content-api.wildberries.ru/content/v2/object/all","attempts":3,"maxRetries":3,"finalError":"Rate limit exceeded. Retry after 5000ms"}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 401 authentication error
+{"timestamp":"2026-10-11T19:27:27.917Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":401,"url":"https://content-api.wildberries.ru/content/v2/object/charcs/105"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:27.917Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/charcs/105"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > deleteUser > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:27.961Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://user-management-api.wildberries.ru/api/v1/user"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > deleteUser > should throw RateLimitError on 429 response
+{"timestamp":"2026-10-11T19:27:27.961Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for DELETE https://user-management-api.wildberries.ru/api/v1/user after 2 attempts","operationName":"DELETE https://user-management-api.wildberries.ru/api/v1/user","attempts":2,"maxRetries":2,"finalError":"Rate limit exceeded. Retry after 5000ms"}
+
+····stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > deleteUser > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:27.962Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://user-management-api.wildberries.ru/api/v1/user"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:28.018Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/charcs/105"}}
+
+·stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > deleteUser > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:28.066Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://user-management-api.wildberries.ru/api/v1/user"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:28.231Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/charcs/105"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > deleteUser > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:28.280Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://user-management-api.wildberries.ru/api/v1/user"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > deleteUser > should throw NetworkError on 500 response
+{"timestamp":"2026-10-11T19:27:28.280Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for DELETE https://user-management-api.wildberries.ru/api/v1/user after 2 attempts","operationName":"DELETE https://user-management-api.wildberries.ru/api/v1/user","attempts":2,"maxRetries":2,"finalError":"Server error: 500"}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > Retry Logic Integration > should retry on transient 503 error and eventually succeed for getUsers
+{"timestamp":"2026-10-11T19:27:28.281Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://user-management-api.wildberries.ru/api/v1/users"}}
+
+stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > Retry Logic Integration > should retry on transient 503 error and eventually succeed for getUsers
+{"timestamp":"2026-10-11T19:27:28.374Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://user-management-api.wildberries.ru/api/v1/users"}}
+
+·stderr | tests/integration/user-management.integration.test.ts > UserManagementModule Integration Tests > Retry Logic Integration > should not retry on 400 Bad Request (permanent error)
+{"timestamp":"2026-10-11T19:27:28.574Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":400,"url":"https://user-management-api.wildberries.ru/api/v1/invite"}}
+
+········stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:28.616Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://content-api.wildberries.ru/content/v2/object/charcs/105"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 429 rate limit error
+{"timestamp":"2026-10-11T19:27:28.616Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://content-api.wildberries.ru/content/v2/object/charcs/105 after 3 attempts","operationName":"GET https://content-api.wildberries.ru/content/v2/object/charcs/105","attempts":3,"maxRetries":3,"finalError":"Rate limit exceeded. Retry after 5000ms"}
+
+······stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 500 network error
+{"timestamp":"2026-10-11T19:27:28.617Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://content-api.wildberries.ru/content/v2/object/charcs/105"}}
+
+·stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 500 network error
+{"timestamp":"2026-10-11T19:27:28.723Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://content-api.wildberries.ru/content/v2/object/charcs/105"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 500 network error
+{"timestamp":"2026-10-11T19:27:28.936Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://content-api.wildberries.ru/content/v2/object/charcs/105"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 500 network error
+{"timestamp":"2026-10-11T19:27:29.365Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://content-api.wildberries.ru/content/v2/object/charcs/105"}}
+
+stderr | tests/integration/products-categories.integration.test.ts > ProductsModule Integration Tests - Categories > getObjectCharc() - Characteristics > should handle 500 network error
+{"timestamp":"2026-10-11T19:27:29.365Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://content-api.wildberries.ru/content/v2/object/charcs/105 after 3 attempts","operationName":"GET https://content-api.wildberries.ru/content/v2/object/charcs/105","attempts":3,"maxRetries":3,"finalError":"Server error: 500"}
+
+·····stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 429 Too Many Requests to RateLimitError
+{"timestamp":"2026-10-11T19:27:36.457Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":429,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 429 Too Many Requests to RateLimitError
+{"timestamp":"2026-10-11T19:27:36.457Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://common-api.wildberries.ru/ping after 3 attempts","operationName":"GET https://common-api.wildberries.ru/ping","attempts":3,"maxRetries":3,"finalError":"Rate limit exceeded. Retry after 5000ms"}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 500 Internal Server Error to NetworkError
+{"timestamp":"2026-10-11T19:27:36.458Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://common-api.wildberries.ru/ping"}}
+
+·stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 500 Internal Server Error to NetworkError
+{"timestamp":"2026-10-11T19:27:36.559Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 500 Internal Server Error to NetworkError
+{"timestamp":"2026-10-11T19:27:36.760Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://common-api.wildberries.ru/ping"}}
+
+·stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 500 Internal Server Error to NetworkError
+{"timestamp":"2026-10-11T19:27:47.152Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 500 Internal Server Error to NetworkError
+{"timestamp":"2026-10-11T19:27:47.153Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://common-api.wildberries.ru/ping after 3 attempts","operationName":"GET https://common-api.wildberries.ru/ping","attempts":3,"maxRetries":3,"finalError":"Server error: 500"}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 503 Service Unavailable to NetworkError
+{"timestamp":"2026-10-11T19:27:47.154Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://common-api.wildberries.ru/api/v1/seller-info"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 503 Service Unavailable to NetworkError
+{"timestamp":"2026-10-11T19:27:47.260Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://common-api.wildberries.ru/api/v1/seller-info"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 503 Service Unavailable to NetworkError
+{"timestamp":"2026-10-11T19:27:47.449Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://common-api.wildberries.ru/api/v1/seller-info"}}
+
+·stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 503 Service Unavailable to NetworkError
+{"timestamp":"2026-10-11T19:27:47.823Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://common-api.wildberries.ru/api/v1/seller-info"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Error Transformation > should transform 503 Service Unavailable to NetworkError
+{"timestamp":"2026-10-11T19:27:47.823Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://common-api.wildberries.ru/api/v1/seller-info after 3 attempts","operationName":"GET https://common-api.wildberries.ru/api/v1/seller-info","attempts":3,"maxRetries":3,"finalError":"Server error: 503"}
+
+·stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Retry Logic Integration > should retry on transient 503 error and eventually succeed
+{"timestamp":"2026-10-11T19:27:47.824Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Retry Logic Integration > should retry on transient 503 error and eventually succeed
+{"timestamp":"2026-10-11T19:27:47.917Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":503,"url":"https://common-api.wildberries.ru/ping"}}
+
+·stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Retry Logic Integration > should not retry on 400 Bad Request (permanent error)
+{"timestamp":"2026-10-11T19:27:48.139Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":400,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Retry Logic Integration > should exhaust retries and throw final error
+{"timestamp":"2026-10-11T19:27:48.140Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Retry Logic Integration > should exhaust retries and throw final error
+{"timestamp":"2026-10-11T19:27:48.236Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Retry Logic Integration > should exhaust retries and throw final error
+{"timestamp":"2026-10-11T19:27:48.428Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://common-api.wildberries.ru/ping"}}
+
+········stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Retry Logic Integration > should exhaust retries and throw final error
+{"timestamp":"2026-10-11T19:27:58.805Z","level":"warn","service":"WildberriesSDK","message":"HTTP error response","meta":{"status":500,"url":"https://common-api.wildberries.ru/ping"}}
+
+stderr | tests/integration/general.integration.test.ts > GeneralModule Integration Tests > Retry Logic Integration > should exhaust retries and throw final error
+{"timestamp":"2026-10-11T19:27:58.805Z","level":"warn","service":"RetryHandler","message":"All retries exhausted for GET https://common-api.wildberries.ru/ping after 3 attempts","operationName":"GET https://common-api.wildberries.ru/ping","attempts":3,"maxRetries":3,"finalError":"Server error: 500"}
+
+····
+
+ Test Files  13 passed (13)
+      Tests  228 passed | 1 skipped (229)
+   Start at  22:27:24
+   Duration  34.69s (transform 4.18s, setup 0ms, import 8.14s, tests 73.42s, environment 8.96s)

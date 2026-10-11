@@ -146,6 +146,7 @@ export default defineConfig({
                 items: [
                   { text: 'Realization Report', link: '/guides/realization-report' },
                   { text: 'Reports Module', link: '/guides/reports-module' },
+                  { text: 'Regional Sales → Order Feed', link: '/guides/region-sale-to-order-feed' },
                   { text: 'Commissions & Fees', link: '/guides/commissions-fees' },
                   { text: 'Stock Management', link: '/guides/stock-management' },
                   { text: 'Returns Handling', link: '/guides/returns-handling' },
@@ -406,6 +407,7 @@ export default defineConfig({
                 items: [
                   { text: 'Отчёт о реализации', link: '/ru/guides/realization-report' },
                   { text: 'Модуль отчётов', link: '/ru/guides/reports-module' },
+                  { text: 'Продажи по регионам → Лента заказов', link: '/ru/guides/region-sale-to-order-feed' },
                   { text: 'Комиссии и тарифы', link: '/ru/guides/commissions-fees' },
                   { text: 'Управление остатками', link: '/ru/guides/stock-management' },
                   { text: 'Возвраты и отмены', link: '/ru/guides/returns-handling' },

@@ -85,6 +85,7 @@ In-depth guides for production deployment and advanced SDK usage.
 - **[Commissions & Fees](/guides/commissions-fees)** - Tariffs and commission calculations
 - **[Realization Reports](/guides/realization-report)** - Sales and realization reports
 - **[Reports Module](/guides/reports-module)** - Financial reporting
+- **[Regional Sales → Order Feed](/guides/region-sale-to-order-feed)** - Migrate before 2026-11-03 with stable-snapshot pagination and explicit semantic boundaries
 - **[Storage Fees](/guides/storage-fees-integration)** - Warehouse costs integration
 
 ### Finance Reconciliation

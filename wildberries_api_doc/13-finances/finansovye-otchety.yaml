@@ -1,8 +1,111 @@
 _tag: "Финансовые отчёты"
 _tag_en: "Financial Reports"
-_endpoints: 1
-_base_url: "https://statistics-api.wildberries.ru"
+_endpoints: 3
+_base_url: "https://finance-api.wildberries.ru"
 paths:
+  /api/finance/v1/sales-reports/detailed/{reportId}:
+    servers:
+      - url: https://finance-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: finance
+      operationId: postV1SalesReportsDetailedReportId
+      tags:
+        - Финансовые отчёты
+      summary: Детализация отчёта о продажах по ID
+      parameters:
+        - name: reportId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                limit:
+                  type: integer
+                  maximum: 100000
+                  default: 100000
+                rrdId:
+                  type: integer
+                  default: 0
+                fields:
+                  type: array
+                  items:
+                    type: string
+                  description: Список полей ответа; при выборочной проекции остальные поля отсутствуют.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '_schemas.yaml#/SalesReportsDetailedRes'
+        '204':
+          description: Нет данных
+  /api/finance/v1/sales-reports/detailed:
+    servers:
+      - url: https://finance-api.wildberries.ru
+    post:
+      x-readonly-method: true
+      x-category: finance
+      operationId: postV1SalesReportsDetailed
+      tags:
+        - Финансовые отчёты
+      summary: Детализация отчёта о продажах за период
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - dateFrom
+                - dateTo
+              properties:
+                dateFrom:
+                  type: string
+                  description: Начало периода в формате RFC3339.
+                dateTo:
+                  type: string
+                  description: Конец периода в формате RFC3339.
+                limit:
+                  type: integer
+                  maximum: 100000
+                  default: 100000
+                rrdId:
+                  type: integer
+                  default: 0
+                period:
+                  type: string
+                  enum:
+                    - daily
+                    - weekly
+                  default: weekly
+                fields:
+                  type: array
+                  items:
+                    type: string
+                  description: Список полей ответа; при выборочной проекции остальные поля отсутствуют.
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '_schemas.yaml#/SalesReportsDetailedRes'
+        '204':
+          description: Нет данных
+
   /api/v5/supplier/reportDetailByPeriod:
     servers:
       - url: https://statistics-api.wildberries.ru

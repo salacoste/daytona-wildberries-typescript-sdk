@@ -13,7 +13,11 @@ import type { BaseClient } from '../../client/base-client';
 import type { ReportsModule } from '../reports';
 import type { OrdersFbsModule } from '../orders-fbs';
 import type { FinancesModule } from '../finances';
-import type { GoodsReturnItem } from '../../types/reports.types';
+import type {
+  GoodsReturnStatus,
+  GoodsReturnV1Item,
+  GoodsReturnV1Response,
+} from '../../types/reports.types';
 import type { SalesReportDetailedItem } from '../../types/finances.types';
 import { classifyReturnReason } from '../../utils/classifyReturnReason';
 import { parseMoneyAmount } from '../../utils/parseMoneyAmount';
@@ -36,7 +40,7 @@ import type {
 
 /**
  * Validates the date range. Throws for invalid date strings, ranges > 31 days,
- * or if dateFrom > dateTo.
+ * or if dateFrom >= dateTo.
  */
 function validateDateRange(dateFrom: string, dateTo: string): void {
   const from = new Date(dateFrom);
@@ -49,13 +53,13 @@ function validateDateRange(dateFrom: string, dateTo: string): void {
   }
   const diffMs = to.getTime() - from.getTime();
   const diffDays = diffMs / (1000 * 60 * 60 * 24);
-  if (diffDays < 0) {
-    throw new Error(`dateFrom (${dateFrom}) must be <= dateTo (${dateTo})`);
+  if (diffDays <= 0) {
+    throw new Error(`dateTo (${dateTo}) must be after dateFrom (${dateFrom})`);
   }
   if (diffDays > 31) {
     throw new Error(
       `Date range exceeds 31-day limit (got ${Math.round(diffDays)} days). ` +
-        `WB getAnalyticsGoodsReturn supports max 31 days. ` +
+        `WB getAnalyticsV1GoodsReturn supports max 31 days. ` +
         `Split your range and call getReturns() multiple times.`
     );
   }
@@ -65,25 +69,24 @@ function validateDateRange(dateFrom: string, dateTo: string): void {
  * Derives the return status for an FBO goods-return record.
  *
  * Rules (in order):
- * - `isStatusActive === 1` → `'initiated'` (still in flight)
- * - `isStatusActive === 0` and `completedDt` present → `'processed'`
+ * - active endpoint context → `'initiated'` (still in flight)
+ * - archive endpoint context and `completedDt` present → `'processed'`
  * - otherwise → `'received'`
  */
-function deriveFboReturnStatus(item: GoodsReturnItem): ReturnStatus {
-  if (item.isStatusActive === 1) return 'initiated';
-  if (item.isStatusActive === 0 && item.completedDt) return 'processed';
+function deriveFboReturnStatus(item: GoodsReturnV1Item, status: GoodsReturnStatus): ReturnStatus {
+  if (status === 'active') return 'initiated';
+  if (item.completedDt) return 'processed';
   return 'received';
 }
 
 /**
- * Maps a `GoodsReturnItem` array from the FBO analytics endpoint to unified
+ * Maps `GoodsReturnV1Item` records from one FBO status page to unified
  * `ReturnItem[]`. Skips records that are missing required fields.
  */
-function mapFboToReturnItems(items: GoodsReturnItem[]): ReturnItem[] {
+function mapFboToReturnItems(items: GoodsReturnV1Item[], status: GoodsReturnStatus): ReturnItem[] {
   const result: ReturnItem[] = [];
   for (const item of items) {
-    // Required: nmId, orderId, at least one date field for returnDate
-    if (item.nmId === undefined) continue;
+    // Required: orderId and at least one date field for returnDate
     if (!item.orderId && item.orderId !== 0) continue;
 
     const returnDate = item.completedDt ?? item.readyToReturnDt ?? item.orderDt;
@@ -92,11 +95,12 @@ function mapFboToReturnItems(items: GoodsReturnItem[]): ReturnItem[] {
     result.push({
       orderId: String(item.orderId),
       nmId: item.nmId,
+      sku: item.sku,
       orderType: 'fbo',
       returnDate,
-      returnStatus: deriveFboReturnStatus(item),
-      returnReason: item.reason ?? '',
-      returnReasonCode: classifyReturnReason(item.reason ?? ''),
+      returnStatus: deriveFboReturnStatus(item, status),
+      returnReason: item.returnReason ?? '',
+      returnReasonCode: classifyReturnReason(item.returnReason ?? ''),
       returnCategory: 'unknown',
       quantity: 1,
       srid: item.srid,
@@ -162,18 +166,30 @@ function enrichWithFinance(
 }
 
 /**
- * Deduplicates merged items by `srid` — when the same srid appears more than
- * once (e.g., from FBO and FBS simultaneously), the first occurrence wins.
+ * Deduplicates merged items by `srid`. Later records replace earlier records,
+ * so the archive page fetched after active pages wins during a status transition.
  * Items without srid are always kept.
  */
 function deduplicateBySrid(items: ReturnItem[]): ReturnItem[] {
-  const seen = new Set<string>();
-  return items.filter((item) => {
-    if (!item.srid) return true;
-    if (seen.has(item.srid)) return false;
-    seen.add(item.srid);
-    return true;
-  });
+  const deduped: ReturnItem[] = [];
+  const indexBySrid = new Map<string, number>();
+
+  for (const item of items) {
+    if (!item.srid) {
+      deduped.push(item);
+      continue;
+    }
+
+    const existingIndex = indexBySrid.get(item.srid);
+    if (existingIndex === undefined) {
+      indexBySrid.set(item.srid, deduped.length);
+      deduped.push(item);
+    } else {
+      deduped[existingIndex] = item;
+    }
+  }
+
+  return deduped;
 }
 
 // ============================================================================
@@ -214,6 +230,32 @@ export class ReturnsModule {
   ) {
     this.reports = reports;
     this.finances = finances;
+  }
+
+  /** Fetches active and archived FBO returns sequentially with offset pagination. */
+  private async fetchAllFboReturns(dateFrom: string, dateTo: string): Promise<ReturnItem[]> {
+    const PAGE_LIMIT = 1000;
+    const all: ReturnItem[] = [];
+
+    for (const status of ['active', 'archive'] as const) {
+      let offset = 0;
+      let pageLength: number;
+      do {
+        const response = (await this.reports.getAnalyticsV1GoodsReturn({
+          dateFrom,
+          dateTo,
+          status,
+          limit: PAGE_LIMIT,
+          offset,
+        })) as GoodsReturnV1Response | null | undefined;
+        const page = response?.report ?? [];
+        pageLength = page.length;
+        all.push(...mapFboToReturnItems(page, status));
+        offset += pageLength;
+      } while (pageLength === PAGE_LIMIT);
+    }
+
+    return all;
   }
 
   /**
@@ -259,7 +301,7 @@ export class ReturnsModule {
   /**
    * Unified return analytics aggregator.
    *
-   * Fetches FBO returns from `sdk.reports.getAnalyticsGoodsReturn()`,
+   * Fetches active and archived FBO returns from `sdk.reports.getAnalyticsV1GoodsReturn()`,
    * optionally FBS returns (reserved — currently skipped), and enriches all
    * records with financial amounts from `sdk.finances.getSalesReportsDetailed()`.
    *
@@ -271,7 +313,7 @@ export class ReturnsModule {
    *
    * @param params - Date range, optional filters, and pagination
    * @returns Unified `ReturnsApiResponse` with data, warnings, partialFailures, _meta
-   * @throws {Error} If `dateFrom > dateTo`, range exceeds 31 days, or date strings are invalid
+   * @throws {Error} If `dateFrom >= dateTo`, range exceeds 31 days, or date strings are invalid
    *
    * @example
    * ```typescript
@@ -309,19 +351,14 @@ export class ReturnsModule {
       }
     }
 
-    // 4. Parallel fetch with Promise.allSettled
+    // 4. Parallel source fetch with Promise.allSettled. The FBO helper itself
+    // sequences active/archive pages so every request uses the shared 1 req/min limiter.
     // FBS slot is omitted — always skipped in v3.10.0 (implementation deferred)
     // Note: Finance is fetched even if FBO fails — by the time we know FBO failed,
     // finance is already in flight (Promise.allSettled). The wasted call costs ~1
     // req/min but eliminates serial latency in the happy path.
     const [fboResult, financeResult] = await Promise.allSettled([
-      fetchFbo
-        ? // eslint-disable-next-line @typescript-eslint/no-deprecated -- legacy goods-return endpoint; migrating getReturns() to getAnalyticsV1GoodsReturn (active+archive, pagination) is tracked in task-215, deadline 2026-10-26
-          this.reports.getAnalyticsGoodsReturn({
-            dateFrom: params.dateFrom,
-            dateTo: params.dateTo,
-          })
-        : Promise.resolve(null),
+      fetchFbo ? this.fetchAllFboReturns(params.dateFrom, params.dateTo) : Promise.resolve(null),
       this.fetchAllFinanceLines(params.dateFrom, params.dateTo, warnings),
     ]);
 
@@ -345,10 +382,7 @@ export class ReturnsModule {
     }
 
     // 6. Build per-source telemetry
-    const fboItems =
-      fboResult.status === 'fulfilled' && fboResult.value
-        ? mapFboToReturnItems(fboResult.value.report ?? [])
-        : [];
+    const fboItems = fboResult.status === 'fulfilled' && fboResult.value ? fboResult.value : [];
 
     const financeLines = financeResult.status === 'fulfilled' ? financeResult.value : [];
 

@@ -22,6 +22,8 @@ Complete guide to fetching, filtering, and paginating product cards using the `g
 - [Troubleshooting](#troubleshooting)
 - [Best Practices](#best-practices)
 - [Response Structure](#response-structure)
+- [TN VED and OKPD2 Directories](#tn-ved-and-okpd2-directories)
+- [Additional GTIN](#additional-gtin)
 - [Documents](#documents)
 
 ---
@@ -872,6 +874,96 @@ const nikeCards = allCards.filter(c => c.brand === 'Nike');
   }
 }
 ```
+
+---
+
+## TN VED and OKPD2 Directories
+
+The three classification-directory methods use a Content API token and share the Content API
+limit of 100 requests per minute, a 600 ms interval, and a burst of 5 requests.
+
+```typescript
+const tnved = await sdk.products.getDirectoryTnvedAll({
+  search: 6106,
+  locale: 'en',
+});
+
+const subjectOkpd = await sdk.products.getDirectoryOkpd({
+  subjectId: 105,
+  search: '61.06',
+  locale: 'ru',
+});
+
+const allOkpd = await sdk.products.getDirectoryOkpdAll({
+  search: 61.06,
+  locale: 'ru',
+});
+```
+
+The official raw Swagger permits `ru` only for both OKPD2 methods. On the same date, the
+rendered portal page showed `ru` and `en` for the full directory. The SDK follows the exact
+machine-readable request contract, but this source conflict is not proof that the WB runtime
+rejects `en`. TN VED permits both `ru` and `en`.
+
+The raw schema declares `getDirectoryOkpdAll().search` as a `number`, even though its prose
+describes dotted text prefixes. The SDK preserves that numeric type. By comparison,
+`getDirectoryOkpd().search` is a `string`, so pass a dotted prefix such as `61.06` as a string.
+
+---
+
+## Additional GTIN
+
+The optional `gtin` field is placed at card level, not size level. It is a non-null string when
+present at all four contract locations:
+
+| Operation | Field location |
+|-----------|----------------|
+| `createCardsUpload()` | `variants[].gtin` |
+| `createCardsUpdate()` | each update item's `gtin` |
+| `createUploadAdd()` | `cardsToAdd[].gtin` |
+| `getCardsList()` | response `cards[].gtin`, when populated |
+
+```typescript
+const historicalGtin = '04600000000018';
+
+await sdk.products.createCardsUpload([{
+  subjectID: 105,
+  variants: [{
+    vendorCode: 'ART-GTIN-CREATE',
+    gtin: historicalGtin,
+    sizes: [{ skus: ['04600000000995'] }],
+  }],
+}]);
+
+await sdk.products.createCardsUpdate([{
+  nmID: 12345678,
+  vendorCode: 'ART-GTIN-UPDATE',
+  gtin: historicalGtin,
+  sizes: [{ skus: ['04600000000996'] }],
+}]);
+
+await sdk.products.createUploadAdd({
+  imtID: 98765,
+  cardsToAdd: [{
+    vendorCode: 'ART-GTIN-ADD',
+    gtin: historicalGtin,
+    sizes: [{ skus: ['04600000000997'] }],
+  }],
+});
+
+const cards = await sdk.products.getCardsList({
+  settings: { cursor: { limit: 100 } },
+});
+const listedGtin: string | undefined = cards.cards?.[0]?.gtin;
+```
+
+WB accepts an additional GTIN only when the same value previously occurred in `skus` of one
+of the seller's listings; it does not have to be the same listing. This depends on remote seller
+history and is enforced by WB, so the SDK passes the field without local history validation.
+Current `skus` values must remain unique across listings and sizes. The example therefore keeps
+the historical GTIN out of all current `skus` arrays and uses a different current SKU in each
+payload. The pinned contract makes this feature available only to sellers registered in Russia.
+Omit `gtin` when it is not needed.
 
 ---
 

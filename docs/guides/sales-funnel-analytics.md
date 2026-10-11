@@ -16,6 +16,14 @@ This guide covers the Wildberries Sales Funnel API (v3) and explains how to use 
 
 ---
 
+## Data freshness from 2026-09-24
+
+Wildberries refreshes data **once every two hours** for `getSalesFunnelProducts()`, `getSalesFunnelProductsHistory()` and `getSalesFunnelGroupedHistory()`, and for the `DETAIL_HISTORY_REPORT` and `GROUPED_HISTORY_REPORT` CSV exports created with `createNmReportDownload()`.
+
+This is the data refresh cadence, not a request-rate limit. Polling or generating another CSV sooner does not guarantee newer metrics. Order Feed (`getOrderFeed()`) can replace only order and buyout data; it does not replace views, cart additions or conversion metrics.
+
+Sources: [Sales Funnel](https://dev.wildberries.ru/docs/openapi/analytics/#tag/salesFunnel/operation/postV3SalesFunnelProducts), [CSV reports](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/postV2NmReportDownloads).
+
 ## Table of Contents
 
 1. [What is the Sales Funnel](#what-is-the-sales-funnel)

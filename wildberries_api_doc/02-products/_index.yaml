@@ -16,7 +16,7 @@ _base_url: N/A
 _shards:
   - file: kategorii-predmety-i-kharakteristiki.yaml
     domain: Категории, предметы и характеристики
-    endpoints: 10
+    endpoints: 13
     description: Categories and Characteristics
   - file: yarlyki.yaml
     domain: Ярлыки
@@ -59,4 +59,4 @@ _shards:
     endpoints: 7
     description: Seller Warehouses
 _shared_schemas: _schemas.yaml
-_total_endpoints: 49
+_total_endpoints: 52

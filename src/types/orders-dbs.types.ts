@@ -25,6 +25,51 @@ export interface DBSAddress {
 }
 
 /**
+ * Delivery model for a test DBS assembly order in the WB sandbox.
+ *
+ * The official rendered contract documents `dbs` as the omission default.
+ * The SDK keeps this field optional and does not inject the default into the
+ * serialized request.
+ */
+export type DbsTestDeliveryType = 'dbs' | 'dbsPickupPoint' | 'edbs';
+
+/** Product and quantity for one test DBS assembly order. */
+export interface CreateTestDbsOrderItem {
+  /** Seller SKU. The rendered official contract shows no length or pattern bound. */
+  sku: string;
+  /** Integer quantity. The rendered official contract shows only a maximum of 10. */
+  amount: number;
+}
+
+/** Delivery address for test DBS assembly orders. */
+export interface CreateTestDbsOrdersAddress {
+  region: string;
+  locality: string;
+  street: string;
+  houseNumber: string;
+  entrance?: string;
+  intercom?: string;
+  floor?: string;
+  apartment?: string;
+}
+
+/** Request body for `ordersDBS.createTestOrders()`. */
+export interface CreateTestDbsOrdersRequest {
+  /** One through ten test orders. */
+  orders: CreateTestDbsOrderItem[];
+  /**
+   * Test delivery model. The official rendered contract displays `dbs` as the
+   * default when omitted; the SDK sends omission unchanged.
+   */
+  deliveryType?: DbsTestDeliveryType;
+  /**
+   * Delivery address. When omitted, the official documentation describes a
+   * WB-provided default Moscow address; this has not been runtime-tested here.
+   */
+  address?: CreateTestDbsOrdersAddress;
+}
+
+/**
  * New DBS order (assembly task) awaiting processing
  * Contains delivery window, customer address, and required metadata
  */
@@ -141,6 +186,10 @@ export interface DBSClientInfo {
   phoneCode?: number;
   /** Additional phone country codes */
   additionalPhoneCodes?: number[];
+  /** Additional direct contact numbers. Empty array means WB did not provide a number. */
+  additionalPhones?: string[];
+  /** Additional masked replacement numbers. Empty array means WB did not provide a number. */
+  replacementAdditionalPhones?: string[];
 }
 
 // ============================================================================
@@ -342,8 +391,8 @@ export interface GetOrdersResponse {
  * Response from getClientInfo
  */
 export interface GetClientInfoResponse {
-  /** List of customer information */
-  orders?: DBSClientInfo[];
+  /** List of customer information, or `null` when WB returns no order collection. */
+  orders?: DBSClientInfo[] | null;
 }
 
 /**

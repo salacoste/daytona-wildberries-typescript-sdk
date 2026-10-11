@@ -145,7 +145,7 @@ export const reportsRateLimits: Record<string, RateLimitConfig> = {
   'reports.analyticsGoodsReturnV1': {
     requestsPerMinute: 1,
     intervalSeconds: 60,
-    burstLimit: 10,
+    burstLimit: 1,
   },
   // EPIC 44: New endpoints
   'reports.measurementPenalties': {

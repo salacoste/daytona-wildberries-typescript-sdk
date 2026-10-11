@@ -1,0 +1,15 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 npx
+npm notice run 'vitest' list --config vitest.integration.config.ts --filesOnly
+tests/integration/base-client.integration.test.ts
+tests/integration/finances.integration.test.ts
+tests/integration/general.integration.test.ts
+tests/integration/module-generator.integration.test.ts
+tests/integration/orders-fbs.integration.test.ts
+tests/integration/orders-fbw.integration.test.ts
+tests/integration/products-categories.integration.test.ts
+tests/integration/rate-limiter.integration.test.ts
+tests/integration/retry-handler.integration.test.ts
+tests/integration/sdk-initialization.test.ts
+tests/integration/tariffs.integration.test.ts
+tests/integration/type-generator.integration.test.ts
+tests/integration/user-management.integration.test.ts

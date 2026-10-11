@@ -12,7 +12,7 @@ layout: doc
 
 ```mermaid
 flowchart LR
-  A[sdk.reports.<br/>getAnalyticsGoodsReturn]:::fbo --> M[ReturnsModule]
+  A[sdk.reports.<br/>getAnalyticsV1GoodsReturn<br/>active + archive]:::fbo --> M[ReturnsModule]
   B[sdk.ordersFBS.orders<br/>+ status history]:::fbs --> M
   C[sdk.finances.<br/>getSalesReportsDetailed]:::fin --> M
   M --> O[Unified ReturnItem array]:::output
@@ -22,6 +22,8 @@ flowchart LR
   classDef fin fill:#e8f5e9,stroke:#2e7d32
   classDef output fill:#f3e5f5,stroke:#6a1b9a
 ```
+
+The FBO branch fetches all `active` pages and then all `archive` pages with `limit: 1000`. The SDK reuses the Reports rate limiter configured at one request per minute with burst 1, and treats an HTTP 204 response as an empty page.
 
 **Happy path — fetch one month of returns:**
 
@@ -53,8 +55,8 @@ result.data.forEach((r) => {
 | Free-text Russian return reasons | WB returns reason as human-readable text only | Use `classifyReturnReason()` → maps to stable `ReturnReasonCode` enum |
 | Weekly finance cadence | Sales Reports v1 publishes on Mondays | `returnAmount` may be `undefined` for returns within last ~7 days |
 | No `returnCategory` for FBO | Only FBS status history reveals category | FBO records get `returnCategory: 'unknown'`; FBS implementation deferred to v3.10.1 |
-| 31-day max date range | WB `getAnalyticsGoodsReturn` enforces this limit | Throws clear error; consumer chunks request manually ([Recipe 4](#recipe-4-multi-month-range-chunking-pattern)) |
-| No `vendorCode` for FBO | `getAnalyticsGoodsReturn` doesn't expose it | Always `undefined` for FBO records |
+| 31-day max date range | WB `getAnalyticsV1GoodsReturn` enforces this limit | Throws clear error; consumer chunks request manually ([Recipe 4](#recipe-4-multi-month-range-chunking-pattern)) |
+| No `vendorCode` for FBO | `getAnalyticsV1GoodsReturn` doesn't expose it | Always `undefined` for FBO records |
 
 ---
 
@@ -200,7 +202,7 @@ The primary aggregation method. Fetches FBO returns in parallel with Finance enr
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `dateFrom` | `string` | Yes | ISO 8601 date (`YYYY-MM-DD`). Start of the range (inclusive). |
-| `dateTo` | `string` | Yes | ISO 8601 date (`YYYY-MM-DD`). End of the range (inclusive). Must be `>= dateFrom`. |
+| `dateTo` | `string` | Yes | ISO 8601 date (`YYYY-MM-DD`). End of the range (inclusive). Must be `> dateFrom`; equal dates are rejected. |
 | `nmIds` | `number[]` | No | Filter by SKU. Applied as a post-filter on the merged result. |
 | `orderType` | `'fbo' \| 'fbs'` | No | Restrict to one fulfillment type. Omitting fetches both. |
 | `includeFbsStatusHistory` | `boolean` | No | Reserved for v3.10.1. Passing `true` today adds a warning and skips FBS. Default `false`. |
@@ -208,7 +210,7 @@ The primary aggregation method. Fetches FBO returns in parallel with Finance enr
 | `limit` | `number` | No | Pagination: max items in `data`. Applied to merged result. Default: no limit. |
 | `offset` | `number` | No | Pagination: skip first N items. Default `0`. |
 
-**Throws:** `Error` when `dateFrom > dateTo`, the range exceeds 31 days, or either date string is invalid. These are synchronous validation errors — no network call is made.
+**Throws:** `Error` when `dateTo <= dateFrom`, the range exceeds 31 days, or either date string is invalid. These are synchronous validation errors — no network call is made.
 
 **Response (`ReturnsApiResponse`):**
 
@@ -229,7 +231,7 @@ The primary aggregation method. Fetches FBO returns in parallel with Finance enr
 | `vendorCode` | `string \| undefined` | FBS only | Always `undefined` for FBO records in v3.10.0. |
 | `orderType` | `'fbo' \| 'fbs'` | Derived | Fulfillment path of the order. |
 | `returnDate` | `string` | FBO: `completedDt` or `readyToReturnDt`; FBS: status transition | ISO 8601 datetime string. |
-| `returnStatus` | `ReturnStatus` | FBO: derived from `isStatusActive`; FBS: status history | `'initiated' \| 'received' \| 'processed'`. No `'in_transit'`. |
+| `returnStatus` | `ReturnStatus` | FBO: derived from the requested `active`/`archive` status and completion date; FBS: status history | `'initiated' \| 'received' \| 'processed'`. No `'in_transit'`. |
 | `returnReason` | `string` | FBO/FBS | Free-text Russian reason from WB. |
 | `returnReasonCode` | `ReturnReasonCode` | Derived | Standardized code via `classifyReturnReason()`. Stable across WB text changes. |
 | `returnCategory` | `ReturnCategory` | FBS preferred | `'unknown'` for all FBO records in v3.10.0. FBS deferred to v3.10.1. |

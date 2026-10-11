@@ -18,6 +18,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ReportsModule } from '../../../src/modules/reports';
+import { reportsRateLimits } from '../../../src/config/reports-rate-limits';
 import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
 import type { BaseClient } from '../../../src/client/base-client';
 
@@ -331,13 +332,26 @@ describe('ReportsModule', () => {
       });
 
       it('getAnalyticsRegionSale passes rateLimitKey', async () => {
+        resetDeprecationWarnings();
         mockClient.get.mockResolvedValue({});
-        await module.getAnalyticsRegionSale({ dateFrom: '2026-01-01', dateTo: '2026-01-31' });
+        const params = { dateFrom: '2026-01-01', dateTo: '2026-01-31' };
+        await module.getAnalyticsRegionSale(params);
+        await module.getAnalyticsRegionSale(params);
 
-        expect(mockClient.get).toHaveBeenCalledWith(
+        expect(mockClient.get).toHaveBeenNthCalledWith(
+          1,
           `${ANALYTICS_URL}/api/v1/analytics/region-sale`,
-          expect.objectContaining({ rateLimitKey: 'reports.analyticsRegionSale' })
+          expect.objectContaining({
+            params,
+            rateLimitKey: 'reports.analyticsRegionSale',
+          })
         );
+        expect(mockClient.get).toHaveBeenCalledTimes(2);
+        /* eslint-disable no-console */
+        expect(console.warn).toHaveBeenCalledTimes(1);
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('2026-11-03'));
+        expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('getOrderFeed'));
+        /* eslint-enable no-console */
       });
 
       it('getAnalyticsGoodsReturn passes rateLimitKey', async () => {
@@ -361,6 +375,14 @@ describe('ReportsModule', () => {
       });
 
       describe('getAnalyticsV1GoodsReturn (new endpoint)', () => {
+        it('uses the shared one-request-per-minute limiter without a burst', () => {
+          expect(reportsRateLimits['reports.analyticsGoodsReturnV1']).toEqual({
+            requestsPerMinute: 1,
+            intervalSeconds: 60,
+            burstLimit: 1,
+          });
+        });
+
         it('calls the new item-returns path with all required params and rateLimitKey', async () => {
           mockClient.get.mockResolvedValue({ count: 0, report: [] });
           await module.getAnalyticsV1GoodsReturn({

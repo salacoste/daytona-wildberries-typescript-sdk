@@ -8,11 +8,11 @@ layout: doc
 
 ## Что предоставляет `sdk.returns`
 
-`sdk.returns` — агрегатор, который объединяет три разрозненных источника данных WB в единый массив `ReturnItem`. Вместо того чтобы вручную вызывать `getAnalyticsGoodsReturn`, `ordersFBS.getOrders` и `getSalesReportsDetailed`, а затем склеивать их по `srid`, достаточно одного вызова. Внутри SDK обрабатывает pagination, фильтрацию по `nmId`, классификацию причин и финансовое обогащение. Частичные ошибки не роняют весь запрос — вы получаете данные из успешных источников вместе с прозрачным отчётом о том, что пошло не так.
+`sdk.returns` — агрегатор, который объединяет три разрозненных источника данных WB в единый массив `ReturnItem`. Вместо того чтобы вручную вызывать `getAnalyticsV1GoodsReturn` для активных и архивных возвратов, `ordersFBS.getOrders` и `getSalesReportsDetailed`, а затем склеивать их по `srid`, достаточно одного вызова. Внутри SDK обрабатывает пагинацию, фильтрацию по `nmId`, классификацию причин и финансовое обогащение. Частичные ошибки не роняют весь запрос — вы получаете данные из успешных источников вместе с прозрачным отчётом о том, что пошло не так.
 
 ```mermaid
 flowchart LR
-  A[sdk.reports.<br/>getAnalyticsGoodsReturn]:::fbo --> M[ReturnsModule]
+  A[sdk.reports.<br/>getAnalyticsV1GoodsReturn<br/>active + archive]:::fbo --> M[ReturnsModule]
   B[sdk.ordersFBS.orders<br/>+ status history]:::fbs --> M
   C[sdk.finances.<br/>getSalesReportsDetailed]:::fin --> M
   M --> O[Unified ReturnItem array]:::output
@@ -22,6 +22,8 @@ flowchart LR
   classDef fin fill:#e8f5e9,stroke:#2e7d32
   classDef output fill:#f3e5f5,stroke:#6a1b9a
 ```
+
+Ветка FBO последовательно получает все страницы `active`, затем все страницы `archive` с `limit: 1000`. Запросы проходят через общий лимитер Reports с лимитом 1 запрос в минуту и всплеском 1; HTTP 204 считается пустой страницей.
 
 ### Быстрый старт
 
@@ -59,8 +61,8 @@ if (result.partialFailures.length > 0) {
 | Причины возврата возвращаются как свободный текст на русском | WB не предоставляет машиночитаемых кодов причин | Используйте `classifyReturnReason()` — маппинг на стабильный enum `ReturnReasonCode` |
 | Еженедельная частота финансовых отчётов | Sales Reports v1 публикуется по понедельникам | `returnAmount` может быть `undefined` для возвратов последних ~7 дней |
 | `returnCategory` недоступна для FBO | Категория выводится из истории статусов FBS | FBO-записи получают `returnCategory: 'unknown'`; реализация FBS перенесена в v3.10.1 |
-| Максимальный диапазон дат — 31 день | Ограничение `getAnalyticsGoodsReturn` на стороне WB | SDK бросает понятную ошибку; разбейте запрос вручную ([Рецепт 4](#рецепт-4-длинный-диапазон-дат-разбивка-на-чанки)) |
-| `vendorCode` недоступен для FBO | `getAnalyticsGoodsReturn` не возвращает это поле | Всегда `undefined` для FBO-записей в v3.10.0 |
+| Максимальный диапазон дат — 31 день | Ограничение `getAnalyticsV1GoodsReturn` на стороне WB | SDK бросает понятную ошибку; разбейте запрос вручную ([Рецепт 4](#рецепт-4-длинный-диапазон-дат-разбивка-на-чанки)) |
+| `vendorCode` недоступен для FBO | `getAnalyticsV1GoodsReturn` не возвращает это поле | Всегда `undefined` для FBO-записей в v3.10.0 |
 
 ::: warning FBS-источник в v3.10.0
 Реализация FBS-источника перенесена в v3.10.1. В текущей версии FBS пропускается (`skipped: true` в `_meta.sources.fbs`). Передача `includeFbsStatusHistory: true` добавляет предупреждение и откатывается к пропуску источника.
@@ -181,7 +183,7 @@ async function flagSuspiciousReturns(sdk: WildberriesSDK, dateFrom: string, date
 
 ### Рецепт 4: Длинный диапазон дат (разбивка на чанки)
 
-WB ограничивает `getAnalyticsGoodsReturn` диапазоном в 31 день. Для получения данных за несколько месяцев нужна ручная разбивка.
+WB ограничивает `getAnalyticsV1GoodsReturn` диапазоном в 31 день. Для получения данных за несколько месяцев нужна ручная разбивка.
 
 ```typescript
 import type { ReturnItem } from 'daytona-wildberries-typescript-sdk';
@@ -235,7 +237,7 @@ console.log(`Всего возвратов за Q1: ${q1Returns.length}`);
 ```typescript
 interface ReturnsApiRequest {
   dateFrom: string;           // ISO 8601 (YYYY-MM-DD). Обязательно.
-  dateTo: string;             // ISO 8601 (YYYY-MM-DD). Обязательно. Должно быть >= dateFrom.
+  dateTo: string;             // ISO 8601 (YYYY-MM-DD). Обязательно. Должно быть > dateFrom; одинаковые даты отклоняются.
   nmIds?: number[];           // Фильтр по SKU. Применяется на уровне WB там, где поддерживается.
   orderType?: 'fbo' | 'fbs'; // Пропустить ненужный источник. По умолчанию — оба.
   includeFbsStatusHistory?: boolean; // Зарезервировано для v3.10.1. Сейчас добавляет предупреждение.

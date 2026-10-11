@@ -95,7 +95,7 @@ const brandShare = await sdk.reports.getAnalyticsBrandShare();
 
 | Method | HTTP | Endpoint | Description |
 |--------|------|----------|-------------|
-| `getAnalyticsRegionSale()` | GET | `/api/v1/analytics/region-sale` | Get regional sales report |
+| `getAnalyticsRegionSale()` | GET | `/api/v1/analytics/region-sale` | **Deprecated:** WB disables on 2026-11-03; see the [Order Feed migration guide](/guides/region-sale-to-order-feed) |
 | `getBrandShareBrands()` | GET | `/api/v1/analytics/brand-share/brands` | Get seller brands list |
 | `getBrandShareParentSubjects()` | GET | `/api/v1/analytics/brand-share/parent-subjects` | Get brand parent categories |
 | `getAnalyticsBrandShare()` | GET | `/api/v1/analytics/brand-share` | Get brand share in sales |

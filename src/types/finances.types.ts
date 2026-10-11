@@ -376,6 +376,12 @@ export interface SalesReportDetailedItem {
   salePriceWholesaleDiscountPrc?: number;
   /** ИНН покупателя B2B (B2B buyer TIN) */
   b2bCustomerTin?: string;
+  /** КПП покупателя B2B. Optional in the SDK because selective `fields` responses may omit it. */
+  buyerTaxRegistrationReasonCode?: string;
+  /** Номер УПД/УКД. Optional in the SDK because selective `fields` responses may omit it. */
+  utdUcdNumber?: string;
+  /** Дата УПД/УКД в формате YYYY-MM-DD. Optional when the field was not selected. */
+  utdUcdDate?: string;
   /** ID транзакции (was `order_uid`) */
   orderUid?: string;
   /** Уникальный ID заказа (was `srid`) */

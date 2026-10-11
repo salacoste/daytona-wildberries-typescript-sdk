@@ -243,6 +243,17 @@ export interface RequestOptions {
   rateLimitKey?: string;
 
   /**
+   * Operation metadata key used by the retry handler.
+   *
+   * When supplied, write operations registered with `readonly: false` are not
+   * automatically retried after transient failures. Existing calls that omit
+   * this option keep the legacy retry behavior.
+   *
+   * @example 'ordersDBS.createTestOrders'
+   */
+  operationKey?: string;
+
+  /**
    * Per-request timeout in milliseconds
    *
    * Overrides the global `SDKConfig.timeout` for this single request.

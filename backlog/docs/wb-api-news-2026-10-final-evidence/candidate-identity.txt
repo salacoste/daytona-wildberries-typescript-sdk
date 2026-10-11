@@ -1,0 +1,42 @@
+WB API October 2026 staged candidate identity
+
+Original incomplete freeze
+staged_path_count=219
+staged_patch_sha256=4558edb0fb775a1003bf760dcd067607745361ac7c9a94b545f58c1152cfbf23
+staged_patch_bytes=1637861
+staged_tree=a66cc12c3ed9d967161530f4991fdf5b929fffd1
+
+Updated content identity
+content_path_count=224
+content_patch_sha256=20e18fbb8b22edac23030d095065691b01be5a0cd66602f9457e61eff81e0be6
+content_patch_bytes=1690330
+content_tree=302dfdf3513b098b724d488bbdc1e1e3545b8c4e
+content_identity_exclusions=hash-manifest.txt and candidate-identity.txt only; both are staged metadata reports and are excluded here solely to avoid recursive identity embedding
+
+Final full staged index
+expected_staged_path_count=226
+full_index_identity_embedding=excluded because embedding the final patch hash or tree in this staged file would change that identity
+reproduce_path_count=git diff --cached --name-only | wc -l
+reproduce_patch_sha256=git diff --cached --binary --full-index --no-ext-diff | shasum -a 256
+reproduce_patch_bytes=git diff --cached --binary --full-index --no-ext-diff | wc -c
+reproduce_tree=git write-tree
+
+Completeness correction
+added_delivery_records=backlog/docs/wb-api-changes-2026-09.md; backlog/docs/wb-api-news-2026-10-final-review.md; backlog/docs/wb-api-news-2026-10-gtin-fixture-fix.md; backlog/docs/wb-api-news-2026-10-nodenext-declarations.md; backlog/docs/wb-api-news-2026-10-returns-guide-boundary-fix.md; backlog/tasks/task-231 - Generate-NodeNext-safe-package-declarations.md
+historical_review_sha256=16c61b77b984514a716f5e7a2ea4da48de3c4125e9e57d11e7141b99d48a7fb2
+historical_review_content_changed=no
+hash_manifest_rule=hash-manifest.txt records every other final staged path from exact index blobs and excludes only its own staged blob
+
+Source and protected state
+head=6e8d6269140e3ae0a5aa5cb12ac714f457af4263
+package_version=4.6.0
+build_input_count=93
+build_input_sha256=7925c8e30ad92753a35d62bc62697ea675005012258d36fc0e3a4560e1a77367
+source_or_build_input_changed_by_completeness_correction=no
+returns_en_sha256=ccb197db0fc8aa5118f72cbf526c317f6623e6fd2e6438743c2df6bf344f6bfa
+returns_ru_sha256=1dc39f19feaf0054acda133cbd33bf868f92cf0209cdafa33f69278e00e1a54e
+gtin_test_sha256=777d54262fbb06f2668074f2be6a41862f8b7b1abd048469b43fa897a777b20d
+gtin_targeted_report=13/13 passed
+protected_config_sha256=bd618437cd04a4d71ad67a4f671100a7b968630f72daf17378ce3d2561c0b1b9
+protected_config_blob=6798b3a8df653646b20c3fcdb60f622c95ddf39e
+commit_created=no

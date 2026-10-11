@@ -1,0 +1,2 @@
+NmID,VendorCode,Name,Subject,Brand,IsAdvertised,IsRated,Rating,FeedbackRating,MinPrice,MaxPrice,AveragePosition,OpenCard,AddToCart,OpenToCart,Orders,CartToOrder,Visibility,AveragePositionPast,OpenCardPast,AddToCartPast,OpenToCartPast,OrdersPast,CartToOrderPast,VisibilityPast,IsSubstitutedSKU
+100001,synthetic-sku,Synthetic product,1,1,false,false,1,1,1,1,1,1,1,1,7,35,1,1,1,1,1,1,1,1,false

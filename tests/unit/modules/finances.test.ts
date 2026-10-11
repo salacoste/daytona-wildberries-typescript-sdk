@@ -617,6 +617,9 @@ describe('FinancesModule', () => {
           forPay: '376.99',
           retailAmount: '367',
           paidStorage: '12647.29',
+          buyerTaxRegistrationReasonCode: '770101001',
+          utdUcdNumber: 'UPD-2026-0001',
+          utdUcdDate: '2026-10-11',
         },
       ];
       mockClient.post.mockResolvedValue(mockResponse);
@@ -639,6 +642,9 @@ describe('FinancesModule', () => {
       );
       expect(result[0].forPay).toBe('376.99');
       expect(result[0].paidStorage).toBe('12647.29');
+      expect(result[0].buyerTaxRegistrationReasonCode).toBe('770101001');
+      expect(result[0].utdUcdNumber).toBe('UPD-2026-0001');
+      expect(result[0].utdUcdDate).toBe('2026-10-11');
       expect(typeof result[0].forPay).toBe('string');
     });
   });
@@ -791,10 +797,30 @@ describe('FinancesModule', () => {
         'currency',
         'srid',
         'orderUid',
+        'buyerTaxRegistrationReasonCode',
+        'utdUcdNumber',
+        'utdUcdDate',
       ];
-      expect(validFields).toHaveLength(12);
+      expect(validFields).toHaveLength(15);
       expect(validFields).toContain('rrdId');
       expect(validFields).toContain('forPay');
+      expect(validFields).toContain('buyerTaxRegistrationReasonCode');
+    });
+
+    it('keeps new sales-report fields optional and the acquiring KPP field distinct', () => {
+      const selectedFieldsRow: import('../../../src/types/finances.types').SalesReportDetailedItem =
+        {
+          rrdId: 1,
+        };
+      const acquiringRow: import('../../../src/types/finances.types').AcquiringReportDetailedItem =
+        {
+          taxRegistrationReasonCode: '770101001',
+        };
+
+      expect(selectedFieldsRow.buyerTaxRegistrationReasonCode).toBeUndefined();
+      expect(selectedFieldsRow.utdUcdNumber).toBeUndefined();
+      expect(selectedFieldsRow.utdUcdDate).toBeUndefined();
+      expect(acquiringRow.taxRegistrationReasonCode).toBe('770101001');
     });
 
     it('AcquiringReportDetailedField should accept valid field names from AcquiringReportDetailedItem', () => {

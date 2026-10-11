@@ -70,6 +70,18 @@ rg "getSupplierReportDetailByPeriod|DetailReportItem"
 | Эндпоинт списка | Нет | Новый `getSalesReportsList()` |
 | Эндпоинт по ID | Нет | Новый `getSalesReportsDetailedByReportId()` |
 
+### КПП покупателя и поля УПД/УКД (октябрь 2026)
+
+Обе операции детализации v1 возвращают `buyerTaxRegistrationReasonCode` (КПП покупателя B2B), `utdUcdNumber` и `utdUcdDate`. Закреплённый дополнительный snapshot описывает все три поля как обязательные строки без `null`, а `utdUcdDate` — как дату. Прямое получение развёрнутой официальной схемы свойств завершилось HTTP 498, поэтому эти детали остаются предварительными, а поля в типах SDK — optional; параметр `fields` также может запросить выборку без них. КПП покупателя не связан с полем `taxRegistrationReasonCode` в строках эквайрингового отчёта.
+
+```typescript
+const rows = await sdk.finances.getSalesReportsDetailed({
+  dateFrom: '2026-10-01',
+  dateTo: '2026-10-07',
+  fields: ['rrdId', 'buyerTaxRegistrationReasonCode', 'utdUcdNumber', 'utdUcdDate'],
+});
+```
+
 ## Почему денежные суммы теперь `string`
 
 В v5 денежные суммы были типа `number`. В v1 они стали `string`. **Это сделано намеренно согласно спецификации WB** — тип `number` в JavaScript (IEEE-754) теряет точность при суммах выше 2^53 (редко, но возможно в агрегированных итогах). Строковые значения сохраняют точность, возвращённую API.

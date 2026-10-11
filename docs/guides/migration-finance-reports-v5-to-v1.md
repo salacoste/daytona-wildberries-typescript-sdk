@@ -70,6 +70,18 @@ rg "getSupplierReportDetailByPeriod|DetailReportItem"
 | List endpoint | None | New `getSalesReportsList()` |
 | By-ID endpoint | None | New `getSalesReportsDetailedByReportId()` |
 
+### B2B buyer and UPD/UKD fields (October 2026)
+
+Both v1 detailed operations expose `buyerTaxRegistrationReasonCode` (buyer KPP), `utdUcdNumber`, and `utdUcdDate`. The pinned supplemental snapshot models all three as required, non-null strings and `utdUcdDate` as a date. Direct retrieval of the expanded official property schema returned HTTP 498, so those details remain provisional and the SDK keeps the additive fields optional; `fields` can also request a projection that excludes them. The buyer KPP field is unrelated to `taxRegistrationReasonCode` on acquiring-report rows.
+
+```typescript
+const rows = await sdk.finances.getSalesReportsDetailed({
+  dateFrom: '2026-10-01',
+  dateTo: '2026-10-07',
+  fields: ['rrdId', 'buyerTaxRegistrationReasonCode', 'utdUcdNumber', 'utdUcdDate'],
+});
+```
+
 ## Why money is now `string`
 
 In v5 money amounts were `number`. In v1 they're `string`. **This is intentional per WB's spec** — JavaScript's IEEE-754 `number` loses precision at amounts above 2^53 (rare but possible in aggregated sums). String values preserve the API-returned precision.

@@ -1,0 +1,4 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 docs:validate
+npm notice run typedoc --emit none
+[info] Loaded plugin typedoc-plugin-missing-exports
+[info] Loaded plugin typedoc-plugin-markdown

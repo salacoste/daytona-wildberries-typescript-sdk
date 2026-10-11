@@ -244,6 +244,16 @@ const light = await sdk.finances.getSalesReportsDetailed({
 const totalPayout = light.reduce((sum, r) => sum + parseMoneyAmount(r.forPay), 0);
 ```
 
+Detailed rows from both v1 operations can also include B2B document fields:
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `buyerTaxRegistrationReasonCode` | `string \| undefined` | Buyer KPP for a B2B sale |
+| `utdUcdNumber` | `string \| undefined` | UPD/UKD document number |
+| `utdUcdDate` | `string \| undefined` | UPD/UKD date in `YYYY-MM-DD` format |
+
+The pinned supplemental snapshot models these as required, non-null strings and models `utdUcdDate` as a date. Direct retrieval of the expanded official property schema returned HTTP 498, so the SDK keeps the additive fields optional and treats those property details as provisional until an official revision can be compared. A request with `fields` can also intentionally omit them. `buyerTaxRegistrationReasonCode` belongs to the sales-report row and is separate from the acquiring-report field `taxRegistrationReasonCode`.
+
 ### getSalesReportsDetailedByReportId() - NEW in v3.7.0
 
 Returns detailed rows for a specific report by its ID.

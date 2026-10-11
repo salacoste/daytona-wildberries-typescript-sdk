@@ -130,6 +130,24 @@ describe('operationMetadata - Products module entries', () => {
     expect(meta.rateLimitKey).toBe('products.contentObjectParentAll');
   });
 
+  it.each([
+    ['products.getDirectoryTnvedAll', 'products.contentDirectoryTnvedAll'],
+    ['products.getDirectoryOkpd', 'products.contentDirectoryOkpd'],
+    ['products.getDirectoryOkpdAll', 'products.contentDirectoryOkpdAll'],
+  ])('registers %s as a read-only Content operation', (operationKey, rateLimitKey) => {
+    const expected = {
+      readonly: true,
+      category: 'content',
+      rateLimitKey,
+    };
+
+    expect(operationMetadata[operationKey]).toEqual(expected);
+    expect(getOperationMetadata(operationKey)).toEqual(expected);
+    expect(isOperationReadonly(operationKey)).toBe(true);
+    expect(getOperationCategory(operationKey)).toBe('content');
+    expect(getOperationRateLimitKey(operationKey)).toBe(rateLimitKey);
+  });
+
   it('should have products.createContentTag entry (write operation)', () => {
     const meta = operationMetadata['products.createContentTag'];
     expect(meta).toBeDefined();
@@ -221,6 +239,22 @@ describe('operationMetadata - Orders DBS module entries', () => {
   it('should include B2B operations', () => {
     const meta = operationMetadata['ordersDBS.getB2BInfo'];
     expect(meta).toBeDefined();
+  });
+
+  it('registers sandbox creation as a non-readonly marketplace operation', () => {
+    const expected = {
+      readonly: false,
+      category: 'marketplace',
+      rateLimitKey: 'sandbox-dbs.createTestOrders',
+    };
+
+    expect(operationMetadata['ordersDBS.createTestOrders']).toEqual(expected);
+    expect(getOperationMetadata('ordersDBS.createTestOrders')).toEqual(expected);
+    expect(isOperationReadonly('ordersDBS.createTestOrders')).toBe(false);
+    expect(getOperationCategory('ordersDBS.createTestOrders')).toBe('marketplace');
+    expect(getOperationRateLimitKey('ordersDBS.createTestOrders')).toBe(
+      'sandbox-dbs.createTestOrders'
+    );
   });
 });
 
@@ -512,6 +546,13 @@ describe('operationMetadata consistency', () => {
     // Note: module prefixes may differ in format (camelCase vs kebab-case)
     // e.g., 'ordersFBS' vs 'orders-fbs'
     Object.entries(operationMetadata).forEach(([key, meta]) => {
+      if (key === 'ordersDBS.createTestOrders') {
+        // The public method stays in ordersDBS, while its fixed-host sandbox
+        // limiter intentionally uses a separate category to avoid Test-token
+        // downscaling of the already-reduced official limit.
+        expect(meta.rateLimitKey).toBe('sandbox-dbs.createTestOrders');
+        return;
+      }
       const keyModule = key.split('.')[0].toLowerCase();
       const rateLimitModule = meta.rateLimitKey.split('.')[0].toLowerCase().replace(/-/g, '');
       // After normalization, they should be similar

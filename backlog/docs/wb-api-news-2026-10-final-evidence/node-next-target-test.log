@@ -1,0 +1,11 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 npx
+npm notice run 'vitest' run tests/unit/scripts/node-next-declarations.test.ts tests/unit/scripts/validate-package-exports.test.ts --reporter=dot
+
+ RUN  v4.1.10 /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk
+
+···················
+
+ Test Files  2 passed (2)
+      Tests  19 passed (19)
+   Start at  22:22:20
+   Duration  313ms (transform 96ms, setup 29ms, import 199ms, tests 9ms, environment 0ms)

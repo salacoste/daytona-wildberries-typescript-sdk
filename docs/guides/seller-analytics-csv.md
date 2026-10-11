@@ -8,6 +8,53 @@ layout: doc
 
 This guide covers generating and downloading long-term analytics reports as CSV files through the Wildberries SDK. CSV reports let you export up to one year of historical data -- sales funnels, stock history, and search query analytics -- as ZIP archives containing CSV files.
 
+## Data freshness from 2026-09-24
+
+Wildberries refreshes data **once every two hours** for `getSalesFunnelProducts()`, `getSalesFunnelProductsHistory()` and `getSalesFunnelGroupedHistory()`, and for the `DETAIL_HISTORY_REPORT` and `GROUPED_HISTORY_REPORT` CSV exports created with `createNmReportDownload()`.
+
+This is the data refresh cadence, not a request-rate limit. Polling or generating another CSV sooner does not guarantee newer metrics. Order Feed (`getOrderFeed()`) can replace only order and buyout data; it does not replace views, cart additions or conversion metrics.
+
+Sources: [Sales Funnel](https://dev.wildberries.ru/docs/openapi/analytics/#tag/salesFunnel/operation/postV3SalesFunnelProducts), [CSV reports](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/postV2NmReportDownloads).
+
+## Search Queries data freshness from 2026-10-12
+
+Wildberries refreshes data **once every two hours** for these five API operations and three CSV exports:
+
+| API method | Endpoint |
+|---|---|
+| `createSearchReportReport()` | `POST /api/v2/search-report/report` |
+| `createTableGroup()` | `POST /api/v2/search-report/table/groups` |
+| `createTableDetail()` | `POST /api/v2/search-report/table/details` |
+| `createProductSearchText()` | `POST /api/v2/search-report/product/search-texts` |
+| `createProductOrder()` | `POST /api/v2/search-report/product/orders` |
+
+The CSV types are `SEARCH_QUERIES_PREMIUM_REPORT_GROUP`, `SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT` and `SEARCH_QUERIES_PREMIUM_REPORT_TEXT`, created with `createNmReportDownload()`.
+
+This is data freshness, not a request-rate limit or a guarantee that every request returns new data. It is separate from the removal of five percentile columns in the TEXT CSV; other report schemas and request limits are unchanged by this cadence announcement.
+
+Sources: [Search Queries](https://dev.wildberries.ru/docs/openapi/analytics/#tag/searchQueriesForYourItems/operation/postV2SearchReportReport), [CSV reports](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/postV2NmReportDownloads).
+
+## TEXT CSV columns from 2026-10-12
+
+Only `SEARCH_QUERIES_PREMIUM_REPORT_TEXT` stops emitting these five columns: `OpenCardPercentile`, `AddToCartPercentile`, `OpenToCartPercentile`, `OrdersPercentile`, `CartToOrderPercentile`.
+
+`OpenCard`, `AddToCart`, `OpenToCart`, `Orders`, `CartToOrder`, their past-period metrics and all other columns remain in their existing scope. GROUP and PRODUCT CSV exports and JSON API percentile fields are unaffected by this column removal.
+
+The SDK returns the ZIP as `ArrayBuffer`; it has no CSV row parser, mandatory-column checks or public CSV row interfaces. `SearchReportTextReq` describes the generation request, not a CSV row. In your CSV consumer, map columns by header name, accept all five missing columns, and treat historical percentile values as optional. Do not replace missing percentiles with zero or use their old numeric column positions: removing them shifts later values.
+
+For example, after extracting and parsing a row in your application, read the retained order count by name:
+
+```typescript
+// A synthetic row after 2026-10-12; no percentile columns are required.
+const row: Record<string, string | undefined> = {
+  Text: 'synthetic query', OpenCard: '20', AddToCart: '10',
+  OpenToCart: '50', Orders: '7', CartToOrder: '70',
+};
+const orders = Number(row['Orders']); // 7
+```
+
+Source: [CSV download contract](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/getV2NmReportDownloadsFileDownloadId).
+
 ## Table of Contents
 
 - [What are CSV Reports](#what-are-csv-reports)
@@ -25,7 +72,7 @@ This guide covers generating and downloading long-term analytics reports as CSV 
 
 ## What are CSV Reports
 
-CSV reports are long-term analytics exports generated asynchronously by the Wildberries Seller Analytics API. Unlike the real-time JSON endpoints that return paginated data for short periods, CSV reports:
+CSV reports are long-term analytics exports generated asynchronously by the Wildberries Seller Analytics API. Unlike the JSON endpoints that return paginated data for short periods, CSV reports:
 
 - Cover periods up to **1 year** of historical data
 - Are generated **asynchronously** -- you create a task, then poll until it completes
@@ -542,6 +589,6 @@ async function safeReportGeneration(sdk: WildberriesSDK): Promise<void> {
 
 - [Analytics Module Reference](/modules/analytics) -- Full reference for all analytics methods
 - [Jam Subscription Detection](/guides/jam-subscription) -- Detect your Jam tier before generating CSV reports
-- [Sales Funnel Analytics](/guides/sales-funnel-analytics) -- Real-time sales funnel data via JSON endpoints
-- [Search Queries Analytics](/guides/search-queries-analytics) -- Real-time search query data via JSON endpoints
+- [Sales Funnel Analytics](/guides/sales-funnel-analytics) -- Sales funnel data via JSON endpoints
+- [Search Queries Analytics](/guides/search-queries-analytics) -- Search query data via JSON endpoints
 - [Best Practices](/guides/best-practices) -- General SDK usage patterns and production tips

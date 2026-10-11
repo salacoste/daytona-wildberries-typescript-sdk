@@ -5,6 +5,98 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **products**: added typed `getDirectoryTnvedAll()`, `getDirectoryOkpd()`, and
+  `getDirectoryOkpdAll()` methods with public request/response types, Products
+  limiter keys, synchronized OpenAPI copies, documentation, and synthetic tests.
+- **products**: product-card create, update, add, and list contracts now expose
+  the optional non-null `gtin` field at the captured listing-level locations.
+  Documentation preserves WB's rule that reuse is allowed when the GTIN already
+  appears in `skus` of one of the seller's listings; the SDK does not attempt
+  remote-history enforcement.
+- **finances**: `SalesReportDetailedItem` now exposes the B2B buyer KPP
+  (`buyerTaxRegistrationReasonCode`) and UPD/UKD document fields
+  (`utdUcdNumber`, `utdUcdDate`) returned by both v1 detailed-report
+  operations. They remain optional in TypeScript because selective `fields`
+  responses may omit them.
+- **ordersDBS**: `getClientInfo()` responses now expose optional non-null
+  `additionalPhones` and `replacementAdditionalPhones` string arrays. Empty
+  arrays mean WB did not provide an additional number.
+- **ordersDBS sandbox**: added `createTestOrders(request)` for
+  `POST /api/v3/test/dbs/orders/make` on the fixed WB sandbox host, with typed
+  `dbs | dbsPickupPoint | edbs` delivery modes, omission-preserving optional
+  fields, 1–10 order validation, a dedicated 1 request/second limiter, and no
+  automatic retry for the write operation. Hidden raw required/nullability
+  flags and live sandbox behavior remain unproven; no sandbox call was made.
+
+### Changed
+
+- **analytics**: Sales Funnel v3 product/history/grouped-history operations and
+  `DETAIL_HISTORY_REPORT` / `GROUPED_HISTORY_REPORT` CSV documentation now state
+  the two-hour data-freshness cadence effective 2026-09-24. Search Queries docs
+  likewise cover the five affected API reports and three Premium CSV variants
+  effective 2026-10-12. These are freshness statements; limiter settings did
+  not change.
+- **analytics**: `SEARCH_QUERIES_PREMIUM_REPORT_TEXT` contract fixtures and
+  documentation now tolerate the absence of `OpenCardPercentile`,
+  `AddToCartPercentile`, `OpenToCartPercentile`, `OrdersPercentile`, and
+  `CartToOrderPercentile`; other CSV variants and similarly named JSON fields
+  remain unchanged.
+- **contract evidence**: official public raw Swagger captures now close the
+  Products/GTIN, Finance, and DBS phone/order property gates. Full OKPD2 follows
+  raw `locale: ru`; the same-date rendered `ru,en` display remains documented as
+  a source conflict without claiming runtime rejection. GTIN is optional/non-null,
+  Finance fields are raw-required/non-null (public TypeScript remains optional for
+  selective `fields` projections), DBS phone arrays are optional/non-null, and
+  DBS `orders` is nullable. No successful live runtime proof was obtained.
+- **products docs**: the English product-card guide now mirrors the Russian
+  October directory and GTIN guidance. Its two new TypeScript fences are kept
+  byte-equivalent to a strict compile-only fixture and cover the raw `ru`-only
+  full-OKPD2 boundary, numeric full-directory search, all four optional
+  non-null GTIN placements, and the one-of-the-seller-listings history rule.
+- **returns**: `getReturns()` now reads `GET /api/analytics/v1/item-returns`
+  through `getAnalyticsV1GoodsReturn()`, fetching paginated `active` and
+  `archive` statuses sequentially. It treats HTTP 204 as empty, maps v1 return
+  reasons, and uses the endpoint's 1 request/minute, burst-1 limiter.
+
+### Deprecated
+
+- **reports**: `getAnalyticsRegionSale()` remains callable in 4.x but now emits
+  a one-time warning because WB disables `GET /api/v1/analytics/region-sale`
+  on **2026-11-03**. The Order Feed migration guide documents stable-snapshot
+  pagination and the non-equivalence of the legacy regional money/share fields.
+
+### Fixed
+
+- **packaging**: `validate:package` now accepts both array and package-name
+  keyed JSON emitted by supported npm versions for `npm pack --dry-run --json`,
+  with actionable errors for empty or malformed manifests.
+- **packaging**: clean builds now emit NodeNext-resolvable ESM declaration
+  specifiers through the supported `vite-plugin-dts` transform hook. Package
+  validation extracts a real tarball, compiles strict NodeNext `.mts` and
+  `.cts` consumers for all five exports plus the October public type surface,
+  verifies the full-OKPD2 `en` negative contract, and runs import/require
+  smokes without constructing the SDK or making requests.
+- **ordersFBS docs**: synchronized the already shipped
+  `updateSuppliesWaybill()` operation, request schemas, and response example
+  across the root OpenAPI, supplies shard, shared schemas, shard counts, and
+  raw documentation copy.
+- **promotion docs**: corrected `getBidsRecommendations()` JSDoc to describe
+  its existing CPM and CPC response variants consistently.
+- **tests**: Products limiter coverage now asserts the exact 54-key set,
+  including all three TN VED/OKPD2 directory keys. The default integration
+  runner excludes the live WB smoke file; live selection requires the exact
+  `WB_LIVE_API_TESTS=true` opt-in before dotenv or API-key access.
+- **products**: registered all three new directory methods as read-only Content
+  operations with their exact limiter keys, restoring operation metadata
+  helper results and operation-key-aware retries for transient failures.
+- **analytics docs**: removed stale one-hour sentences from the eight operations
+  that now document two-hour freshness, and corrected EN/RU GTIN examples so a
+  pre-existing GTIN is not repeated in the new listing's `skus` payload.
+
 ## [4.6.0] - 2026-09-24
 
 ### Added
@@ -195,16 +287,16 @@ SDK totals: 306 public methods, 2,462 tests.
 - **ordersFBS**: supply shipping parameters for RF sellers (available since 2026-09-01,
   WB news 2026-09) — two new methods: `getShippingPoints(params)` (GET
   `/api/marketplace/v3/fbs/shipping-points`; shipping points filtered by Cyrillic `city`
-  + `cargoType` 1/2/3, with `officeType` `sc`/`sw`/`pp` and the Fulfillment-in-SC
-  `fulfillment` flag) and `updateShippingMethod(data)` (PATCH
-  `/api/marketplace/v3/fbs/supplies/shipping-method`; sets `shippingType`
-  `selfShipping`/`transportCompany` + `shippingDt` + `shippingPointId` for up to 100
-  supplies per request, per-supply `results[]` with `success`/`error`). **From
-  2026-10-01 shipping parameters (+ ETrN id for transport-company deliveries) are
-  mandatory: `updateSuppliesDeliver()` returns 409 without them.** The waybill method
-  (`PATCH /api/marketplace/v3/fbs/supplies/waybill`) exists in the WB spec but is still
-  in development — intentionally not implemented yet (tracked in backlog). Both
-  rate-limit keys registered (300/min, 200 ms interval, burst 20, 4XX = 10 requests).
+  - `cargoType` 1/2/3, with `officeType` `sc`/`sw`/`pp` and the Fulfillment-in-SC
+    `fulfillment` flag) and `updateShippingMethod(data)` (PATCH
+    `/api/marketplace/v3/fbs/supplies/shipping-method`; sets `shippingType`
+    `selfShipping`/`transportCompany` + `shippingDt` + `shippingPointId` for up to 100
+    supplies per request, per-supply `results[]` with `success`/`error`). **From
+    2026-10-01 shipping parameters (+ ETrN id for transport-company deliveries) are
+    mandatory: `updateSuppliesDeliver()` returns 409 without them.** The waybill method
+    (`PATCH /api/marketplace/v3/fbs/supplies/waybill`) exists in the WB spec but is still
+    in development — intentionally not implemented yet (tracked in backlog). Both
+    rate-limit keys registered (300/min, 200 ms interval, burst 20, 4XX = 10 requests).
 - **ordersFBS**: SPOT support (EAEU road-import declarations, WB news 2026-09) — four new methods:
   `getSpotCountries()` (GET `/api/marketplace/v3/fbs/dictionaries/countries/oksm` — OKSM country
   list for carrier codes), `updateSupplySpot(supplyId, data)` (PUT
@@ -549,27 +641,32 @@ dropped. Each removed symbol is now a compile error pointing at its replacement 
 ### Added (Major Feature: WB Returns API Aggregator)
 
 #### sdk.returns module — unified Returns API
+
 - New `ReturnsModule` class registered as `sdk.returns` — orchestrates 3 underlying WB sources (FBO analytics, FBS order history, Finance reports) into a single unified `ReturnItem[]`
 - `sdk.returns.getReturns(params)` — primary aggregator with `Promise.allSettled` parallel fetch, srid-based finance enrichment, partial-failure tolerance, per-source telemetry
 - `sdk.returns.getReturnByOrderId(orderId, params)` — convenience single-record lookup with optional orderType pre-filter
 - `sdk.returns.getReturnStats(params)` — in-memory aggregation by `nmId` / `category` / `orderType` with `pendingFinanceCount` for finance-not-yet-published records
 
 #### New types (12 total)
+
 - `ReturnItem`, `ReturnStatus`, `ReturnCategory` — unified record shape
 - `ReturnsApiRequest`, `ReturnsApiResponse`, `PartialFailure`, `ReturnsMeta` — request/response contract with telemetry
 - `ReturnByOrderIdParams`, `ReturnStatsParams`, `ReturnStatsResult`, `ReturnStatsBucket` — convenience method signatures
 - `FbsStatusEvent` — input shape for the FBS status classifier helper
 
 #### New utility
+
 - `classifyFbsReturnCategory(statuses)` — heuristic helper that maps FBS order status transitions to `ReturnCategory` enum (`cancel_before_shipment` / `refusal_at_pvz` / `return_after_receipt` / `unknown`). Pure function.
 
 ### Documentation
+
 - New EN guide: `docs/guides/returns-module.md` (Mermaid diagram, limitations table, 4 copy-paste recipes, full method reference, telemetry contract)
 - New RU guide: `docs/ru/guides/returns-module.md` (full translation)
 - Sidebar entries added under "Finance Reconciliation" / "Финансовая сверка" in both locales
 - Guides indexes updated with `(New in v3.10.0)` / `(Новое в v3.10.0)` tags
 
 ### Honest WB API limitations (documented, not silently dropped)
+
 - No webhooks → consumer polls
 - No `'in_transit'` return status for FBO → only initiated/received/processed
 - No machine-readable reason codes → solved by `classifyReturnReason()` (v3.9.3)
@@ -579,10 +676,12 @@ dropped. Each removed symbol is now a compile error pointing at its replacement 
 - 31-day max date range → throws clear error; consumer chunks via Recipe 4
 
 ### Tests
+
 - 38 new tests (2169 → 2207 total)
 - 25 code review findings fixed across 4 stories (all severities, both EN+RU)
 
 ### Source: client request wb-repricer-system-new (HIGH, 2026-05-04, Request #155)
+
 Replaces 5 workaround data sources (`wb_finance_raw`, FBS status history, Product Data API v2, Sales Funnel cancellations, ad-hoc reconciliation) with a single SDK-managed aggregator.
 
 ---
@@ -592,6 +691,7 @@ Replaces 5 workaround data sources (`wb_finance_raw`, FBS status history, Produc
 ### Added
 
 #### Returns Reconciliation Utilities (Client request: wb-repricer-system-new)
+
 - `classifyReturnReason(reason)` — pure helper that maps free-text Russian return reason strings to standardized `ReturnReasonCode` enum (`damage`, `defect`, `wrong_size`, `wrong_item`, `customer_refused`, `expired`, `not_as_described`, `other`)
 - `enrichReturnsWithType(fboReturns, fbsReturns?)` — combines FBO returns from `getAnalyticsGoodsReturn()` with optional FBS returns into unified `WbReturn[]` with explicit `orderType: 'fbo' | 'fbs'`, `reasonCode`, `quantity`
 - `reconcileBuyoutsAndReturns(buyouts, returns, options?)` — per-nmId reconciliation with anomaly detection (`return_without_buyout`, `orphan_buyout`)
@@ -600,6 +700,7 @@ Replaces 5 workaround data sources (`wb_finance_raw`, FBS status history, Produc
 - 24 new unit tests (16 + 15 + 9) — total **2169 tests**
 
 ### Documentation
+
 - New guide: `docs/guides/buyout-return-reconciliation.md` (EN+RU) covering all three helpers with end-to-end example
 - Sidebar entries added under "Finance Reconciliation" / "Финансовая сверка"
 - Guides indexes updated with v3.9.3 tags
@@ -609,16 +710,19 @@ Replaces 5 workaround data sources (`wb_finance_raw`, FBS status history, Produc
 ## [3.9.2] - 2026-04-21
 
 ### Added
+
 - `isVariable?: boolean` field on `SubjectCharacteristic` — indicates whether merged card variants can differ on this characteristic (returned by `getObjectCharc()`)
 - `validateMergedCardVariants()` helper — pure client-side validator detecting divergent fixed chars, identical variable chars, and duplicate variants before submission
 - `MergedCardVariant`, `MergedCardValidationResult` types exported from main SDK
 - 8 new tests (7 helper + 1 isVariable regression)
 
 ### Documentation
+
 - Updated `mandatory-product-characteristics.md` (EN + RU) — new "Variable vs Fixed Characteristics" section with category-specific rules
 - Updated `product-card-merging.md` (EN + RU) — pre-flight check section with `validateMergedCardVariants()` example
 
 ### Source
+
 - WB API announcement: `isVariable` field added for merged card creation flow
 - Reference: https://seller.wildberries.ru/instructions/ru/ru/material/cards-merging
 
@@ -629,6 +733,7 @@ Replaces 5 workaround data sources (`wb_finance_raw`, FBS status history, Produc
 ### Added
 
 #### Mandatory Product Characteristics Support
+
 - `SubjectCharacteristic` interface with `isRequiredForCreate` field -- indicates which characteristics Wildberries will require for product card creation (enforcement deadline: April 29, 2026)
 - `CardCharacteristicInput` type -- typed characteristic input supporting `string | number | string[]` value variants
 - `CardCharacteristicOutput` type -- typed characteristic output returned from API responses
@@ -636,10 +741,12 @@ Replaces 5 workaround data sources (`wb_finance_raw`, FBS status history, Produc
 - 1 regression test for `isRequiredForCreate` field presence
 
 #### DRY Refactor -- Products Types
+
 - 9 inline type duplications replaced with named interfaces in `products.types.ts`
 - Reduces maintenance surface and improves IDE navigation
 
 ### Documentation
+
 - New EN guide: `docs/guides/mandatory-product-characteristics.md` -- covers 10 affected categories, code examples, filtering by `isRequiredForCreate`
 - New RU guide: `docs/ru/guides/mandatory-product-characteristics.md` -- full Russian translation
 - Both guides added to EN+RU sidebars and guides indexes
@@ -652,22 +759,26 @@ Replaces 5 workaround data sources (`wb_finance_raw`, FBS status history, Produc
 ### Added
 
 #### Field Union Types for Finance Reports
+
 - `SalesReportDetailedField` union type -- narrows `fields[]` from `string[]` to specific valid field names with IDE autocomplete
 - `AcquiringReportDetailedField` union type -- same for Acquiring Reports
 - Both types exported from `/finances` subpath
 - 6 regression tests for field union types
 
 #### Deprecation Utilities (post-release, task-107)
+
 - `warnOnce(key, message)` -- centralized deprecation warning that fires once per process
 - `resetDeprecationWarnings()` -- reset all warnings (useful in tests)
 - Both exported from main SDK entry point
 - Replaces ad-hoc static boolean flags in FinancesModule and PromotionModule
 
 ### Changed (Type-Only Breaking)
+
 - `fields[]` parameter in `SalesReportDetailedRequest`, `SalesReportDetailedByIdRequest`, `AcquiringReportDetailedRequest`, `AcquiringReportDetailedByIdRequest` narrowed from `string[]` to union types
 - Consumers passing arbitrary strings to `fields[]` will get TypeScript errors -- use valid field names from the union type (no runtime changes)
 
 ### Documentation
+
 - Rewrite finances module docs with all 13 methods, v1/v5 comparison table, `parseMoneyAmount()` examples
 - Add 10 missing guides to EN sidebar (products, communications, promotion, tariffs, and more)
 - Add 7 new sections to RU sidebar
@@ -684,6 +795,7 @@ Replaces 5 workaround data sources (`wb_finance_raw`, FBS status history, Produc
 ### Added
 
 #### v1 Finance Reports Migration (6 new methods)
+
 - `getSalesReportsList()` -- list Sales Reports via POST /api/finance/v1/sales-reports/list
 - `getSalesReportsDetailed()` -- detailed Sales Report data
 - `getSalesReportsDetailedByReportId(id, data)` -- detailed data for a specific report (supports BigInt-safe reportId)
@@ -692,6 +804,7 @@ Replaces 5 workaround data sources (`wb_finance_raw`, FBS status history, Produc
 - `getAcquiringReportsDetailedByReportId(id, data)` -- detailed data for a specific acquiring report (RU-only)
 
 All v1 methods:
+
 - Use finance-api.wildberries.ru (not statistics-api)
 - POST with JSON body (not GET with query params)
 - Return money amounts as `string` (was `number` in v5)
@@ -700,11 +813,13 @@ All v1 methods:
 - Require Personal or Service tokens (NOT Basic/Test)
 
 #### parseMoneyAmount Helper
+
 - `parseMoneyAmount(value?: string | null): number` -- parses v1 money strings to JS number with null/undefined/NaN guards
 - Re-exported from main SDK entry point
 - 8 unit tests covering edge cases
 
 #### New Types
+
 - `SalesReportListRequest`, `SalesReportListItem` (20 fields with money as string)
 - `SalesReportDetailedRequest`, `SalesReportDetailedByIdRequest`
 - `SalesReportDetailedItem` (~70 camelCase fields, each JSDoc-mapped to v5 snake_case)
@@ -714,10 +829,12 @@ All v1 methods:
 - All types re-exported from `/finances` subpath
 
 ### Deprecated
+
 - `getSupplierReportDetailByPeriod()` -- WB disabling v5 endpoint on July 15, 2026; runtime warning fires once per process
 - `DetailReportItem` type marked `@deprecated`
 
 ### Documentation
+
 - New migration guide: `docs/guides/migration-finance-reports-v5-to-v1.md`
 - Searchable field mapping table (old + new names in same row)
 - Migration checklist with grep commands for finding call sites
@@ -728,6 +845,7 @@ All v1 methods:
 ## [3.6.2] - 2026-04-12
 
 ### Added
+
 - `kizMarked?: boolean` field on product card create/update/list/trash methods for mandatory marking code confirmation
 - `needKiz?: boolean` added to `getCardsTrash` response (pre-existing gap)
 
@@ -736,6 +854,7 @@ All v1 methods:
 ## [3.6.1] - 2026-04-11
 
 ### Fixed
+
 - Re-export types from `/finances`, `/analytics`, `/communications`, `/reports` subpath imports -- consumers can now `import type { DetailReportItem } from 'daytona-wildberries-typescript-sdk/finances'`
 - 192 types added across 4 module index files (8 finances, 97 analytics, 39 communications, 48 reports)
 
@@ -746,12 +865,14 @@ All v1 methods:
 ### Added
 
 #### Substitute Article Fields (Finance)
+
 - `article_substitution` -- substitute article ID in `DetailReportItem`
 - `sale_price_affiliated_discount_prc` -- substitute article discount percentage
 - `agency_vat` -- agency VAT field (present in WB spec, semantics undocumented)
 - `sale_price_wholesale_discount_prc` -- wholesale business discount percentage
 
 #### Documentation
+
 - New guide: `docs/guides/tracking-promotion-channels-with-substitute-articles.md` with Mermaid data-flow diagram and production aggregation pattern
 
 ---
@@ -759,6 +880,7 @@ All v1 methods:
 ## [3.5.1] - 2026-04-07
 
 ### Fixed
+
 - Suppress eslint `no-deprecated` error in integration test for legacy `meta` field (CI fix only)
 
 ---
@@ -768,10 +890,12 @@ All v1 methods:
 ### Added
 
 #### New Methods
+
 - `getJamSubscription()` -- direct Jam subscription API via GET /api/common/v1/subscriptions (replaces probe-based detection)
 - `getSellerRating()` -- seller rating and review count via GET /api/common/v1/rating
 
 #### Infrastructure
+
 - `applyBasicTokenMultipliers()` -- rate limit multipliers for Basic/Test tokens (16 categories)
 - FBS `MetaDetail` type with key/value/decision fields for metadata validation status
 - `updateSuppliesDeliver()` JSDoc with 409 metadata validation guidance (IMEI/UIN/marking)
@@ -779,10 +903,12 @@ All v1 methods:
 - `updatedAt` field added to product error list items
 
 ### Deprecated
+
 - `getJamSubscriptionStatus()` -- use `getJamSubscription()` instead
 - `Meta` interface -- removal April 30, 2026; use `metaDetails` instead
 
 ### Documentation
+
 - 8 module/guide pages fully updated for v3.5.0 features
 - Jam subscription guide updated with direct API as primary, probe as legacy fallback
 - Configuration guide updated with token types section and rate limit multiplier tables
@@ -794,11 +920,13 @@ All v1 methods:
 ### Added
 
 #### New Methods
+
 - `getBidsRecommendations({advertId, nmId})` -- recommended CPM bids (base, per-normQuery)
 - `getClientInfo(orderIds)` -- DBW buyer info (name, phone, phoneCode) via marketplace-api
 - `getWbWarehousesStock()` -- current inventory across all WB warehouses with offset pagination (replaces deprecated GET /api/v1/supplier/stocks, disabled June 23, 2026)
 
 #### Type Fixes (Sprint 1 + 3)
+
 - `SDKConfig.tokenType` -- awareness for Basic/Test tokens with init warning
 - `additionalErrors` narrowed to `Record<string, string>` (products)
 - `currency` field added to 3 Sales Funnel analytics responses
@@ -807,6 +935,7 @@ All v1 methods:
 - `SellerInfoResponse.tin` field added (general)
 
 ### Changed
+
 - `getAdvertsV2()` return type fixed from `GetAdverts` to `GetAdvertsV2Response`
 
 ---
@@ -814,6 +943,7 @@ All v1 methods:
 ## [3.3.0] - 2026-03-09
 
 ### Added
+
 - `getJamSubscriptionStatus()` -- Jam (Djam) subscription tier detection via probe strategy
 - New guide: Jam subscription detection (EN + RU)
 - TypeDoc API reference regenerated
@@ -825,11 +955,13 @@ All v1 methods:
 ### Added
 
 #### Per-Request Timeout (EPIC-48)
+
 - `RequestOptions.timeout` — override global timeout for individual API calls
 - Useful for long-running operations (analytics reports, bulk product updates) without changing SDK-wide settings
 - Each retry attempt respects the per-request timeout independently
 
 #### Retry & Timeout Logging (EPIC-48)
+
 - `RetryHandler` now logs every retry attempt with details: attempt number, error type, delay until next retry
 - Log visibility controlled by `logLevel` in SDK config:
   - `error` — only final failures after all retries exhausted
@@ -838,6 +970,7 @@ All v1 methods:
   - `debug` — full request/response details including URLs and headers
 
 #### Documentation
+
 - New Timeout Configuration guide section (EN + RU) with global, per-request, and retry interaction examples
 - Log level visibility table showing which events appear at each `logLevel`
 - New `examples/custom-timeout-configuration.ts` with 6 usage scenarios
@@ -846,9 +979,11 @@ All v1 methods:
 ### Fixed
 
 #### Documentation Audit — 40+ factual errors corrected
+
 All documentation validated against actual source code:
 
 **Wrong method names in FAQ (12 fixes, EN + RU):**
+
 - `getParentCategories()` → `getParentAll()`
 - `getBalance()` → `getAccountBalance()`
 - `getProductList()` → `getCardsList()`
@@ -863,6 +998,7 @@ All documentation validated against actual source code:
 - `ping({ timeout })` → `ping()` (no arguments)
 
 **Phantom SDKConfig fields removed (EN + RU config guide):**
+
 - `httpClient` — SDK manages its own Axios instance internally
 - `retryableStatusCodes` — not a config option
 - `onRetry` callback — not a config option
@@ -871,12 +1007,14 @@ All documentation validated against actual source code:
 - Custom HTTP Client and Proxy sections replaced with accurate SDK behavior notes
 
 **Error handling docs (EN + RU):**
+
 - `error.details` → `error.fieldErrors` on `ValidationError`
 - Removed non-existent `quotaReset` from `RateLimitError`
 - Removed non-existent `sdk.getRateLimits()` method
 - 404 status correctly mapped to `WBAPIError` (was wrongly shown as `ValidationError`)
 
 **RU navigation fixes:**
+
 - 5 sidebar links in VitePress config pointed to EN pages instead of `/ru/`
 - 2 tutorial links on RU landing page pointed to EN pages
 
@@ -887,6 +1025,7 @@ All documentation validated against actual source code:
 ### Added - Promotion Module Enhancements
 
 #### New Methods
+
 - `updateBids()` - Update campaign bids in kopecks (PATCH /api/advert/v1/bids)
 - `updateCampaignProducts()` - Add/remove products from campaigns (PATCH /adv/v0/auction/nms)
 - `getMinusPhrases()` - Get minus phrases for campaigns (POST /adv/v0/normquery/get-minus)
@@ -894,6 +1033,7 @@ All documentation validated against actual source code:
 - `getSearchClusterStats()` - Get search cluster statistics (POST /adv/v0/normquery/stats)
 
 #### New Types
+
 - `BidsKopecks` - Bid values in kopecks for search and recommendations
 - `NmSettingV2` - Article settings with bids_kopecks
 - `AdvertV2` - Campaign info from V2 API
@@ -907,11 +1047,13 @@ All documentation validated against actual source code:
 ### Changed
 
 #### Type Changes (Breaking)
+
 - `BidType` enum: `'unified'` → `'auto'` (Type 8 campaigns)
 - `PlacementType` enum: `'recommendation'` → `'recommendations'` (plural)
 - Bid values now use `bid_kopecks` instead of `bid` (kopecks, not rubles)
 
 #### API Migration Notes
+
 - Type 8 campaigns use `bid_type: 'auto'`
 - Type 9 campaigns use `bid_type: 'manual'`
 - For Type 8: `nm_id = 0` for campaign-wide settings
@@ -920,12 +1062,14 @@ All documentation validated against actual source code:
 ### Deprecated
 
 The following methods will be removed on **February 2, 2026**:
+
 - `getPromotionAdverts()` → use `getAdvertsV2()` instead
 - `getAuctionAdverts()` → use `getAdvertsV2()` instead
 
 See [Release Notes](https://dev.wildberries.ru/release-notes?id=388) for details.
 
 ### Documentation
+
 - Added migration guide: `docs/guides/migration-type8-to-type9.md`
 - Updated Promotion module API reference
 
@@ -944,6 +1088,7 @@ This is a **major release** with breaking changes. All deprecated methods and ty
 #### Deprecated Methods (66 total)
 
 **Promotion Module (19 methods):**
+
 - `getSearchSetPlus()` - Removed (no replacement)
 - `createSearchSetPlu()` - Removed (no replacement)
 - `createSearchSetExcluded()` - Removed (no replacement)
@@ -965,6 +1110,7 @@ This is a **major release** with breaking changes. All deprecated methods and ty
 - `getStatWords()` - Use `GET /adv/v0/stats/keywords`
 
 **Orders DBS Module (13 methods):**
+
 - `getMeta()` → Use `getMetaBulk()`
 - `deleteMeta()` → Use `deleteMetaBulk()`
 - `setSgtin()` → Use `setSgtinBulk()`
@@ -980,6 +1126,7 @@ This is a **major release** with breaking changes. All deprecated methods and ty
 - `cancel()` → Use `cancelBulk()`
 
 **Reports Module (10 methods):**
+
 - `getSupplierIncomes()` - Removed on 11 March 2026
 - `getTasksStatu()` → Use `getWarehouseRemainsTaskStatus()`
 - `getTasksDownload()` → Use `downloadWarehouseRemainsReport()`
@@ -992,6 +1139,7 @@ This is a **major release** with breaking changes. All deprecated methods and ty
 - `getTasksDownload3()` → Use `downloadPaidStorageReport()`
 
 **Communications Module (6 methods):**
+
 - `getTemplates()` - Removed (Response Templates tag removed from API)
 - `createTemplates()` - Removed (Response Templates tag removed from API)
 - `getTemplatesId()` - Removed (Response Templates tag removed from API)
@@ -1000,6 +1148,7 @@ This is a **major release** with breaking changes. All deprecated methods and ty
 - `createReviewsGenerate()` - Removed (no replacement)
 
 **Orders FBS Module (5 methods):**
+
 - `createOrdersStatu()` → Use `getOrderStatuses()`
 - `getOrderMeta()` → Use `getOrdersMetaBulk()`
 - `getExternalStickersUrls()` → Use `createStickersCrossBorder()`
@@ -1007,6 +1156,7 @@ This is a **major release** with breaking changes. All deprecated methods and ty
 - `getSuppliesOrder()` → Use `getSupplyOrderIds()`
 
 **Products Module (7 methods):**
+
 - `createCardsList()` → Use `getCardsList()`
 - `createCardsTrash()` → Use `getTrashedCards()`
 - `getGoodsTask2()` → Use `getBufferGoodsTask()`
@@ -1016,37 +1166,41 @@ This is a **major release** with breaking changes. All deprecated methods and ty
 - `deleteWarehous()` → Use `deleteWarehouse()`
 
 **Analytics Module (3 methods):**
+
 - `createNmReportDetail()` → Use `getSalesFunnelProducts()`
 - `createDetailHistory()` → Use `getSalesFunnelProductsHistory()`
 - `createGroupedHistory()` → Use `getSalesFunnelGroupedHistory()`
 
 **Orders FBW Module (2 methods):**
+
 - `getAcceptance()` → Use tariffs module (moved to common-api)
 - `createSupply()` → Use `listSupplies()`
 
 **In-Store Pickup Module (1 method):**
+
 - `createOrdersStatu()` → Use `createOrdersStatus()`
 
 **Finances Module (1 method):**
+
 - `getSupplierReportdetailbyperiod()` → Use `getSupplierReportDetailByPeriod()`
 
 #### Deprecated Types (14 total)
 
-| Type | Alternative |
-|------|-------------|
-| `DBSOrderStatusLegacy` | Use `DBSOrderStatusBulk` |
-| `GetStatusResponseLegacy` | Use `GetStatusInfoResponse` |
-| `NmReportDetailRequest` | Use `SalesFunnelProductsRequest` |
-| `NmReportDetailHistoryRequest` | Use `SalesFunnelProductsHistoryRequest` |
-| `NmReportGroupedHistoryRequest` | Use `SalesFunnelGroupedHistoryRequest` |
-| `NmReportDetailResponse` | Use `SalesFunnelProductsResponse` |
-| `NmReportDetailHistoryResponse` | Use `SalesFunnelProductsHistoryResponse` |
-| `NmReportGroupedHistoryResponse` | Use `SalesFunnelGroupedHistoryResponse` |
-| `Response400WHM` | Use `Response400Retentions` |
-| `Response403WHM` | Use `Response403Retentions` |
-| `TemplatesRequest` | Removed (Response Templates removed from API) |
-| `Template` | Removed (Response Templates removed from API) |
-| `TemplateDetailed` | Removed (Response Templates removed from API) |
+| Type                             | Alternative                                   |
+| -------------------------------- | --------------------------------------------- |
+| `DBSOrderStatusLegacy`           | Use `DBSOrderStatusBulk`                      |
+| `GetStatusResponseLegacy`        | Use `GetStatusInfoResponse`                   |
+| `NmReportDetailRequest`          | Use `SalesFunnelProductsRequest`              |
+| `NmReportDetailHistoryRequest`   | Use `SalesFunnelProductsHistoryRequest`       |
+| `NmReportGroupedHistoryRequest`  | Use `SalesFunnelGroupedHistoryRequest`        |
+| `NmReportDetailResponse`         | Use `SalesFunnelProductsResponse`             |
+| `NmReportDetailHistoryResponse`  | Use `SalesFunnelProductsHistoryResponse`      |
+| `NmReportGroupedHistoryResponse` | Use `SalesFunnelGroupedHistoryResponse`       |
+| `Response400WHM`                 | Use `Response400Retentions`                   |
+| `Response403WHM`                 | Use `Response403Retentions`                   |
+| `TemplatesRequest`               | Removed (Response Templates removed from API) |
+| `Template`                       | Removed (Response Templates removed from API) |
+| `TemplateDetailed`               | Removed (Response Templates removed from API) |
 
 ### Added
 
@@ -1064,10 +1218,10 @@ This is a **major release** with breaking changes. All deprecated methods and ty
 
 ### Migration
 
-| From v2.x | To v3.0.0 |
-|-----------|-----------|
+| From v2.x          | To v3.0.0                    |
+| ------------------ | ---------------------------- |
 | Deprecated methods | Use recommended alternatives |
-| Deprecated types | Use new type definitions |
+| Deprecated types   | Use new type definitions     |
 
 See [Migration Guide](docs/guides/migration-v3.md) for complete instructions with code examples.
 
@@ -1090,11 +1244,11 @@ See the [Migration Guide](docs/guides/migration-v3.md) for detailed instructions
 
 ### Timeline
 
-| Version | Status | Description |
-|---------|--------|-------------|
-| v2.8.0 | Released | Deprecation warnings added |
+| Version    | Status      | Description                       |
+| ---------- | ----------- | --------------------------------- |
+| v2.8.0     | Released    | Deprecation warnings added        |
 | **v2.9.0** | **Current** | **Final warnings before removal** |
-| v3.0.0 | Upcoming | Deprecated methods removed |
+| v3.0.0     | Upcoming    | Deprecated methods removed        |
 
 ---
 
@@ -1113,146 +1267,156 @@ See the [Migration Guide](docs/guides/migration-v3.md) for detailed instructions
 The following methods now emit console warnings and will be **removed in v3.0.0**:
 
 #### Promotion Module (19 methods)
-| Method | Alternative |
-|--------|-------------|
-| `getSearchSetPlus()` | Removed (no replacement) |
-| `createSearchSetPlu()` | Removed (no replacement) |
-| `createSearchSetExcluded()` | Removed (no replacement) |
-| `getAutoGetnmtoadd()` | Use `GET /api/advert/v2/adverts` and `PATCH /adv/v0/auction/nms` |
-| `getAutoStatWords()` | Use `GET /adv/v3/fullstats` |
-| `getPromotionCount()` | Use `GET /api/advert/v2/adverts` |
-| `createPromotionAdvert()` | Use `GET /api/advert/v2/adverts` |
-| `getAuctionAdverts()` | Use updated campaign management API |
-| `getAdvConfig()` | Use updated configuration API |
-| `createBidsMin()` | Use `POST /api/advert/v1/bids/min` |
-| `createAdvSaveAd()` | Use `POST /adv/v2/seacat/save-ad` |
-| `createSeacatSaveAd()` | Use current campaign creation API |
-| `getSupplierSubjects()` | Use updated supplier API |
-| `createSupplierNm()` | Use updated supplier API |
-| `getAdvStart()` | Use updated campaign management API |
-| `getAdvPause()` | Use updated campaign management API |
-| `updateAdvBid()` | Use `PATCH /api/advert/v1/bids` |
-| `createAdvFullstat()` | Use `GET /adv/v3/fullstats` |
-| `getStatWords()` | Use `GET /adv/v0/stats/keywords` |
+
+| Method                      | Alternative                                                      |
+| --------------------------- | ---------------------------------------------------------------- |
+| `getSearchSetPlus()`        | Removed (no replacement)                                         |
+| `createSearchSetPlu()`      | Removed (no replacement)                                         |
+| `createSearchSetExcluded()` | Removed (no replacement)                                         |
+| `getAutoGetnmtoadd()`       | Use `GET /api/advert/v2/adverts` and `PATCH /adv/v0/auction/nms` |
+| `getAutoStatWords()`        | Use `GET /adv/v3/fullstats`                                      |
+| `getPromotionCount()`       | Use `GET /api/advert/v2/adverts`                                 |
+| `createPromotionAdvert()`   | Use `GET /api/advert/v2/adverts`                                 |
+| `getAuctionAdverts()`       | Use updated campaign management API                              |
+| `getAdvConfig()`            | Use updated configuration API                                    |
+| `createBidsMin()`           | Use `POST /api/advert/v1/bids/min`                               |
+| `createAdvSaveAd()`         | Use `POST /adv/v2/seacat/save-ad`                                |
+| `createSeacatSaveAd()`      | Use current campaign creation API                                |
+| `getSupplierSubjects()`     | Use updated supplier API                                         |
+| `createSupplierNm()`        | Use updated supplier API                                         |
+| `getAdvStart()`             | Use updated campaign management API                              |
+| `getAdvPause()`             | Use updated campaign management API                              |
+| `updateAdvBid()`            | Use `PATCH /api/advert/v1/bids`                                  |
+| `createAdvFullstat()`       | Use `GET /adv/v3/fullstats`                                      |
+| `getStatWords()`            | Use `GET /adv/v0/stats/keywords`                                 |
 
 #### Orders DBS Module (13 methods)
-| Method | Alternative |
-|--------|-------------|
-| `getMeta()` | Use `getMetaBulk()` |
-| `deleteMeta()` | Use `deleteMetaBulk()` |
-| `setSgtin()` | Use `setSgtinBulk()` |
-| `setUin()` | Use `setUinBulk()` |
-| `setImei()` | Use `setImeiBulk()` |
-| `setGtin()` | Use `setGtinBulk()` |
+
+| Method                    | Alternative                       |
+| ------------------------- | --------------------------------- |
+| `getMeta()`               | Use `getMetaBulk()`               |
+| `deleteMeta()`            | Use `deleteMetaBulk()`            |
+| `setSgtin()`              | Use `setSgtinBulk()`              |
+| `setUin()`                | Use `setUinBulk()`                |
+| `setImei()`               | Use `setImeiBulk()`               |
+| `setGtin()`               | Use `setGtinBulk()`               |
 | `setCustomsDeclaration()` | Use `setCustomsDeclarationBulk()` |
-| `getStatuses()` | Use `getStatusesBulk()` |
-| `confirm()` | Use `confirmBulk()` |
-| `deliver()` | Use `deliverBulk()` |
-| `receive()` | Use `receiveBulk()` |
-| `reject()` | Use `rejectBulk()` |
-| `cancel()` | Use `cancelBulk()` |
+| `getStatuses()`           | Use `getStatusesBulk()`           |
+| `confirm()`               | Use `confirmBulk()`               |
+| `deliver()`               | Use `deliverBulk()`               |
+| `receive()`               | Use `receiveBulk()`               |
+| `reject()`                | Use `rejectBulk()`                |
+| `cancel()`                | Use `cancelBulk()`                |
 
 #### Reports Module (10 methods)
-| Method | Alternative |
-|--------|-------------|
-| `getSupplierIncomes()` | Removed on 11 March 2026 |
-| `getTasksStatu()` | Use `getWarehouseRemainsTaskStatus()` |
-| `getTasksDownload()` | Use `downloadWarehouseRemainsReport()` |
+
+| Method                       | Alternative                                                       |
+| ---------------------------- | ----------------------------------------------------------------- |
+| `getSupplierIncomes()`       | Removed on 11 March 2026                                          |
+| `getTasksStatu()`            | Use `getWarehouseRemainsTaskStatus()`                             |
+| `getTasksDownload()`         | Use `downloadWarehouseRemainsReport()`                            |
 | `getWarehouseMeasurements()` | Use `getMeasurementPenalties()` or `getWarehouseMeasurementsV2()` |
-| `getSubstitution()` | Use `getDeductions()` |
-| `getIncorrectAttachment()` | Removed (no replacement) |
-| `getTasksStatu2()` | Use `getAcceptanceReportTaskStatus()` |
-| `getTasksDownload2()` | Use `downloadAcceptanceReport()` |
-| `getTasksStatu3()` | Use `getPaidStorageTaskStatus()` |
-| `getTasksDownload3()` | Use `downloadPaidStorageReport()` |
+| `getSubstitution()`          | Use `getDeductions()`                                             |
+| `getIncorrectAttachment()`   | Removed (no replacement)                                          |
+| `getTasksStatu2()`           | Use `getAcceptanceReportTaskStatus()`                             |
+| `getTasksDownload2()`        | Use `downloadAcceptanceReport()`                                  |
+| `getTasksStatu3()`           | Use `getPaidStorageTaskStatus()`                                  |
+| `getTasksDownload3()`        | Use `downloadPaidStorageReport()`                                 |
 
 #### Communications Module (6 methods)
-| Method | Alternative |
-|--------|-------------|
-| `getTemplates()` | Removed (Response Templates tag removed from API) |
-| `createTemplates()` | Removed (Response Templates tag removed from API) |
-| `getTemplatesId()` | Removed (Response Templates tag removed from API) |
-| `updateTemplatesId()` | Removed (Response Templates tag removed from API) |
-| `deleteTemplatesId()` | Removed (Response Templates tag removed from API) |
-| `createReviewsGenerate()` | Removed (no replacement) |
+
+| Method                    | Alternative                                       |
+| ------------------------- | ------------------------------------------------- |
+| `getTemplates()`          | Removed (Response Templates tag removed from API) |
+| `createTemplates()`       | Removed (Response Templates tag removed from API) |
+| `getTemplatesId()`        | Removed (Response Templates tag removed from API) |
+| `updateTemplatesId()`     | Removed (Response Templates tag removed from API) |
+| `deleteTemplatesId()`     | Removed (Response Templates tag removed from API) |
+| `createReviewsGenerate()` | Removed (no replacement)                          |
 
 #### Orders FBS Module (5 methods)
-| Method | Alternative |
-|--------|-------------|
-| `createOrdersStatu()` | Use `getOrderStatuses()` |
-| `getOrderMeta()` | Use `getOrdersMetaBulk()` |
+
+| Method                      | Alternative                       |
+| --------------------------- | --------------------------------- |
+| `createOrdersStatu()`       | Use `getOrderStatuses()`          |
+| `getOrderMeta()`            | Use `getOrdersMetaBulk()`         |
 | `getExternalStickersUrls()` | Use `createStickersCrossBorder()` |
-| `updateSuppliesOrder()` | Use `addOrdersToSupply()` |
-| `getSuppliesOrder()` | Use `getSupplyOrderIds()` |
+| `updateSuppliesOrder()`     | Use `addOrdersToSupply()`         |
+| `getSuppliesOrder()`        | Use `getSupplyOrderIds()`         |
 
 #### Products Module (7 methods)
-| Method | Alternative |
-|--------|-------------|
-| `createCardsList()` | Use `getCardsList()` |
-| `createCardsTrash()` | Use `getTrashedCards()` |
-| `getGoodsTask2()` | Use `getBufferGoodsTask()` |
-| `createStock()` | Use `getStocks()` |
-| `createWarehous()` | Use `createWarehouse()` |
-| `updateWarehous()` | Use `updateWarehouse()` |
-| `deleteWarehous()` | Use `deleteWarehouse()` |
+
+| Method               | Alternative                |
+| -------------------- | -------------------------- |
+| `createCardsList()`  | Use `getCardsList()`       |
+| `createCardsTrash()` | Use `getTrashedCards()`    |
+| `getGoodsTask2()`    | Use `getBufferGoodsTask()` |
+| `createStock()`      | Use `getStocks()`          |
+| `createWarehous()`   | Use `createWarehouse()`    |
+| `updateWarehous()`   | Use `updateWarehouse()`    |
+| `deleteWarehous()`   | Use `deleteWarehouse()`    |
 
 #### Analytics Module (3 methods)
-| Method | Alternative |
-|--------|-------------|
-| `createNmReportDetail()` | Use `getSalesFunnelProducts()` |
-| `createDetailHistory()` | Use `getSalesFunnelProductsHistory()` |
-| `createGroupedHistory()` | Use `getSalesFunnelGroupedHistory()` |
+
+| Method                   | Alternative                           |
+| ------------------------ | ------------------------------------- |
+| `createNmReportDetail()` | Use `getSalesFunnelProducts()`        |
+| `createDetailHistory()`  | Use `getSalesFunnelProductsHistory()` |
+| `createGroupedHistory()` | Use `getSalesFunnelGroupedHistory()`  |
 
 #### Orders FBW Module (2 methods)
-| Method | Alternative |
-|--------|-------------|
+
+| Method            | Alternative                              |
+| ----------------- | ---------------------------------------- |
 | `getAcceptance()` | Use tariffs module (moved to common-api) |
-| `createSupply()` | Use `listSupplies()` |
+| `createSupply()`  | Use `listSupplies()`                     |
 
 #### In-Store Pickup Module (1 method)
-| Method | Alternative |
-|--------|-------------|
+
+| Method                | Alternative                |
+| --------------------- | -------------------------- |
 | `createOrdersStatu()` | Use `createOrdersStatus()` |
 
 #### Finances Module (1 method)
-| Method | Alternative |
-|--------|-------------|
+
+| Method                              | Alternative                             |
+| ----------------------------------- | --------------------------------------- |
 | `getSupplierReportdetailbyperiod()` | Use `getSupplierReportDetailByPeriod()` |
 
 ### Deprecated Types (14 total)
 
-| Type | Alternative |
-|------|-------------|
-| `DBSOrderStatusLegacy` | Use `DBSOrderStatusBulk` |
-| `GetStatusResponseLegacy` | Use `GetStatusInfoResponse` |
-| `NmReportDetailRequest` | Use `SalesFunnelProductsRequest` |
-| `NmReportDetailHistoryRequest` | Use `SalesFunnelProductsHistoryRequest` |
-| `NmReportGroupedHistoryRequest` | Use `SalesFunnelGroupedHistoryRequest` |
-| `NmReportDetailResponse` | Use `SalesFunnelProductsResponse` |
-| `NmReportDetailHistoryResponse` | Use `SalesFunnelProductsHistoryResponse` |
-| `NmReportGroupedHistoryResponse` | Use `SalesFunnelGroupedHistoryResponse` |
-| `Response400WHM` | Use `Response400Retentions` |
-| `Response403WHM` | Use `Response403Retentions` |
-| `TemplatesRequest` | Removed (Response Templates removed from API) |
-| `Template` | Removed (Response Templates removed from API) |
-| `TemplateDetailed` | Removed (Response Templates removed from API) |
+| Type                             | Alternative                                   |
+| -------------------------------- | --------------------------------------------- |
+| `DBSOrderStatusLegacy`           | Use `DBSOrderStatusBulk`                      |
+| `GetStatusResponseLegacy`        | Use `GetStatusInfoResponse`                   |
+| `NmReportDetailRequest`          | Use `SalesFunnelProductsRequest`              |
+| `NmReportDetailHistoryRequest`   | Use `SalesFunnelProductsHistoryRequest`       |
+| `NmReportGroupedHistoryRequest`  | Use `SalesFunnelGroupedHistoryRequest`        |
+| `NmReportDetailResponse`         | Use `SalesFunnelProductsResponse`             |
+| `NmReportDetailHistoryResponse`  | Use `SalesFunnelProductsHistoryResponse`      |
+| `NmReportGroupedHistoryResponse` | Use `SalesFunnelGroupedHistoryResponse`       |
+| `Response400WHM`                 | Use `Response400Retentions`                   |
+| `Response403WHM`                 | Use `Response403Retentions`                   |
+| `TemplatesRequest`               | Removed (Response Templates removed from API) |
+| `Template`                       | Removed (Response Templates removed from API) |
+| `TemplateDetailed`               | Removed (Response Templates removed from API) |
 
 ### Deprecated Fields (4 fields)
 
-| Type | Field | Note |
-|------|-------|------|
-| `Question` | `clientID` | Removed February 2, 2026 (Release #466) |
-| `Feedback` | `clientID` | Removed February 2, 2026 (Release #466) |
-| `Feedback` | `needRefund` | Use claims endpoint `/api/v1/claims` |
-| `Feedback` | `statusID` | Removed February 10, 2026 (Release #469) |
+| Type       | Field        | Note                                     |
+| ---------- | ------------ | ---------------------------------------- |
+| `Question` | `clientID`   | Removed February 2, 2026 (Release #466)  |
+| `Feedback` | `clientID`   | Removed February 2, 2026 (Release #466)  |
+| `Feedback` | `needRefund` | Use claims endpoint `/api/v1/claims`     |
+| `Feedback` | `statusID`   | Removed February 10, 2026 (Release #469) |
 
 ### Timeline
 
-| Version | Date | Action |
-|---------|------|--------|
+| Version    | Date          | Action                               |
+| ---------- | ------------- | ------------------------------------ |
 | **v2.8.0** | February 2026 | Deprecation warnings added (current) |
-| **v2.9.0** | March 2026 | Final warnings |
-| **v3.0.0** | April 2026 | All deprecated methods removed |
+| **v2.9.0** | March 2026    | Final warnings                       |
+| **v3.0.0** | April 2026    | All deprecated methods removed       |
 
 ### Migration Resources
 
@@ -1268,15 +1432,15 @@ The following methods now emit console warnings and will be **removed in v3.0.0*
 
 #### Renamed Methods (old names still work as `@deprecated` wrappers)
 
-| Old Name (deprecated) | New Name | Reason |
-|---|---|---|
-| `createWarehous()` | `createWarehouse()` | Typo fix (missing 'e') |
-| `updateWarehous()` | `updateWarehouse()` | Typo fix (missing 'e') |
-| `deleteWarehous()` | `deleteWarehouse()` | Typo fix (missing 'e') |
-| `createStock()` | `getStocks()` | POST reads stock levels (x-readonly-method) |
-| `createCardsList()` | `getCardsList()` | POST reads/lists product cards |
-| `createCardsTrash()` | `getTrashedCards()` | POST reads trashed cards list |
-| `getGoodsTask2()` | `getBufferGoodsTask()` | Collision workaround replaced with descriptive name |
+| Old Name (deprecated) | New Name               | Reason                                              |
+| --------------------- | ---------------------- | --------------------------------------------------- |
+| `createWarehous()`    | `createWarehouse()`    | Typo fix (missing 'e')                              |
+| `updateWarehous()`    | `updateWarehouse()`    | Typo fix (missing 'e')                              |
+| `deleteWarehous()`    | `deleteWarehouse()`    | Typo fix (missing 'e')                              |
+| `createStock()`       | `getStocks()`          | POST reads stock levels (x-readonly-method)         |
+| `createCardsList()`   | `getCardsList()`       | POST reads/lists product cards                      |
+| `createCardsTrash()`  | `getTrashedCards()`    | POST reads trashed cards list                       |
+| `getGoodsTask2()`     | `getBufferGoodsTask()` | Collision workaround replaced with descriptive name |
 
 All old method names remain available as thin `@deprecated` wrappers that delegate to the new names. They will be removed in the next major version.
 
@@ -1287,67 +1451,74 @@ All old method names remain available as thin `@deprecated` wrappers that delega
 Wildberries migrated the Sales Funnel ("Воронка продаж") endpoints from v2 to v3. The old `/api/v2/nm-report/*` endpoints are dead (return 404).
 
 #### New Methods
+
 - `getSalesFunnelProducts()` — replaces `createNmReportDetail()`
 - `getSalesFunnelProductsHistory()` — replaces `createDetailHistory()`
 - `getSalesFunnelGroupedHistory()` — replaces `createGroupedHistory()`
 
 #### Endpoint Migration Map
-| Old (dead, 404) | New (active) |
-|---|---|
-| POST /api/v2/nm-report/detail | POST /api/analytics/v3/sales-funnel/products |
-| POST /api/v2/nm-report/detail/history | POST /api/analytics/v3/sales-funnel/products/history |
-| POST /api/v2/nm-report/grouped/history | POST /api/analytics/v3/sales-funnel/grouped/history |
-| POST /api/v2/nm-report/grouped | *(removed by WB, no replacement)* |
+
+| Old (dead, 404)                        | New (active)                                         |
+| -------------------------------------- | ---------------------------------------------------- |
+| POST /api/v2/nm-report/detail          | POST /api/analytics/v3/sales-funnel/products         |
+| POST /api/v2/nm-report/detail/history  | POST /api/analytics/v3/sales-funnel/products/history |
+| POST /api/v2/nm-report/grouped/history | POST /api/analytics/v3/sales-funnel/grouped/history  |
+| POST /api/v2/nm-report/grouped         | _(removed by WB, no replacement)_                    |
 
 #### Request Field Renames
-| v2 | v3 |
-|---|---|
-| `period: { begin, end }` | `selectedPeriod: { start, end }` |
-| `nmIDs` | `nmIds` |
-| `objectIDs` | `subjectIds` |
-| `tagIDs` | `tagIds` |
-| `page` | `limit` + `offset` |
-| `timezone` | *(removed)* |
-| *(new)* | `skipDeletedNm` |
-| *(new)* | `pastPeriod` |
+
+| v2                          | v3                                             |
+| --------------------------- | ---------------------------------------------- |
+| `period: { begin, end }`    | `selectedPeriod: { start, end }`               |
+| `nmIDs`                     | `nmIds`                                        |
+| `objectIDs`                 | `subjectIds`                                   |
+| `tagIDs`                    | `tagIds`                                       |
+| `page`                      | `limit` + `offset`                             |
+| `timezone`                  | _(removed)_                                    |
+| _(new)_                     | `skipDeletedNm`                                |
+| _(new)_                     | `pastPeriod`                                   |
 | `aggregationLevel` (string) | `aggregationLevel` (enum: `'day'` \| `'week'`) |
 
 #### OrderBy Field Renames
-| v2 | v3 |
-|---|---|
-| `openCard` | `openCard` *(unchanged)* |
-| `addToCart` | `addToCart` *(unchanged)* |
-| `orders` | `orderCount` |
-| `ordersSumRub` | `orderSum` |
-| `avgRubPrice` | `avgPrice` |
-| `buyoutCount` | `buyoutCount` *(unchanged)* |
-| `buyoutSumRub` | `buyoutSum` |
-| `cancelCount` | `cancelCount` *(unchanged)* |
-| `cancelSumRub` | `cancelSum` |
-| `stockMpQty` | `stockMpQty` *(unchanged)* |
-| `stockWbQty` | `stockWbQty` *(unchanged)* |
-| *(new)* | `shareOrderPercent` |
-| *(new)* | `addToWishlist` |
-| *(new)* | `timeToReady` |
-| *(new)* | `localizationPercent` |
-| *(new)* | `wbClub.orderCount`, `wbClub.orderSum`, `wbClub.buyoutSum`, `wbClub.cancelSum`, `wbClub.buyoutCount`, `wbClub.avgPrice`, `wbClub.buyoutPercent`, `wbClub.avgOrderCountPerDay`, `wbClub.cancelCount` |
+
+| v2             | v3                                                                                                                                                                                                  |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `openCard`     | `openCard` _(unchanged)_                                                                                                                                                                            |
+| `addToCart`    | `addToCart` _(unchanged)_                                                                                                                                                                           |
+| `orders`       | `orderCount`                                                                                                                                                                                        |
+| `ordersSumRub` | `orderSum`                                                                                                                                                                                          |
+| `avgRubPrice`  | `avgPrice`                                                                                                                                                                                          |
+| `buyoutCount`  | `buyoutCount` _(unchanged)_                                                                                                                                                                         |
+| `buyoutSumRub` | `buyoutSum`                                                                                                                                                                                         |
+| `cancelCount`  | `cancelCount` _(unchanged)_                                                                                                                                                                         |
+| `cancelSumRub` | `cancelSum`                                                                                                                                                                                         |
+| `stockMpQty`   | `stockMpQty` _(unchanged)_                                                                                                                                                                          |
+| `stockWbQty`   | `stockWbQty` _(unchanged)_                                                                                                                                                                          |
+| _(new)_        | `shareOrderPercent`                                                                                                                                                                                 |
+| _(new)_        | `addToWishlist`                                                                                                                                                                                     |
+| _(new)_        | `timeToReady`                                                                                                                                                                                       |
+| _(new)_        | `localizationPercent`                                                                                                                                                                               |
+| _(new)_        | `wbClub.orderCount`, `wbClub.orderSum`, `wbClub.buyoutSum`, `wbClub.cancelSum`, `wbClub.buyoutCount`, `wbClub.avgPrice`, `wbClub.buyoutPercent`, `wbClub.avgOrderCountPerDay`, `wbClub.cancelCount` |
 
 #### Response Field Renames
-| v2 | v3 |
-|---|---|
-| `openCardCount` | `openCount` |
-| `addToCartCount` | `cartCount` |
-| `ordersCount` | `orderCount` |
-| `ordersSumRub` | `orderSum` |
-| `buyoutsSumRub` | `buyoutSum` |
-| `cancelSumRub` | `cancelSum` |
-| `avgPriceRub` | `avgPrice` |
-| `dt` | `date` |
-| `openCardDynamics` | `openCountDynamic` |
+
+| v2                  | v3                 |
+| ------------------- | ------------------ |
+| `openCardCount`     | `openCount`        |
+| `addToCartCount`    | `cartCount`        |
+| `ordersCount`       | `orderCount`       |
+| `ordersSumRub`      | `orderSum`         |
+| `buyoutsSumRub`     | `buyoutSum`        |
+| `cancelSumRub`      | `cancelSum`        |
+| `avgPriceRub`       | `avgPrice`         |
+| `dt`                | `date`             |
+| `openCardDynamics`  | `openCountDynamic` |
 | `addToCartDynamics` | `cartCountDynamic` |
 
 #### New v3 Response Fields
+
 The following fields are new in v3 and have no v2 equivalent:
+
 - `shareOrderPercent` — order share percentage
 - `addToWishlist` — wishlist additions count
 - `timeToReady` — time to ready (`{ days, hours, mins }`)
@@ -1359,12 +1530,15 @@ The following fields are new in v3 and have no v2 equivalent:
 - `conversions` — conversion metrics (`cartToOrderPercent`, `buyoutPercent`)
 
 #### Deprecated Methods
+
 The old v2 methods are preserved as deprecated wrappers with parameter mapping:
+
 - `createNmReportDetail()` → use `getSalesFunnelProducts()`
 - `createDetailHistory()` → use `getSalesFunnelProductsHistory()`
 - `createGroupedHistory()` → use `getSalesFunnelGroupedHistory()`
 
 ### Changed
+
 - Updated Swagger spec `11-analytics.yaml` to latest version with v3 Sales Funnel paths
 - Archived old spec as `11-analytics.v2-deprecated.yaml`
 
@@ -1377,15 +1551,19 @@ See: https://dev.wildberries.ru/openapi/seller-analytics
 ### Added
 
 #### New Module: Orders DBS (Delivery by Seller) - Epic 12
+
 Complete implementation of DBS (Delivery by Seller) module for managing orders where sellers handle both storage AND delivery directly to customers.
 
 **Core Operations (Story 12.1):**
+
 - `getNewOrders()` - Fetch new DBS orders awaiting delivery with full delivery details
 - `getOrders(params)` - Query completed orders with date range filtering and pagination
 - `getClientInfo(orderIds)` - Get customer contact information for delivery coordination
 
 **Status Management (Story 12.2):**
+
 - **Bulk Operations (New API from 14.01.2026):**
+
   - `getStatusesBulk(orderIds)` - Get status info for multiple orders
   - `confirmBulk(orderIds)` - Confirm multiple orders
   - `deliverBulk(orderIds)` - Mark multiple orders as delivered
@@ -1402,6 +1580,7 @@ Complete implementation of DBS (Delivery by Seller) module for managing orders w
   - `cancel(orderId)` - Cancel single order
 
 **Metadata Operations (Story 12.3):**
+
 - `getMeta(orderId)` - Get order metadata
 - `deleteMeta(orderId, keys)` - Delete specific metadata keys
 - `setSgtin(orderId, codes)` - Set SGTIN marking codes (Честный знак)
@@ -1411,19 +1590,23 @@ Complete implementation of DBS (Delivery by Seller) module for managing orders w
 - `setCustomsDeclaration(orderId, declaration)` - Set customs declaration number
 
 **B2B Support (Story 12.4):**
+
 - `getB2BInfo(orderIds)` - Get organizational buyer information (company name, INN, KPP)
 
 **Integration (Story 12.5):**
+
 - `ordersDBS` property added to `WildberriesSDK` class
 - Rate limits configuration for all 23 DBS methods
 - Type exports from main SDK entry point
 
 #### New Examples
+
 - `examples/orders-dbs-core-workflow.ts` - Complete DBS order processing workflow
 - `examples/orders-dbs-b2b.ts` - B2B organizational buyer handling
 - `examples/orders-dbs-metadata.ts` - Product marking and metadata management
 
 #### New Types
+
 - `DBSAddress` - Delivery address with GPS coordinates
 - `DBSOrderNew` - New DBS order with delivery window
 - `DBSOrder` - Completed DBS order
@@ -1438,11 +1621,13 @@ Complete implementation of DBS (Delivery by Seller) module for managing orders w
 - `BulkStatusChangeResponse` - Bulk operation response
 
 ### Changed
+
 - Updated `src/modules/index.ts` to export `OrdersDbsModule`
 - Updated `src/config/rate-limits.ts` with DBS rate limits
 - Updated README with DBS module documentation (English and Russian)
 
 ### Developer Notes
+
 - **208 tests** added for DBS module (100% passing)
 - TDD methodology used for all implementations
 - Full TypeScript strict mode compliance
@@ -1450,8 +1635,10 @@ Complete implementation of DBS (Delivery by Seller) module for managing orders w
 - Migration guide available for deprecated legacy methods
 
 ### Migration Notice
+
 **DBS Legacy Methods Deprecation:**
 6 legacy methods will be disabled on **13.04.2026**:
+
 - `getStatuses()` → Use `getStatusesBulk()`
 - `confirm()` → Use `confirmBulk()`
 - `deliver()` → Use `deliverBulk()`
@@ -1466,6 +1653,7 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
 ## [2.4.3] - 2026-01-13
 
 ### Added
+
 - **New Fields in Finances API**: Support for seller loyalty program discount tracking
   - `loyalty_id` — Identifier for seller loyalty program (optional number field)
   - `loyalty_discount` — Discount percentage from seller loyalty program (optional number field)
@@ -1474,7 +1662,9 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
   - Based on Wildberries API Release #433 (January 13, 2026)
 
 ### Changed
+
 - **Documentation Updates**: Enhanced `docs/guides/realization-report.md`
+
   - Added comprehensive section "🆕 Новые поля: Программы лояльности продавца (Release #433)"
   - Documented `loyalty_id` and `loyalty_discount` fields with descriptions and examples
   - Added comparison table between seller loyalty and WB cashback programs
@@ -1483,6 +1673,7 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
   - Linked to Wildberries Release Notes #433
 
 - **TypeScript Types**: Updated `src/types/finances.types.ts`
+
   - Added `loyalty_id?: number` to `DetailReportItem` interface
   - Added `loyalty_discount?: number` to `DetailReportItem` interface
   - Comprehensive JSDoc comments with references to Release #433
@@ -1494,6 +1685,7 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
   - Both fields marked as optional with detailed descriptions
 
 ### Added
+
 - **New Example**: `examples/finances-loyalty-discount-analysis.ts`
   - Comprehensive loyalty discount analysis example
   - Demonstrates fetching and analyzing seller loyalty program data
@@ -1504,6 +1696,7 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
   - Production-ready code with proper documentation
 
 ### Developer Notes
+
 - This is a **patch release** adding optional fields without breaking changes
 - Existing code continues to work without modifications
 - New fields are fully optional and backward compatible
@@ -1513,6 +1706,7 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
 ## [2.4.2] - 2025-12-28
 
 ### Fixed
+
 - **`createCardsList()` Client-Side Validation**: Added automatic validation for cursor `limit` parameter
   - Maximum limit: 100 cards per request (enforced by Wildberries API)
   - Rejects `limit > 100` with clear error message before API call
@@ -1521,6 +1715,7 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
   - Error messages include direct link to pagination documentation
 
 ### Changed
+
 - **Documentation Enhancement**: Updated `docs/guides/working-with-product-cards.md`
   - Added critical warning section about 100-card limit at document start
   - Updated all limit references from "max 1000" to "MAXIMUM: 100"
@@ -1529,6 +1724,7 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
   - Updated "Best Practices" to enforce strict limit: 100 usage
 
 ### Added
+
 - **Pagination Example**: New comprehensive example `examples/products-pagination-correct.ts`
   - 5 practical examples of correct pagination implementation
   - Demonstrates fetching all cards with proper limit handling
@@ -1540,6 +1736,7 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
   - Verifies helpful error messages
 
 ### Developer Notes
+
 - This is a **patch release** improving user experience without breaking changes
 - Existing code with `limit <= 100` continues to work identically
 - Code with `limit > 100` now fails earlier (client-side) with better error messages
@@ -1550,6 +1747,7 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
 ### Added
 
 #### Documentation
+
 - **NEW: Working with Product Cards Guide** (`docs/guides/working-with-product-cards.md`)
   - Complete guide to `createCardsList()` method with cursor pagination
   - First request vs pagination requests explained with examples
@@ -1572,12 +1770,14 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
 ### Changed
 
 #### Documentation Structure
+
 - **Guides Index** - Added "Working with Product Cards" to Product Management section
 - **Method Reference** - Corrected product listing method name from `listProducts()`/`getAllProducts()` to `createCardsList()`
 
 ### Fixed
 
 #### Promotion Module TypeScript Types
+
 - **TypeScript Compilation Errors**: Fixed incorrect union type syntax for `placement_types` parameter
   - `createBidsMin()`: Changed `('combined' | 'search' | 'recommendation'[])` → `(('combined' | 'search' | 'recommendation')[])`
   - `createSeacatSaveAd()`: Changed `('search' | 'recommendations'[])` → `(('search' | 'recommendations')[])`
@@ -1585,6 +1785,7 @@ See `docs/guides/migration-dbs-legacy-to-bulk.md` for detailed migration guide.
   - All 951 tests now pass successfully
 
 #### User Confusion Prevention
+
 - **Common Validation Error**: Documented that empty `updatedAt: ""` and `nmID: 0` cause validation failures
 - **Cursor Structure**: Clarified first request (only `limit`) vs pagination (with `updatedAt`/`nmID`)
 - **Settings Wrapper**: Highlighted requirement to wrap all parameters in `settings` object
@@ -1610,6 +1811,7 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
 ### Added
 
 #### Documentation
+
 - **Comprehensive Migration Guide** (`docs/guides/migration-v2.4-promotion-deprecation.md`)
   - Quick Start: 3-step migration process with time estimates
   - 6 Common Migration Patterns with complete code examples
@@ -1630,6 +1832,7 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
   - Action required notice with deadline
 
 #### CI/CD
+
 - **Standalone Documentation Deployment** (`.github/workflows/docs.yml`)
   - Independent workflow for documentation deployment
   - Triggers on `docs/**` changes and manual dispatch
@@ -1639,6 +1842,7 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
 ### Changed
 
 #### Promotion Module
+
 - **@deprecated JSDoc tags** added to all 4 deprecated methods
   - IDE warnings with strikethrough in autocomplete
   - Russian deprecation messages with correct February 2, 2026 date
@@ -1646,6 +1850,7 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
   - Links to replacement methods for type 9 campaigns
 
 #### OpenAPI Specification
+
 - **Deprecation warnings** added to `wildberries_api_doc/08-promotion.yaml`
   - All 4 endpoints marked with `deprecated: true`
   - Detailed Russian deprecation notices with migration paths
@@ -1654,6 +1859,7 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
 ### Fixed
 
 #### Critical Date Corrections
+
 - **All deprecation dates corrected from 2025 to 2026** (63 occurrences)
   - OpenAPI specification: February 2, 2025 → February 2, 2026
   - SDK code: @deprecated messages updated
@@ -1661,6 +1867,7 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
   - Story documentation: timeline tables and references
 
 #### Architecture Documentation
+
 - **Comprehensive deprecation notice section** added to `docs/architecture.md`
   - All 4 deprecated methods documented with migration paths
   - Version updated to 1.1 with changelog entry
@@ -1673,12 +1880,14 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
 ### Added
 
 #### Finances Module
+
 - **`delivery_method` field** added to `DetailReportItem` interface
   - Indicates fulfillment method for each sale in realization reports
   - Values: `FBS` (seller warehouse), `FBW` (Wildberries warehouse), `DBS` (seller delivery)
   - Synced with WB API update for `/api/v5/supplier/reportDetailByPeriod`
 
 #### Documentation
+
 - **Story 8.2** - `delivery_method` field documentation (`docs/stories/8.2.finances-delivery-method-field.md`)
 - **Story 8.3** - Promotion module type fixes documentation (`docs/stories/8.3.promotion-type-fixes.md`)
 - **Fulfillment Analysis Guide** - New section in `docs/examples/use-cases/financial-reports.md`
@@ -1687,6 +1896,7 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
 ### Fixed
 
 #### Promotion Module
+
 - **`getStatsKeywords()` parameters** - Changed from optional to required (matches WB API contract)
   - All three parameters (`advert_id`, `from`, `to`) are now required
   - Improved JSDoc with detailed parameter descriptions
@@ -1711,18 +1921,21 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
 ### Fixed
 
 #### Promotion Module
+
 - **`getStatsKeywords()` URL correction** - Fixed endpoint path for keyword statistics
 - **Campaign types documentation** - Added comprehensive docs explaining different campaign types (4-9)
   - Documented that `getAuctionAdverts()` works only for type 9 campaigns
   - Documented that `createPromotionAdvert()` works only for types 4-8 (legacy)
 
 #### CI/CD & Testing
+
 - Fixed coverage thresholds for auto-generated modules
 - Excluded auto-generated modules from coverage requirements
 - Fixed empty test suite error in CI with `describe.skipIf`
 - Added eslint-disable for empty interfaces and duplicate union types
 
 #### Documentation
+
 - Corrected Russian localization paths for SDK Usage guides
 - Added promotion API test scripts
 
@@ -1734,22 +1947,25 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
 
 **Epic 8: Code Generator Syntax & Validation Fixes** - Critical fixes to the SDK code generator ensuring all generated TypeScript code compiles correctly.
 
-| Metric | Value |
-|--------|-------|
-| Files Changed | 104 |
-| Generator Functions Added | 3 |
-| Syntax Errors Fixed | 4 |
-| Tests Passing | 951 |
+| Metric                    | Value |
+| ------------------------- | ----- |
+| Files Changed             | 104   |
+| Generator Functions Added | 3     |
+| Syntax Errors Fixed       | 4     |
+| Tests Passing             | 951   |
 
 ### Fixed
 
 #### Code Generator - TypeScript Syntax Validation
+
 - **Invalid Interface Names Starting with Numbers**
+
   - `400Response` → `Response400` in promotion.types.ts
   - `4xxResponse` → `Response4xx` in reports.types.ts
   - Added `sanitizeTypeName()` function to handle numeric prefixes automatically
 
 - **Corrupted Import Statements**
+
   - Fixed inline type definitions appearing in import statements (reports/index.ts)
   - Import statements now only reference valid exported interfaces
 
@@ -1760,12 +1976,15 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
 ### Added
 
 #### Generator Improvements
+
 - `sanitizeTypeName()` - Ensures TypeScript interface names comply with identifier rules
 - `sanitizeIdentifier()` - General identifier sanitization for variables and function names
 - `sanitizeObjectKey()` - Properly escapes object keys with special characters
 
 #### Documentation
+
 - **Storage Fees Integration Guide** (`docs/guides/storage-fees-integration.md`)
+
   - Complete guide for comparing Weekly Report `storage_fee` with Paid Storage API `warehousePrice`
   - Step-by-step instructions for backend integration
   - Data verification methodology
@@ -1775,6 +1994,7 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
   - Implementation details and code examples
 
 #### Examples & Verification Scripts
+
 - `examples/test_sdk_storage_w49.ts` - SDK storage methods verification
 - `examples/verify_w49_2025.ts` - Raw API verification for Week 49 2025
 - `examples/debug_output/` - Sample API response data for testing
@@ -1789,6 +2009,7 @@ Wildberries is transitioning from type 8 (standard bid) campaigns to type 9 (cus
 ### Verification
 
 Storage fees API verified working after fixes:
+
 - Weekly Report `storage_fee`: 1,923.34₽
 - Paid Storage `warehousePrice`: 1,923.37₽
 - Difference: 0.03₽ (0.0013%) - **Data matches perfectly**
@@ -1809,21 +2030,23 @@ Storage fees API verified working after fixes:
 
 **Epic 7: API Compliance Audit** - Major audit achieving 100% API coverage.
 
-| Metric | Value |
-|--------|-------|
-| YAML Endpoints | 229 |
-| SDK Methods | 254 |
-| Bugs Fixed | 13 |
-| New Methods | 23 |
-| Coverage | **100%** |
+| Metric         | Value    |
+| -------------- | -------- |
+| YAML Endpoints | 229      |
+| SDK Methods    | 254      |
+| Bugs Fixed     | 13       |
+| New Methods    | 23       |
+| Coverage       | **100%** |
 
 ### Fixed
 
 #### Communications Module
+
 - `getQuestionsCountUnanswered()` - URL corrected from `/count/unanswered` to `/count-unanswered` (404 error fix)
 - `getNewFeedbacksQuestions()` - URL corrected to `/api/v1/new-feedbacks-questions`
 
 #### Products Module - Parameter Signatures (12 fixes)
+
 - `getWarehousesContact(warehouseId)` - Added required `warehouseId` parameter
 - `updateWarehousesContact(warehouseId, data)` - Added required `warehouseId` parameter
 - `getHistoryTasks(uploadID)` - Added required `uploadID` parameter
@@ -1838,12 +2061,14 @@ Storage fees API verified working after fixes:
 - `deleteStock(warehouseId, data)` - Added required `warehouseId` parameter
 
 #### Products Module - Bug Fixes
+
 - `listProducts()` - Fixed empty results bug
 - `getAllProducts()` - Added to validator whitelist
 
 ### Added
 
 #### Orders FBS Module - Cross-Border Operations (14 methods)
+
 - `updatePass(passId, data)` - Update delivery pass
 - `deleteOrderMetadata(orderId, key)` - Delete order metadata by key
 - `setOrderSGTIN(orderId, data)` - Set SGTIN marking code
@@ -1860,6 +2085,7 @@ Storage fees API verified working after fixes:
 - `getSupplyTrbxStickersPost(supplyId, type, trbxIds)` - Get box stickers
 
 #### Reports Module (6 methods)
+
 - `getWarehouseRemainsReportStatus(taskId)` - Check warehouse remains report status
 - `downloadWarehouseRemainsReport(taskId)` - Download warehouse remains report
 - `getAcceptanceReportStatus(taskId)` - Check acceptance report status
@@ -1868,10 +2094,12 @@ Storage fees API verified working after fixes:
 - `downloadPaidStorageReport(taskId)` - Download paid storage report
 
 #### Communications Module (2 methods)
+
 - `getNewFeedbacksQuestions()` - Get indicator for new feedbacks/questions
 - `requestReturnByFeedback(feedbackId)` - Request product return by feedback ID
 
 #### Products Module (1 method)
+
 - `recoverCards(nmIds)` - Recover product cards from trash
 
 ### Deprecated
@@ -1889,6 +2117,7 @@ Storage fees API verified working after fixes:
 ## [2.0.1] - 2025-11-28
 
 ### Fixed
+
 - Build validation for `.cjs` file extension
 - ESLint configuration for strict TypeScript mode
 
@@ -1899,12 +2128,14 @@ Storage fees API verified working after fixes:
 ### Added
 
 #### Epic 4: Extended Modules
+
 - **Orders FBW Module** - FBW warehouse fulfillment (8 methods)
 - **Promotion Module** - Advertising campaigns (42 methods)
 - **Tariffs Module** - Commission rates (4 methods)
 - **In-Store Pickup Module** - Click & collect (16 methods)
 
 #### Epic 6: VitePress Documentation Site
+
 - VitePress with i18n support (English + Russian)
 - TypeDoc API reference generation (343 pages)
 - Getting started tutorials (4 tutorials)
@@ -1917,6 +2148,7 @@ Storage fees API verified working after fixes:
 ### Added
 
 #### Epic 1: Foundation & Code Generation Infrastructure
+
 - **Core HTTP Client (BaseClient)** with intelligent retry logic and configurable timeout handling
 - **Rate Limiting System** with token bucket algorithm for automatic API limit enforcement
 - **Retry Handler** with exponential backoff for transient error recovery
@@ -1931,6 +2163,7 @@ Storage fees API verified working after fixes:
 - **General Module** with API connectivity testing and seller information retrieval
 
 #### Epic 2: Critical Business APIs - Products & Orders
+
 - **Products Module** - Complete product lifecycle management:
   - Product CRUD operations (create, read, update, delete)
   - Category and characteristic management
@@ -1948,6 +2181,7 @@ Storage fees API verified working after fixes:
 - **Cross-module workflows** with comprehensive error handling
 
 #### Epic 3: Financial Operations & Analytics
+
 - **Finances Module** - Financial data and reporting:
   - Real-time balance retrieval
   - Transaction history with filtering and pagination
@@ -1980,6 +2214,7 @@ Storage fees API verified working after fixes:
   - Seller insights and metrics
 
 #### Epic 5: Documentation & Localization
+
 - **Documentation Structure Reorganization** - Hierarchical documentation infrastructure:
   - **Directory Structure** - 4 core directories (getting-started/, guides/, api/, examples/) with clear separation
   - **Central Hub** - docs/index.md serves as documentation home with navigation to all sections
@@ -2013,18 +2248,23 @@ Storage fees API verified working after fixes:
 - **Target Audience**: 70%+ of Wildberries sellers (Russia, Belarus, Kazakhstan markets)
 
 ### Changed
+
 - N/A (initial release)
 
 ### Deprecated
+
 - N/A (initial release)
 
 ### Removed
+
 - N/A (initial release)
 
 ### Fixed
+
 - N/A (initial release)
 
 ### Security
+
 - ✅ **Zero vulnerabilities** in production dependencies
 - Secure API key authentication for all requests
 - Input validation for all API operations
@@ -2034,6 +2274,7 @@ Storage fees API verified working after fixes:
 ## [0.1.0] - Pre-release (Development)
 
 Initial development release implementing 7 of 11 planned modules:
+
 1. **General Module** - API connectivity and seller information
 2. **Products Module** - Complete product management
 3. **Orders FBS Module** - Seller warehouse fulfillment
@@ -2043,6 +2284,7 @@ Initial development release implementing 7 of 11 planned modules:
 7. **Reports Module** - Operational reporting
 
 **Test Coverage:**
+
 - 1,345 passing tests
 - 98.32% line coverage
 - 97.5% branch coverage
@@ -2050,6 +2292,7 @@ Initial development release implementing 7 of 11 planned modules:
 - Core infrastructure exceeds 90% coverage target
 
 **Remaining Modules (Planned for Epic 4):**
+
 - Orders FBW Module
 - Promotion Module
 - Tariffs Module

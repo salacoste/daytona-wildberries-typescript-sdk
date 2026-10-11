@@ -15,6 +15,7 @@ This guide covers everything you need to know to work with DBS (Delivery by Sell
 - [What is DBS?](#what-is-dbs)
 - [DBS vs FBS vs FBW](#dbs-vs-fbs-vs-fbw)
 - [Quick Start](#quick-start)
+- [Create Test Orders in the WB Sandbox](#create-test-orders-in-the-wb-sandbox)
 - [Available Methods](#available-methods)
 - [Complete Order Workflow](#complete-order-workflow)
 - [Working with Customer Data](#working-with-customer-data)
@@ -87,7 +88,56 @@ Create a `.env` file:
 WB_API_KEY=your_api_key_here
 ```
 
+## Create Test Orders in the WB Sandbox
+
+Use a separate SDK instance with a token that has the **Test** scope. The method
+always sends to the fixed host
+`https://marketplace-api-sandbox.wildberries.ru`; configured production base URL
+overrides do not change it.
+
+```typescript
+import {
+  WildberriesSDK,
+  type CreateTestDbsOrdersRequest,
+} from 'daytona-wildberries-typescript-sdk';
+
+const sandbox = new WildberriesSDK({
+  apiKey: process.env.WB_TEST_TOKEN!,
+  tokenType: 'test',
+});
+
+const request: CreateTestDbsOrdersRequest = {
+  orders: [{ sku: '4600000000001', amount: 1 }],
+  deliveryType: 'dbsPickupPoint',
+  address: {
+    region: 'Москва',
+    locality: 'Москва',
+    street: 'Сумская улица',
+    houseNumber: '6 к 5',
+  },
+};
+
+await sandbox.ordersDBS.createTestOrders(request);
+```
+
+The official rendered request contract lists `dbs`, `dbsPickupPoint`, and
+`edbs`. `deliveryType` has no displayed required badge and shows `dbs` as its
+documented default. `address` also has no displayed required badge and its
+description documents a default Moscow address. The SDK therefore keeps both
+properties optional and preserves omission; it does not inject defaults.
+
+The public portal did not expose the raw sandbox OpenAPI `required` or
+`nullable` metadata, and no live sandbox call was made. The types represent the
+visible official contract: no `null`, no guessed string constraints, and no
+guessed lower bound for `amount`.
+
 ## Available Methods
+
+### Sandbox Test Order Creation
+
+| Method | Description | Rate Limit |
+|--------|-------------|------------|
+| `createTestOrders(request)` | Create 1–10 DBS, DBS-to-PVZ, or EDBS test orders on the fixed sandbox host | 60 rpm, 1s interval, burst 1 |
 
 ### Order Retrieval
 
@@ -485,6 +535,11 @@ The DBS API uses a **4-tier rate limit system**. The SDK enforces these limits a
 | **T2** | Status Write | 60 | 1s | 10 | `confirmBulk`, `deliverBulk`, `receiveBulk`, `rejectBulk`, `cancelBulk` |
 | **T3** | Meta Delete | 150 | 400ms | 20 | `deleteMetaBulk` |
 | **T4** | Meta Set | 500 | 120ms | 20 | `setSgtinBulk`, `setUinBulk`, `setImeiBulk`, `setGtinBulk`, `setCustomsDeclarationBulk` |
+| **Sandbox** | Test order creation | 60 | 1s | 1 | `createTestOrders` |
+
+The sandbox row is a separate host/token category with no penalty multiplier.
+It remains 60 rpm for `tokenType: 'test'`; the SDK does not apply the generic
+Basic/Test downscale a second time.
 
 ### Penalty Multiplier (409 Responses)
 
@@ -508,7 +563,7 @@ const result = await sdk.ordersDBS.confirmBulk(orderIds); // 1 T2 call
 
 // Inefficient: 500 API calls (would exhaust T2 limit in ~8 minutes)
 // for (const id of orderIds) {
-//   await sdk.ordersDBS.confirm(id); // 500 T2 calls -- DON'T DO THIS
+//   await sdk.ordersDBS.confirmBulk([id]); // 500 T2 calls -- DON'T DO THIS
 // }
 ```
 
@@ -593,9 +648,9 @@ const result = await sdk.ordersDBS.setImeiBulk({
   ]
 });
 
-// Avoid: Setting metadata one order at a time (deprecated, removed April 13, 2026)
-// await sdk.ordersDBS.setImei(111, '123456789012345');
-// await sdk.ordersDBS.setImei(222, '543210987654321');
+// Avoid: 2 separate bulk calls containing only one order each
+// await sdk.ordersDBS.setImeiBulk({ orders: [{ orderId: 111, imei: '123456789012345' }] });
+// await sdk.ordersDBS.setImeiBulk({ orders: [{ orderId: 222, imei: '543210987654321' }] });
 ```
 
 ### 2. Check Metadata Before Confirming

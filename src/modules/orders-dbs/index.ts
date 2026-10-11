@@ -44,10 +44,15 @@ import type {
   StickerResponse,
   OrdersFinalPriceRequest,
   OrdersFinalPriceResponse,
+  CreateTestDbsOrdersRequest,
 } from '../../types/orders-dbs.types';
 
 /** Base URL for DBS API endpoints */
 const BASE_URL = 'https://marketplace-api.wildberries.ru';
+
+/** Fixed WB sandbox URL for creating test DBS assembly orders. */
+const SANDBOX_CREATE_TEST_ORDERS_URL =
+  'https://marketplace-api-sandbox.wildberries.ru/api/v3/test/dbs/orders/make';
 
 /** Maximum date range in seconds (30 days) */
 const MAX_DATE_RANGE_SECONDS = 30 * 24 * 60 * 60;
@@ -73,6 +78,62 @@ const MAX_DATE_RANGE_SECONDS = 30 * 24 * 60 * 60;
  */
 export class OrdersDbsModule {
   constructor(private client: BaseClient) {}
+
+  /**
+   * Create DBS assembly orders in the WB test environment.
+   *
+   * This method always targets the fixed WB sandbox host. Use it from a
+   * separate SDK instance initialized with a token that has the Test scope and
+   * `tokenType: 'test'`. It never routes through production base URLs.
+   *
+   * The official rendered request contract allows one through ten orders,
+   * shows `amount` as an integer no greater than 10, and documents `dbs` as the
+   * omission default for `deliveryType`. The SDK preserves omission and does
+   * not inject either a delivery type or an address.
+   *
+   * Rate limit: 1 request/second (60 requests/minute), burst 1.
+   *
+   * @param request - Test orders and optional delivery model/address
+   * @returns Promise resolving after the documented 204 response
+   * @throws {ValidationError} When the request has fewer than 1 or more than 10 orders,
+   * or when an amount is not an integer or exceeds the displayed maximum of 10
+   * @throws {AuthenticationError} When the Test-scope token is invalid
+   * @throws {RateLimitError} When the sandbox rate limit is exceeded
+   * @throws {NetworkError} When the sandbox request fails
+   * @see {@link https://dev.wildberries.ru/en/docs/openapi-other/sandbox-environment#tag/marketplaceDbs/operation/postV3TestDbsOrdersMake}
+   *
+   * @example
+   * ```typescript
+   * const sandbox = new WildberriesSDK({
+   *   apiKey: 'caller-provided-test-scope-token',
+   *   tokenType: 'test',
+   * });
+   *
+   * await sandbox.ordersDBS.createTestOrders({
+   *   orders: [{ sku: '4600000000001', amount: 1 }],
+   *   deliveryType: 'dbsPickupPoint',
+   * });
+   * ```
+   */
+  async createTestOrders(request: CreateTestDbsOrdersRequest): Promise<void> {
+    if (request.orders.length < 1 || request.orders.length > 10) {
+      throw new ValidationError('orders array must contain between 1 and 10 items');
+    }
+
+    for (const order of request.orders) {
+      if (!Number.isInteger(order.amount)) {
+        throw new ValidationError('amount must be an integer');
+      }
+      if (order.amount > 10) {
+        throw new ValidationError('amount cannot exceed 10');
+      }
+    }
+
+    await this.client.post(SANDBOX_CREATE_TEST_ORDERS_URL, request, {
+      rateLimitKey: 'sandbox-dbs.createTestOrders',
+      operationKey: 'ordersDBS.createTestOrders',
+    });
+  }
 
   /**
    * Get list of new DBS assembly tasks

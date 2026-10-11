@@ -50,6 +50,9 @@ describe('productsRateLimits', () => {
       'products.contentDirectorySeasons',
       'products.contentDirectoryVat',
       'products.contentDirectoryTnved',
+      'products.contentDirectoryTnvedAll',
+      'products.contentDirectoryOkpd',
+      'products.contentDirectoryOkpdAll',
       'products.contentTags',
       'products.postContentTag',
       'products.patchContentTag',
@@ -186,6 +189,9 @@ describe('productsRateLimits', () => {
         'products.contentDirectorySeasons',
         'products.contentDirectoryVat',
         'products.contentDirectoryTnved',
+        'products.contentDirectoryTnvedAll',
+        'products.contentDirectoryOkpd',
+        'products.contentDirectoryOkpdAll',
         'products.contentTags',
         'products.postContentTag',
         'products.patchContentTag',
@@ -235,14 +241,9 @@ describe('productsRateLimits', () => {
         'products.putDbwWarehousesContacts',
       ];
 
-      for (const key of allExpectedKeys) {
-        expect(productsRateLimits).toHaveProperty(key);
-      }
-    });
-
-    it('should not have any unexpected keys', () => {
       const actualKeys = Object.keys(productsRateLimits);
-      expect(actualKeys).toHaveLength(51);
+      expect(actualKeys).toHaveLength(54);
+      expect(actualKeys.sort()).toEqual(allExpectedKeys.sort());
     });
   });
 });

@@ -2,8 +2,14 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import dts from 'vite-plugin-dts';
+import {
+  resolveDeclarationTargetFromSource,
+  rewriteNodeNextDeclarationSpecifiers,
+} from './scripts/node-next-declarations';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const declarationRoot = resolve(__dirname, 'dist/esm');
+const sourceRoot = resolve(__dirname, 'src');
 
 /**
  * Vite configuration for dual ESM + CommonJS builds
@@ -18,6 +24,17 @@ export default defineConfig({
       entryRoot: 'src',
       include: ['src/**/*.ts'],
       exclude: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
+      beforeWriteFile(filePath, content) {
+        if (!filePath.endsWith('.d.ts')) {
+          return;
+        }
+
+        return {
+          content: rewriteNodeNextDeclarationSpecifiers(filePath, content, (specifier) =>
+            resolveDeclarationTargetFromSource(declarationRoot, sourceRoot, filePath, specifier)
+          ),
+        };
+      },
     }),
   ],
   build: {

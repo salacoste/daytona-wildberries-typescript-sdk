@@ -1,0 +1,47 @@
+openapi: 3.0.1
+info:
+  title: 04-orders-dbs - Песочница DBS
+  description: Локальная evidence-based модель специального DBS sandbox operation
+  version: 1.0.0-shard
+servers:
+  - url: https://marketplace-api-sandbox.wildberries.ru
+tags:
+  - name: Песочница DBS
+    description: Тестовые сборочные задания DBS в отдельном контуре WB
+paths:
+  /api/v3/test/dbs/orders/make:
+    servers:
+      - url: https://marketplace-api-sandbox.wildberries.ru
+    post:
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Песочница DBS
+      summary: Создать тестовые сборочные задания DBS
+      description: |
+        Создаёт от 1 до 10 тестовых сборочных заданий только в песочнице WB.
+        Для авторизации используется отдельный токен с областью действия Test.
+
+        Отображённая официальная схема документирует `dbs` как значение по
+        умолчанию для `deliveryType`. Клиент сохраняет пропуск поля без подстановки.
+        Если `address` не передан, документация WB описывает адрес по умолчанию.
+        Эти значения по умолчанию не подтверждались runtime-вызовом.
+
+        Лимит: 1 запрос в секунду для каждого метода песочницы DBS.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTestDbsOrdersRequest'
+      responses:
+        '204':
+          description: Тестовые сборочные задания созданы
+        '400':
+          description: Некорректный запрос
+        '401':
+          description: Ошибка авторизации
+        '429':
+          description: Превышен лимит запросов

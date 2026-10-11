@@ -11,7 +11,7 @@ The **Returns** module (`sdk.returns`) is an aggregator introduced in **v3.10.0*
 | **Module Name** | `returns` |
 | **SDK Namespace** | `sdk.returns.*` |
 | **Introduced** | v3.10.0 |
-| **Sources** | `sdk.reports.getAnalyticsGoodsReturn()` (FBO), `sdk.ordersFBS` status history (FBS — deferred to v3.10.1), `sdk.finances.getSalesReportsDetailed()` (Finance) |
+| **Sources** | `sdk.reports.getAnalyticsV1GoodsReturn()` for both `active` and `archive` FBO returns, `sdk.ordersFBS` status history (FBS — deferred to v3.10.1), `sdk.finances.getSalesReportsDetailed()` (Finance) |
 | **Methods** | 3 |
 | **Authentication** | Delegates to underlying modules |
 
@@ -54,6 +54,8 @@ result.data.forEach((r) => {
 ### `getReturns(params: ReturnsApiRequest): Promise<ReturnsApiResponse>`
 
 Primary aggregation method. Fetches FBO returns and Finance enrichment in parallel, merges by `srid`, applies optional filters, and returns results with full telemetry.
+
+For FBO data the aggregator requests `active` pages first, then `archive` pages. Each page uses `limit: 1000` and advances `offset` until WB returns fewer than 1,000 rows. Calls pass through the shared Reports limiter (1 request/minute, burst 1); an HTTP 204 response is treated as an empty page.
 
 **Parameters:**
 

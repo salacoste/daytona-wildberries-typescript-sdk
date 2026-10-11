@@ -2,7 +2,7 @@
 
 # Class: OrdersDbsModule
 
-Defined in: [modules/orders-dbs/index.ts:74](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L74)
+Defined in: [modules/orders-dbs/index.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L79)
 
 Orders DBS Module for managing Delivery by Seller orders
 
@@ -31,7 +31,7 @@ const clientInfo = await sdk.ordersDBS.getClientInfo([123456]);
 new OrdersDbsModule(client: BaseClient): OrdersDbsModule;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:75](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L75)
+Defined in: [modules/orders-dbs/index.ts:80](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L80)
 
 #### Parameters
 
@@ -45,13 +45,83 @@ Defined in: [modules/orders-dbs/index.ts:75](https://github.com/salacoste/dayton
 
 ## Methods
 
+### createTestOrders()
+
+```ts
+createTestOrders(request: CreateTestDbsOrdersRequest): Promise<void>;
+```
+
+Defined in: [modules/orders-dbs/index.ts:118](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L118)
+
+Create DBS assembly orders in the WB test environment.
+
+This method always targets the fixed WB sandbox host. Use it from a
+separate SDK instance initialized with a token that has the Test scope and
+`tokenType: 'test'`. It never routes through production base URLs.
+
+The official rendered request contract allows one through ten orders,
+shows `amount` as an integer no greater than 10, and documents `dbs` as the
+omission default for `deliveryType`. The SDK preserves omission and does
+not inject either a delivery type or an address.
+
+Rate limit: 1 request/second (60 requests/minute), burst 1.
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `request` | [`CreateTestDbsOrdersRequest`](../interfaces/CreateTestDbsOrdersRequest.md) | Test orders and optional delivery model/address |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+Promise resolving after the documented 204 response
+
+#### Throws
+
+When the request has fewer than 1 or more than 10 orders,
+or when an amount is not an integer or exceeds the displayed maximum of 10
+
+#### Throws
+
+When the Test-scope token is invalid
+
+#### Throws
+
+When the sandbox rate limit is exceeded
+
+#### Throws
+
+When the sandbox request fails
+
+#### See
+
+[https://dev.wildberries.ru/en/docs/openapi-other/sandbox-environment#tag/marketplaceDbs/operation/postV3TestDbsOrdersMake](https://dev.wildberries.ru/en/docs/openapi-other/sandbox-environment#tag/marketplaceDbs/operation/postV3TestDbsOrdersMake)
+
+#### Example
+
+```typescript
+const sandbox = new WildberriesSDK({
+  apiKey: 'caller-provided-test-scope-token',
+  tokenType: 'test',
+});
+
+await sandbox.ordersDBS.createTestOrders({
+  orders: [{ sku: '4600000000001', amount: 1 }],
+  deliveryType: 'dbsPickupPoint',
+});
+```
+
+***
+
 ### getNewOrders()
 
 ```ts
 getNewOrders(): Promise<GetNewOrdersResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L108)
+Defined in: [modules/orders-dbs/index.ts:169](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L169)
 
 Get list of new DBS assembly tasks
 
@@ -107,7 +177,7 @@ for (const order of newOrders.orders ?? []) {
 getOrders(params: GetOrdersParams): Promise<GetOrdersResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:155](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L155)
+Defined in: [modules/orders-dbs/index.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L216)
 
 Get completed DBS orders with pagination and date filtering
 
@@ -177,7 +247,7 @@ do {
 getClientInfo(orderIds: number[]): Promise<GetClientInfoResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L216)
+Defined in: [modules/orders-dbs/index.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L277)
 
 Get customer contact information for DBS orders
 
@@ -194,7 +264,7 @@ Rate limit: 300 requests/min, 200ms interval, 20 burst
 
 #### Returns
 
-`Promise`\<[`GetClientInfoResponse`](../-internal-/interfaces/GetClientInfoResponse.md)\>
+`Promise`\<[`GetClientInfoResponse`](../interfaces/GetClientInfoResponse.md)\>
 
 Promise resolving to customer contact information
 
@@ -242,7 +312,7 @@ for (const client of clientInfo.orders ?? []) {
 getB2BInfo(orderIds: number[]): Promise<GetB2BInfoResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:266](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L266)
+Defined in: [modules/orders-dbs/index.ts:327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L327)
 
 Get B2B buyer information for DBS orders
 
@@ -312,7 +382,7 @@ for (const result of b2bInfo.results ?? []) {
 getGroupsInfo(request: OrderGroupsRequest): Promise<OrderGroupsResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:299](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L299)
+Defined in: [modules/orders-dbs/index.ts:360](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L360)
 
 Get paid delivery group information
 
@@ -342,7 +412,7 @@ const groups = await sdk.ordersDBS.getGroupsInfo({ orders: [123456] });
 getDeliveryDates(request: DeliveryDatesRequest): Promise<DeliveryDatesInfoResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:316](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L316)
+Defined in: [modules/orders-dbs/index.ts:377](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L377)
 
 Get delivery dates for DBS orders
 
@@ -372,7 +442,7 @@ const dates = await sdk.ordersDBS.getDeliveryDates({ orders: [123456] });
 deleteMetaBulk(request: DeleteMetaBulkRequest): Promise<DeleteMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:342](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L342)
+Defined in: [modules/orders-dbs/index.ts:403](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L403)
 
 Delete metadata for multiple orders (bulk)
 
@@ -405,7 +475,7 @@ const result = await sdk.ordersDBS.deleteMetaBulk({ orders: [123456], key: 'imei
 setSgtinBulk(request: SetSgtinBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L366)
+Defined in: [modules/orders-dbs/index.ts:427](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L427)
 
 Set SGTIN codes for multiple orders (bulk)
 
@@ -440,7 +510,7 @@ const result = await sdk.ordersDBS.setSgtinBulk({
 setUinBulk(request: SetUinBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:390](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L390)
+Defined in: [modules/orders-dbs/index.ts:451](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L451)
 
 Set UIN codes for multiple orders (bulk)
 
@@ -475,7 +545,7 @@ const result = await sdk.ordersDBS.setUinBulk({
 setImeiBulk(request: SetImeiBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L414)
+Defined in: [modules/orders-dbs/index.ts:475](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L475)
 
 Set IMEI codes for multiple orders (bulk)
 
@@ -510,7 +580,7 @@ const result = await sdk.ordersDBS.setImeiBulk({
 setGtinBulk(request: SetGtinBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:438](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L438)
+Defined in: [modules/orders-dbs/index.ts:499](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L499)
 
 Set GTIN codes for multiple orders (bulk)
 
@@ -545,7 +615,7 @@ const result = await sdk.ordersDBS.setGtinBulk({
 setCustomsDeclarationBulk(request: SetCustomsDeclarationBulkRequest): Promise<SetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:467](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L467)
+Defined in: [modules/orders-dbs/index.ts:528](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L528)
 
 Set customs declaration for multiple orders (bulk)
 
@@ -585,7 +655,7 @@ const result = await sdk.ordersDBS.setCustomsDeclarationBulk({
 getStatusesBulk(orderIds: number[]): Promise<GetStatusInfoResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:511](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L511)
+Defined in: [modules/orders-dbs/index.ts:572](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L572)
 
 Get status information for multiple DBS orders (bulk)
 
@@ -648,7 +718,7 @@ for (const order of statuses.orders ?? []) {
 confirmBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:557](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L557)
+Defined in: [modules/orders-dbs/index.ts:618](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L618)
 
 Confirm multiple DBS orders for assembly (bulk)
 
@@ -713,7 +783,7 @@ for (const order of result.orders ?? []) {
 deliverBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:611](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L611)
+Defined in: [modules/orders-dbs/index.ts:672](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L672)
 
 Mark multiple DBS orders as delivered (bulk)
 
@@ -789,7 +859,7 @@ for (const order of result.orders ?? []) {
 receiveBulk(orders: OrderCodeRequest[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:661](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L661)
+Defined in: [modules/orders-dbs/index.ts:722](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L722)
 
 Confirm customer receipt for multiple DBS orders (bulk)
 
@@ -858,7 +928,7 @@ for (const order of result.orders ?? []) {
 rejectBulk(orders: OrderCodeRequest[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:720](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L720)
+Defined in: [modules/orders-dbs/index.ts:781](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L781)
 
 Reject delivery for multiple DBS orders (bulk)
 
@@ -928,7 +998,7 @@ for (const order of result.orders ?? []) {
 cancelBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:774](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L774)
+Defined in: [modules/orders-dbs/index.ts:835](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L835)
 
 Cancel multiple DBS orders (bulk)
 
@@ -993,7 +1063,7 @@ for (const order of result.orders ?? []) {
 checkMetaValidation(request: GetMetaBulkRequest): Promise<DBSCheckMetaValidationResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:811](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L811)
+Defined in: [modules/orders-dbs/index.ts:872](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L872)
 
 Check marking-metadata validation (B2B Chestny ZNAK pre-flight)
 
@@ -1042,7 +1112,7 @@ await sdk.ordersDBS.deliverStatus({ orders: [123456, 234567] });
 createOrdersStickers(options?: StickerParams, data?: StickerRequest): Promise<StickerResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:859](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L859)
+Defined in: [modules/orders-dbs/index.ts:920](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L920)
 
 Get DBS assembly-order stickers
 
@@ -1111,7 +1181,7 @@ console.log(result.stickers);
 getOrdersFinalPrice(request: OrdersFinalPriceRequest): Promise<OrdersFinalPriceResponse>;
 ```
 
-Defined in: [modules/orders-dbs/index.ts:916](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/orders-dbs/index.ts#L916)
+Defined in: [modules/orders-dbs/index.ts:977](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/orders-dbs/index.ts#L977)
 
 Get seller prices and buyer-payable sums for assembly orders (task-203)
 

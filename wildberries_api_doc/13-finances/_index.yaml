@@ -14,14 +14,14 @@ _shards:
     description: Balance
   - file: finansovye-otchety.yaml
     domain: Финансовые отчёты
-    endpoints: 1
+    endpoints: 3
     description: Financial Reports
   - file: dokumenty.yaml
     domain: Документы
     endpoints: 4
     description: Documents
 _shared_schemas: _schemas.yaml
-_total_endpoints: 6
+_total_endpoints: 8
 _base_urls:
   - https://finance-api.wildberries.ru
   - https://statistics-api.wildberries.ru

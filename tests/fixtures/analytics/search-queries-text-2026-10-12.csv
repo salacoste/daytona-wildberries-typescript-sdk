@@ -1,0 +1,2 @@
+Text,NmID,SubjectName,BrandName,VendorCode,Name,Rating,FeedbackRating,MinPrice,MaxPrice,Frequency,MedianPosition,AveragePosition,OpenCard,AddToCart,OpenToCart,Orders,CartToOrder,Visibility,FrequencyPast,MedianPositionPast,AveragePositionPast,OpenCardPast,AddToCartPast,OpenToCartPast,OrdersPast,CartToOrderPast,VisibilityPast
+synthetic query,100001,Synthetic subject,Synthetic brand,synthetic-sku,Synthetic product,1,1,1,1,1,1,1,1,1,1,7,35,1,1,1,1,1,1,1,1,1,1

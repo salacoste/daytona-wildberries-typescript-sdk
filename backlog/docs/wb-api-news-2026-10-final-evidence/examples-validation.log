@@ -1,0 +1,311 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 validate:examples
+npm notice run tsx scripts/validate-doc-examples.ts
+[35m═══════════════════════════════════════════════════════[0m
+[35m  Documentation Examples Validator[0m
+[35m═══════════════════════════════════════════════════════[0m
+
+[33m⚠ Coverage gap: 91 guide file(s) under docs/guides/ are NOT in docsToValidate:[0m
+  - docs/guides/advertising-campaigns.md
+  - docs/guides/advertising-statistics-guide.md
+  - docs/guides/best-practices-advertising.md
+  - docs/guides/best-practices-sales-funnel.md
+  - docs/guides/buyout-return-reconciliation.md
+  - docs/guides/commissions-fees.md
+  - docs/guides/communications-getting-started.md
+  - docs/guides/communications.md
+  - docs/guides/configuration.md
+  - docs/guides/customer-communication.md
+  - docs/guides/fbo-supply-lifecycle.md
+  - docs/guides/in-store-pickup-batch-migration.md
+  - docs/guides/in-store-pickup-getting-started.md
+  - docs/guides/index.md
+  - docs/guides/jam-subscription.md
+  - docs/guides/migration-dbs-legacy-to-bulk.md
+  - docs/guides/migration-type8-to-type9.md
+  - docs/guides/migration-v2.3.md
+  - docs/guides/migration-v2.4-promotion-deprecation.md
+  - docs/guides/migration-v2.7-analytics-v3.md
+  - docs/guides/migration-v3.md
+  - docs/guides/migration-v4.md
+  - docs/guides/orders-dbs-workflows.md
+  - docs/guides/orders-fbw-getting-started.md
+  - docs/guides/performance-tuning.md
+  - docs/guides/performance.md
+  - docs/guides/product-card-merging.md
+  - docs/guides/promotion-advertising.md
+  - docs/guides/promotion-getting-started.md
+  - docs/guides/realization-report.md
+  - docs/guides/reports-module.md
+  - docs/guides/returns-handling.md
+  - docs/guides/returns-module.md
+  - docs/guides/sales-funnel-analytics.md
+  - docs/guides/search-queries-analytics.md
+  - docs/guides/security.md
+  - docs/guides/seller-analytics-csv.md
+  - docs/guides/stock-management.md
+  - docs/guides/storage-fees-integration.md
+  - docs/guides/supplies-planning.md
+  - docs/guides/supplies-tariffs.md
+  - docs/guides/tariffs-overview.md
+  - docs/guides/testing.md
+  - docs/guides/user-management.md
+  - docs/guides/wb-api-changes-2026-09.md
+  - docs/ru/guides/advertising-campaigns.md
+  - docs/ru/guides/advertising-statistics-guide.md
+  - docs/ru/guides/best-practices-advertising.md
+  - docs/ru/guides/best-practices-sales-funnel.md
+  - docs/ru/guides/best-practices.md
+  - docs/ru/guides/buyout-return-reconciliation.md
+  - docs/ru/guides/commissions-fees.md
+  - docs/ru/guides/communications-getting-started.md
+  - docs/ru/guides/communications.md
+  - docs/ru/guides/configuration.md
+  - docs/ru/guides/customer-communication.md
+  - docs/ru/guides/in-store-pickup-getting-started.md
+  - docs/ru/guides/index.md
+  - docs/ru/guides/jam-subscription.md
+  - docs/ru/guides/migration-dbs-legacy-to-bulk.md
+  - docs/ru/guides/migration-finance-reports-v5-to-v1.md
+  - docs/ru/guides/migration-type8-to-type9.md
+  - docs/ru/guides/migration-v2.3.md
+  - docs/ru/guides/migration-v2.4-promotion-deprecation.md
+  - docs/ru/guides/migration-v2.7-analytics-v3.md
+  - docs/ru/guides/migration-v3.md
+  - docs/ru/guides/orders-dbs-workflows.md
+  - docs/ru/guides/orders-fbw-getting-started.md
+  - docs/ru/guides/performance-tuning.md
+  - docs/ru/guides/performance.md
+  - docs/ru/guides/product-card-merging.md
+  - docs/ru/guides/promotion-advertising.md
+  - docs/ru/guides/promotion-getting-started.md
+  - docs/ru/guides/realization-report.md
+  - docs/ru/guides/reports-module.md
+  - docs/ru/guides/returns-handling.md
+  - docs/ru/guides/returns-module.md
+  - docs/ru/guides/sales-funnel-analytics.md
+  - docs/ru/guides/search-queries-analytics.md
+  - docs/ru/guides/security.md
+  - docs/ru/guides/seller-analytics-csv.md
+  - docs/ru/guides/stock-management.md
+  - docs/ru/guides/storage-fees-integration.md
+  - docs/ru/guides/supplies-planning.md
+  - docs/ru/guides/supplies-tariffs.md
+  - docs/ru/guides/tariffs-overview.md
+  - docs/ru/guides/testing.md
+  - docs/ru/guides/tracking-promotion-channels-with-substitute-articles.md
+  - docs/ru/guides/troubleshooting.md
+  - docs/ru/guides/user-management.md
+  - docs/ru/guides/wb-api-changes-2026-09.md
+[33m  → Add to docsToValidate in scripts/validate-doc-examples.ts[0m
+[33m  (Sprint 15 lesson: shipping a guide without snippet validation hides bugs)[0m
+
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/troubleshooting.md
+[34mTotal code examples:[0m 54
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/best-practices.md
+[34mTotal code examples:[0m 28
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/tracking-promotion-channels-with-substitute-articles.md
+[34mTotal code examples:[0m 3
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/migration-finance-reports-v5-to-v1.md
+[34mTotal code examples:[0m 18
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/region-sale-to-order-feed.md
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/ru/guides/region-sale-to-order-feed.md
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/working-with-product-cards.md
+[34mTotal code examples:[0m 44
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/ru/guides/working-with-product-cards.md
+[34mTotal code examples:[0m 44
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/orders-dbs-getting-started.md
+[34mTotal code examples:[0m 31
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/ru/guides/orders-dbs-getting-started.md
+[34mTotal code examples:[0m 31
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/mandatory-product-characteristics.md
+[34mTotal code examples:[0m 7
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/ru/guides/mandatory-product-characteristics.md
+[34mTotal code examples:[0m 7
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/stocks-sku-to-chrtid-migration.md
+[34mTotal code examples:[0m 9
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/ru/guides/stocks-sku-to-chrtid-migration.md
+[34mTotal code examples:[0m 9
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/chat-replysign-format-migration.md
+[34mTotal code examples:[0m 7
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/ru/guides/chat-replysign-format-migration.md
+[34mTotal code examples:[0m 7
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/withphoto-semantic-migration.md
+[34mTotal code examples:[0m 4
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/ru/guides/withphoto-semantic-migration.md
+[34mTotal code examples:[0m 4
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/fbs-marking-code-validation.md
+[34mTotal code examples:[0m 3
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/ru/guides/fbs-marking-code-validation.md
+[34mTotal code examples:[0m 3
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/guides/migration-item-rating-v2.md
+[34mTotal code examples:[0m 2
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/getting-started/quickstart.md
+[34mTotal code examples:[0m 2
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/getting-started/tutorials/product-catalog-sync.md
+[34mTotal code examples:[0m 9
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/getting-started/tutorials/order-fulfillment.md
+[34mTotal code examples:[0m 13
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/getting-started/tutorials/analytics-dashboard.md
+[34mTotal code examples:[0m 7
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/docs/getting-started/tutorials/multi-module-integration.md
+[34mTotal code examples:[0m 8
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/general.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/quickstart.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/products-categories.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/products-crud.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/products-media-pricing.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/products-warehouse-stock.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/orders-fbs-processing.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/orders-fbs-fulfillment.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/complete-product-workflow.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/finances-balance-transactions.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/finances-reports-payouts.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/analytics-dashboard.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/customer-support.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/reports-analytics.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/business-dashboard.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/financial-reconciliation.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/customer-engagement.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/export-to-bi.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/orders-fbw-fulfillment.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/communications-customer-engagement.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/in-store-pickup-workflow.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/tariffs-pricing-calculator.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/promotion-campaign-automation.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[36mValidating:[0m /Users/r2d2/Documents/Code_Projects/wb_daytona_sdk/examples/integration-product-order-finance.ts
+[34mTotal code examples:[0m 1
+[32m✓ All examples are valid![0m
+
+[35m═══════════════════════════════════════════════════════[0m
+[35m  Validation Summary[0m
+[35m═══════════════════════════════════════════════════════[0m
+[36mFiles validated:[0m 50/50
+[36mTotal code examples:[0m 380
+[32m✓ All examples are valid across all documentation![0m
+[35m═══════════════════════════════════════════════════════[0m
+
+[32m✓ Validation passed! All examples are accurate.[0m

@@ -32,6 +32,7 @@ import { inStorePickupRateLimits } from './in-store-pickup-rate-limits';
 import { analyticsRateLimits } from './analytics-rate-limits';
 import { reportsRateLimits } from './reports-rate-limits';
 import { communicationsRateLimits } from './communications-rate-limits';
+import { sandboxDbsRateLimits } from './sandbox-dbs-rate-limits';
 
 /**
  * Aggregated rate limit configuration for all SDK modules.
@@ -84,6 +85,7 @@ export const ALL_RATE_LIMITS = {
   ...analyticsRateLimits,
   ...reportsRateLimits,
   ...communicationsRateLimits,
+  ...sandboxDbsRateLimits,
 };
 
 /**
@@ -117,6 +119,7 @@ const BASIC_TOKEN_CATEGORY_MULTIPLIERS: Record<string, number> = {
   'orders-fbs': 0.003, // ~10-50/hour vs 300/min
   'orders-dbw': 0.003,
   'orders-dbs': 0.003,
+  'sandbox-dbs': 1,
   'click-collect': 0.003,
   'in-store-pickup': 0.003,
   'orders-fbw': 0.01,

@@ -1,0 +1,2 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 lint
+npm notice run eslint src tests

@@ -216,6 +216,36 @@ export const operationMetadata: Record<string, OperationMetadata> = {
   },
 
   /**
+   * Get the complete TN VED directory
+   * x-readonly-method: true, x-category: content
+   */
+  'products.getDirectoryTnvedAll': {
+    readonly: true,
+    category: 'content',
+    rateLimitKey: 'products.contentDirectoryTnvedAll',
+  },
+
+  /**
+   * Get OKPD2 codes by subject
+   * x-readonly-method: true, x-category: content
+   */
+  'products.getDirectoryOkpd': {
+    readonly: true,
+    category: 'content',
+    rateLimitKey: 'products.contentDirectoryOkpd',
+  },
+
+  /**
+   * Get the complete OKPD2 directory
+   * x-readonly-method: true, x-category: content
+   */
+  'products.getDirectoryOkpdAll': {
+    readonly: true,
+    category: 'content',
+    rateLimitKey: 'products.contentDirectoryOkpdAll',
+  },
+
+  /**
    * Get brands by subject
    * x-readonly-method: true, x-category: content
    */
@@ -1101,6 +1131,16 @@ export const operationMetadata: Record<string, OperationMetadata> = {
     readonly: true,
     category: 'marketplace',
     rateLimitKey: 'orders-dbs.getNewOrders',
+  },
+
+  /**
+   * Create test DBS assembly orders on the fixed sandbox host
+   * x-readonly-method: false, x-category: marketplace
+   */
+  'ordersDBS.createTestOrders': {
+    readonly: false,
+    category: 'marketplace',
+    rateLimitKey: 'sandbox-dbs.createTestOrders',
   },
 
   /**

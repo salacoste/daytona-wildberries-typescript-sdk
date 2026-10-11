@@ -1610,6 +1610,7 @@ paths:
     servers:
       - url: https://seller-analytics-api.wildberries.ru
     get:
+      deprecated: true
       x-readonly-method: true
       x-category: contentanalytics
       security:
@@ -1618,6 +1619,9 @@ paths:
         - Продажи по регионам
       summary: Получить отчёт
       description: |
+        **Устарел. Wildberries отключит этот эндпоинт 3 ноября 2026 года.**
+        Перейдите на Ленту заказов и агрегируйте события по географии доставки. Лента заказов не воспроизводит в точности денежные показатели и доли старого отчёта.
+
         Метод возвращает отчёт с [данными продаж, сгруппированных по регионам стран](https://seller.wildberries.ru/analytics-reports/region-sale).<br><br>
 
         Можно получить отчёт максимум за 31 день.

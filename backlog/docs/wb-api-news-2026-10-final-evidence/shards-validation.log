@@ -1,0 +1,3 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 validate:shards
+npm notice run node scripts/validate_shards.cjs
+61/61 clean

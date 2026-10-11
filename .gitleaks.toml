@@ -111,4 +111,6 @@ regexes = [
   '''test-api-key-cross-module-examples''',
   '''test-api-key-for-analytics-integration-tests''',
   '''your_real_wildberries_api_key_here''',
+  # Complete generic-api-key match for the exact Orders DBS synthetic placeholder.
+  '''^apiKey: 'caller-provided-test-scope-token$''',
 ]

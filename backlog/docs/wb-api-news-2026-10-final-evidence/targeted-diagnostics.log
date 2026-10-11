@@ -1,0 +1,10 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 npx
+npm notice run 'tsc' --noEmit --strict --module ESNext --moduleResolution Bundler --target ES2022 --types node --skipLibCheck false vite.config.ts scripts/node-next-declarations.ts
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 npx
+npm notice run 'tsc' --noEmit --strict --module ESNext --moduleResolution Bundler --target ES2022 --types node,vitest/globals --skipLibCheck false scripts/node-next-declarations.ts tests/unit/scripts/node-next-declarations.test.ts tests/unit/scripts/validate-package-exports.test.ts
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 npx
+npm notice run 'eslint' tests/unit/scripts/node-next-declarations.test.ts tests/unit/scripts/validate-package-exports.test.ts
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 npx
+npm notice run 'prettier' --check vite.config.ts scripts/node-next-declarations.ts scripts/validate-package-exports.mjs package-consumer-fixtures/news-public-types.mts package-consumer-fixtures/news-public-types.cts package-consumer-fixtures/full-okpd-locale-negative.mts tests/unit/scripts/node-next-declarations.test.ts tests/unit/scripts/validate-package-exports.test.ts tests/fixtures/docs/english-products-guide-parity.mts
+Checking formatting...
+All matched files use Prettier code style!

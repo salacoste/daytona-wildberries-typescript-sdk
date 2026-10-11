@@ -1252,6 +1252,9 @@ components:
         - salePriceAffiliatedDiscountPrc
         - salePriceWholesaleDiscountPrc
         - b2bCustomerTin
+        - buyerTaxRegistrationReasonCode
+        - utdUcdNumber
+        - utdUcdDate
         - orderUid
         - srid
       properties:
@@ -1623,6 +1626,19 @@ components:
           type: string
           description: Taxpayer identification number of B2B buyer
           example: '010101010101'
+        buyerTaxRegistrationReasonCode:
+          type: string
+          description: Tax registration reason code (KPP) of the B2B buyer
+          example: '770101001'
+        utdUcdNumber:
+          type: string
+          description: Universal transfer/correction document number
+          example: UPD-2026-0001
+        utdUcdDate:
+          type: string
+          format: date
+          description: Universal transfer/correction document date
+          example: '2026-10-11'
         orderUid:
           type: string
           description: |

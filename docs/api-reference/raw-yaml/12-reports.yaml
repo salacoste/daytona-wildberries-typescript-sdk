@@ -1499,6 +1499,7 @@ paths:
     servers:
       - url: https://seller-analytics-api.wildberries.ru
     get:
+      deprecated: true
       x-readonly-method: true
       x-category: contentanalytics
       security:
@@ -1507,6 +1508,9 @@ paths:
         - Sales by Regions
       summary: Get Report
       description: |
+        **Deprecated. Wildberries disables this endpoint on November 3, 2026.**
+        Migrate to Order Feed and aggregate order events by delivery geography. Order Feed does not reproduce the legacy regional money/share fields exactly.
+
         Returns sales data grouped by regions of the countries. You can obtain a report for a maximum of 31 days.
 
         <div class="description_limit">

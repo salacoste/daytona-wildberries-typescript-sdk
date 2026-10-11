@@ -97,6 +97,9 @@ Reference data for product characteristics.
 | `getDirectorySeasons(options?)` | Get available season values | 100 req/min |
 | `getDirectoryVat(options?)` | Get available VAT rate values | 100 req/min |
 | `getDirectoryTnved(options)` | Get TNVED codes by subject | 100 req/min |
+| `getDirectoryTnvedAll(options?)` | Get the full TN VED directory; `search` is numeric | 100 req/min |
+| `getDirectoryOkpd(options)` | Get OKPD2 codes by required `subjectId`; dotted `search` is a string | 100 req/min |
+| `getDirectoryOkpdAll(options?)` | Get the full OKPD2 directory; upstream declares `search` as numeric | 100 req/min |
 
 ### Seller Tags
 
@@ -217,6 +220,36 @@ do {
   nextCursor = page.next;
 } while (nextCursor);
 ```
+
+### TN VED and OKPD2 Directories
+
+The three classification-directory methods use the Content API token category and the
+shared Content rate limit: 100 requests per minute, a 600 ms interval, and burst 5.
+
+```typescript
+const tnved = await sdk.products.getDirectoryTnvedAll({
+  search: 6106,
+  locale: 'en',
+});
+
+const subjectOkpd = await sdk.products.getDirectoryOkpd({
+  subjectId: 105,
+  search: '61.06',
+  locale: 'ru',
+});
+
+const allOkpd = await sdk.products.getDirectoryOkpdAll({
+  search: 61.06,
+  locale: 'ru',
+});
+```
+
+The official raw Swagger permits only `ru` for both OKPD2 methods. The rendered portal was
+observed displaying `ru` and `en` for the full directory on the same date, so the SDK follows
+the exact machine-readable request contract without claiming that WB runtime rejects `en`.
+The raw schema declares `getDirectoryOkpdAll().search` as a `number`, while its prose describes
+dotted text prefixes. The SDK preserves that declared numeric type. By contrast,
+`getDirectoryOkpd().search` is a `string` and accepts dotted prefixes such as `61.06`.
 
 ### Product Cards Workflow
 
@@ -447,6 +480,35 @@ interface CardCharacteristicOutput {
   value?: unknown;               // Characteristic value
 }
 ```
+
+### Additional GTIN
+
+Product card contracts accept an optional additional `gtin` at these exact locations:
+
+| Operation | Field |
+|-----------|-------|
+| `createCardsUpload()` | `variants[].gtin` |
+| `createCardsUpdate()` | each update item’s `gtin` |
+| `createUploadAdd()` | `cardsToAdd[].gtin` |
+| `getCardsList()` | response `cards[].gtin` (only when populated) |
+
+```typescript
+await sdk.products.createCardsUpload([{
+  subjectID: 105,
+  variants: [{
+    vendorCode: 'ART-GTIN',
+    gtin: '04600000000018', // already present in skus of another seller listing
+    sizes: [{ skus: ['04600000000995'] }],
+  }],
+}]);
+```
+
+WB accepts the additional GTIN only when the same value was previously present in `skus`
+of one of the seller’s listings. This does not require it to be the same listing. WB checks
+the account’s remote history, and values in `skus` must not be duplicated across listings
+or sizes. The SDK passes the field through and does not perform local history validation.
+The pinned contract marks the field as available only to sellers registered in Russia.
+Existing calls remain compatible because `gtin` is optional.
 
 ### Card Documents (v4.3.0)
 

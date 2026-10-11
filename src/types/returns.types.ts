@@ -31,7 +31,7 @@ export type ReturnCategory =
  * Unified return record across FBO and FBS sources.
  *
  * Built by `sdk.returns.getReturns()` (since v3.10.0) by aggregating:
- * - **FBO returns** from `sdk.reports.getAnalyticsGoodsReturn()` (real-time)
+ * - **FBO returns** from `sdk.reports.getAnalyticsV1GoodsReturn()` (real-time)
  * - **FBS returns** from `sdk.ordersFBS.getOrders()` + status history (real-time)
  * - **Finance amount/srid** from `sdk.finances.getSalesReportsDetailed()` (weekly delay)
  *
@@ -42,8 +42,10 @@ export type ReturnCategory =
 export interface ReturnItem {
   /** WB order ID. Source: FBO/FBS endpoint. */
   orderId: string;
-  /** SKU. Source: all sources. */
+  /** WB article ID (`nmId`). Source: all sources. */
   nmId: number;
+  /** Seller barcode/SKU. Source: FBO item-return `sku`. */
+  sku?: string;
   /**
    * Seller article. Source: FBS preferred (when implemented in v3.10.1).
    * **NOT populated by FBO source** — the goods-return endpoint does not
@@ -52,7 +54,7 @@ export interface ReturnItem {
   vendorCode?: string;
   /** Fulfillment type — derived from data source. */
   orderType: 'fbo' | 'fbs';
-  /** ISO 8601 date when return was initiated. Source: completedDt (FBO) or status transition date (FBS). */
+  /** ISO 8601 return date. FBO fallback order: completedDt, readyToReturnDt, then orderDt. */
   returnDate: string;
   /** Current return state. NOTE: WB does not expose 'in_transit' for FBO — only initiated/received/processed available. */
   returnStatus: ReturnStatus;
@@ -84,7 +86,7 @@ export interface ReturnItem {
 export interface ReturnsApiRequest {
   /** ISO 8601 date (YYYY-MM-DD). Required. Max 31 days range. */
   dateFrom: string;
-  /** ISO 8601 date (YYYY-MM-DD). Required. Must be >= dateFrom. */
+  /** ISO 8601 date (YYYY-MM-DD). Required. Must be after dateFrom. */
   dateTo: string;
   /** Filter by SKU. Pre-filter at WB level where supported, post-filter otherwise. */
   nmIds?: number[];

@@ -14,6 +14,12 @@ import type {
   GetContentTagsResponse,
   GetDirectoryColorsResponse,
   GetDirectoryCountriesResponse,
+  GetDirectoryOkpdAllOptions,
+  GetDirectoryOkpdAllResponse,
+  GetDirectoryOkpdOptions,
+  GetDirectoryOkpdResponse,
+  GetDirectoryTnvedAllOptions,
+  GetDirectoryTnvedAllResponse,
   GetParentAllResponse,
   Goods,
   GoodsBufferResponse,
@@ -412,6 +418,82 @@ export class ProductsModule {
   }
 
   /**
+   * Полный справочник кодов ТН ВЭД
+   *
+   * Returns the full TN VED directory, optionally filtered by the first digits of a code.
+   * The upstream contract declares `search` as an integer.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param [options] - Query parameters
+   * @param [options.search] - First digits of a TN VED code (up to 10 characters in WB prose)
+   * @param [options.locale] - Response language (`ru` or `en`, default `ru`)
+   * @returns TN VED directory entries
+   * @see {@link https://dev.wildberries.ru/docs/openapi/item-management#tag/categoriesSubcategoriesAndCharacteristics/operation/getV2DirectoryTnvedAll}
+   */
+  async getDirectoryTnvedAll(
+    options?: GetDirectoryTnvedAllOptions
+  ): Promise<GetDirectoryTnvedAllResponse> {
+    return this.client.get<GetDirectoryTnvedAllResponse>(
+      'https://content-api.wildberries.ru/api/content/v2/directory/tnved/all',
+      {
+        params: options ? { ...options } : undefined,
+        rateLimitKey: 'products.contentDirectoryTnvedAll',
+      }
+    );
+  }
+
+  /**
+   * Справочник кодов ОКПД2 по предмету
+   *
+   * Returns OKPD2 codes for a required subject ID and an optional dotted code prefix.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param options - Query parameters
+   * @param options.subjectId - Subject ID
+   * @param [options.search] - OKPD2 code fragment, including dotted prefixes such as `61.06`
+   * @param [options.locale] - Response language (`ru`, default `ru`)
+   * @returns OKPD2 directory entries for the subject
+   * @see {@link https://dev.wildberries.ru/docs/openapi/item-management#tag/categoriesSubcategoriesAndCharacteristics/operation/getV2DirectoryOkpd}
+   */
+  async getDirectoryOkpd(options: GetDirectoryOkpdOptions): Promise<GetDirectoryOkpdResponse> {
+    return this.client.get<GetDirectoryOkpdResponse>(
+      'https://content-api.wildberries.ru/api/content/v2/directory/okpd',
+      {
+        params: { ...options },
+        rateLimitKey: 'products.contentDirectoryOkpd',
+      }
+    );
+  }
+
+  /**
+   * Полный справочник кодов ОКПД2
+   *
+   * Returns the full OKPD2 directory. The upstream schema declares `search` as a number,
+   * although its prose shows dotted prefixes; this method preserves the declared type.
+   *
+   * Rate limit: 100 req/min, 600ms interval, burst 5
+   *
+   * @param [options] - Query parameters
+   * @param [options.search] - Numeric OKPD2 prefix as declared by the upstream schema
+   * @param [options.locale] - Response language (`ru`, default `ru`)
+   * @returns Full OKPD2 directory entries
+   * @see {@link https://dev.wildberries.ru/docs/openapi/item-management#tag/categoriesSubcategoriesAndCharacteristics/operation/getV2DirectoryOkpdAll}
+   */
+  async getDirectoryOkpdAll(
+    options?: GetDirectoryOkpdAllOptions
+  ): Promise<GetDirectoryOkpdAllResponse> {
+    return this.client.get<GetDirectoryOkpdAllResponse>(
+      'https://content-api.wildberries.ru/api/content/v2/directory/okpd/all',
+      {
+        params: options ? { ...options } : undefined,
+        rateLimitKey: 'products.contentDirectoryOkpdAll',
+      }
+    );
+  }
+
+  /**
    * Бренды
    *
    * Метод возвращает список брендов по ID предмета.
@@ -683,6 +765,8 @@ export class ProductsModule {
       vendorCode?: string;
       brand?: string;
       title?: string;
+      /** Additional GTIN for RF sellers, returned only when populated. */
+      gtin?: string;
       description?: string;
       needKiz?: boolean;
       /** Confirmed mandatory marking code (Честный ЗНАК) applied to product @since v3.6.2 */
@@ -767,6 +851,8 @@ export class ProductsModule {
         vendorCode?: string;
         brand?: string;
         title?: string;
+        /** Additional GTIN for RF sellers, returned only when populated. */
+        gtin?: string;
         description?: string;
         needKiz?: boolean;
         /** Confirmed mandatory marking code (Честный ЗНАК) applied to product @since v3.6.2 */
@@ -882,6 +968,13 @@ export class ProductsModule {
       vendorCode: string;
       brand?: string;
       title?: string;
+      /**
+       * Additional GTIN. WB accepts a value previously used in `skus` of one of the
+       * seller's listings. Values in `skus` must remain unique across listings and sizes.
+       * The pinned contract marks the field as RF-seller-only. These account-wide rules
+       * are enforced by WB, not by the SDK.
+       */
+      gtin?: string;
       description?: string;
       dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
       characteristics?: CardCharacteristicInput[];
@@ -1293,6 +1386,13 @@ export class ProductsModule {
       variants: {
         brand?: string;
         title?: string;
+        /**
+         * Additional GTIN. WB accepts a value previously used in `skus` of one of the
+         * seller's listings. Values in `skus` must remain unique across listings and sizes.
+         * The pinned contract marks the field as RF-seller-only. These account-wide rules
+         * are enforced by WB, not by the SDK.
+         */
+        gtin?: string;
         description?: string;
         vendorCode: string;
         wholesale?: { enabled?: boolean; quantum?: number };
@@ -1353,6 +1453,13 @@ export class ProductsModule {
       vendorCode: string;
       wholesale?: { enabled?: boolean; quantum?: number };
       title?: string;
+      /**
+       * Additional GTIN. WB accepts a value previously used in `skus` of one of the
+       * seller's listings. Values in `skus` must remain unique across listings and sizes.
+       * The pinned contract marks the field as RF-seller-only. These account-wide rules
+       * are enforced by WB, not by the SDK.
+       */
+      gtin?: string;
       description?: string;
       dimensions?: { length?: number; width?: number; height?: number; weightBrutto?: number };
       sizes?: { techSize?: string; wbSize?: string; price?: number; skus?: string[] }[];
@@ -2195,4 +2302,14 @@ export type {
   CardDocumentsOverallVerdict,
   CardDocument,
   CardDocumentsResponse,
+  TnvedDirectoryLocale,
+  OkpdDirectoryLocale,
+  GetDirectoryTnvedAllOptions,
+  GetDirectoryOkpdOptions,
+  GetDirectoryOkpdAllOptions,
+  TnvedDirectoryEntry,
+  OkpdDirectoryEntry,
+  GetDirectoryTnvedAllResponse,
+  GetDirectoryOkpdResponse,
+  GetDirectoryOkpdAllResponse,
 } from '../../types/products.types';

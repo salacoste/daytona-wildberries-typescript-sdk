@@ -1,0 +1,4 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 format:check
+npm notice run prettier --check "src/**/*.ts" "tests/**/*.ts"
+Checking formatting...
+All matched files use Prettier code style!

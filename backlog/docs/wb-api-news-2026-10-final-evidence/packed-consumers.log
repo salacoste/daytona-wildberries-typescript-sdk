@@ -1,0 +1,3 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 validate:package
+npm notice run node scripts/validate-package-exports.mjs
+Validated 5 package export surfaces across 193 packed files with strict NodeNext ESM/CommonJS type and runtime consumers

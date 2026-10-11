@@ -16,6 +16,24 @@ layout: doc
 
 ---
 
+## Свежесть поисковой аналитики с 2026-10-12
+
+Wildberries обновляет данные **раз в 2 часа** для пяти API-операций и трёх CSV-выгрузок:
+
+| Метод API | Эндпоинт |
+|---|---|
+| `createSearchReportReport()` | `POST /api/v2/search-report/report` |
+| `createTableGroup()` | `POST /api/v2/search-report/table/groups` |
+| `createTableDetail()` | `POST /api/v2/search-report/table/details` |
+| `createProductSearchText()` | `POST /api/v2/search-report/product/search-texts` |
+| `createProductOrder()` | `POST /api/v2/search-report/product/orders` |
+
+Типы CSV: `SEARCH_QUERIES_PREMIUM_REPORT_GROUP`, `SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT` и `SEARCH_QUERIES_PREMIUM_REPORT_TEXT`, создаваемые через `createNmReportDownload()`.
+
+Это свежесть данных, а не лимит запросов и не гарантия новых данных при каждом вызове. Изменение периодичности отдельно от удаления пяти percentile-колонок в TEXT CSV; схемы других отчётов и лимиты запросов этим объявлением не меняются.
+
+Источники: [Поисковые запросы](https://dev.wildberries.ru/docs/openapi/analytics/#tag/searchQueriesForYourItems/operation/postV2SearchReportReport), [CSV-отчёты](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/postV2NmReportDownloads).
+
 ## Содержание
 
 1. [Что такое аналитика поисковых запросов](#что-такое-аналитика-поисковых-запросов)

@@ -399,6 +399,11 @@ export class ReportsModule {
    *
    * Метод возвращает отчёт с [данными продаж, сгруппированных по регионам стран](https://seller.wildberries.ru/analytics-reports/region-sale).<br><br> Можно получить отчёт максимум за 31 день. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 10 секунд | 1 запрос | 10 секунд | 5 запросов | </div>
    *
+   * @deprecated WB disables this endpoint on 2026-11-03. Migrate to
+   * `sdk.analytics.getOrderFeed()` and aggregate the returned order events by
+   * delivery geography. Order Feed is not a drop-in replacement for the legacy
+   * regional money/share metrics; see the regional-sales migration guide.
+   *
    * @param [options] - Query parameters
    * @returns Response data
    * @throws {AuthenticationError} When API key is invalid (401/403)
@@ -413,6 +418,12 @@ export class ReportsModule {
     dateFrom: string;
     dateTo: string;
   }): Promise<RegionSaleResponse> {
+    warnOnce(
+      'reports.getAnalyticsRegionSale:deprecated',
+      'reports.getAnalyticsRegionSale (GET /api/v1/analytics/region-sale) is deprecated — ' +
+        'WB disables the endpoint on 2026-11-03. Migrate to sdk.analytics.getOrderFeed() ' +
+        'and aggregate by delivery geography; Order Feed is not a drop-in replacement.'
+    );
     return this.client.get<RegionSaleResponse>(
       'https://seller-analytics-api.wildberries.ru/api/v1/analytics/region-sale',
       { params: options, rateLimitKey: 'reports.analyticsRegionSale' }

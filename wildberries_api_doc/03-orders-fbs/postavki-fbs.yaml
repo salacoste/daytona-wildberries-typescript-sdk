@@ -79,6 +79,81 @@ paths:
           $ref: "#/components/responses/AccessDenied"
         "429":
           $ref: "#/components/responses/429"
+  /api/marketplace/v3/fbs/supplies/waybill:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      operationId: patchV3FbsSuppliesWaybill
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Поставки FBS
+      summary: Set Supply Waybill ID
+      description: |
+        This method sets the ID of the electronic waybill. To use this method, ensure that the supply's shipping method is set to `"shippingType": "transportCompany"` by updating the [supply shipping method](./orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesShippingMethod).
+
+        You can update the electronic waybill ID until the supply and its boxes are scanned at the shipping point. Once the supply has been scanned, this method will start returning a `409` error.<br><br>
+
+        You can specify a maximum of 100 supplies in the request. The processing result is returned separately for each supply.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for <strong>FBS assembly orders, supplies, passes and auto-return settings</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+
+        </div>
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdateSuppliesWaybill"
+                - description: Waybill data
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateSuppliesResponse"
+              examples:
+                UpdatedSuppliesWaybill:
+                  $ref: "#/components/examples/UpdatedSuppliesWaybill"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                AccessDenied:
+                  $ref: "#/components/examples/AccessDenied"
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Response4XX"
+              examples:
+                Response403TokenCategory:
+                  $ref: "#/components/examples/Response403TokenCategory"
+        "429":
+          $ref: "#/components/responses/429"
     get:
       x-readonly-method: true
       x-category: marketplace

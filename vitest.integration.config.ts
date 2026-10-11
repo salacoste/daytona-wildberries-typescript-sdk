@@ -12,6 +12,7 @@ import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const liveApiTestsEnabled = process.env.WB_LIVE_API_TESTS === 'true';
 
 export default defineConfig({
   test: {
@@ -22,11 +23,16 @@ export default defineConfig({
     // Enable globals (describe, it, expect) without imports
     globals: true,
 
-    // Only run integration tests
-    include: ['tests/integration/**/*.test.ts'],
+    // The exact opt-in switches this config to the separately selected live file.
+    include: liveApiTestsEnabled
+      ? ['tests/integration/api.test.ts']
+      : ['tests/integration/**/*.test.ts'],
 
-    // No exclusions - run all integration tests
-    exclude: ['node_modules', 'dist'],
+    // Live WB requests require a separate, explicit operator-selected run.
+    // The default integration command is restricted to mocked integration tests.
+    exclude: liveApiTestsEnabled
+      ? ['node_modules', 'dist']
+      : ['node_modules', 'dist', 'tests/integration/api.test.ts'],
 
     // Reporters
     reporters: ['default'],

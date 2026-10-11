@@ -8,6 +8,53 @@ layout: doc
 
 Данное руководство охватывает генерацию и скачивание долгосрочных аналитических отчётов в формате CSV через Wildberries SDK. CSV-отчёты позволяют экспортировать до одного года исторических данных -- воронки продаж, историю остатков и аналитику поисковых запросов -- в виде ZIP-архивов с CSV-файлами.
 
+## Свежесть данных с 2026-09-24
+
+Wildberries обновляет данные **раз в 2 часа** для `getSalesFunnelProducts()`, `getSalesFunnelProductsHistory()` и `getSalesFunnelGroupedHistory()`, а также CSV-выгрузок `DETAIL_HISTORY_REPORT` и `GROUPED_HISTORY_REPORT`, создаваемых через `createNmReportDownload()`.
+
+Это периодичность обновления данных, а не лимит запросов. Более частый опрос или повторная генерация CSV не гарантируют более свежие метрики. Лента заказов Order Feed (`getOrderFeed()`) заменяет только данные заказов и выкупов; просмотры, добавления в корзину и метрики конверсии она не заменяет.
+
+Источники: [Воронка продаж](https://dev.wildberries.ru/docs/openapi/analytics/#tag/salesFunnel/operation/postV3SalesFunnelProducts), [CSV-отчёты](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/postV2NmReportDownloads).
+
+## Свежесть поисковой аналитики с 2026-10-12
+
+Wildberries обновляет данные **раз в 2 часа** для пяти API-операций и трёх CSV-выгрузок:
+
+| Метод API | Эндпоинт |
+|---|---|
+| `createSearchReportReport()` | `POST /api/v2/search-report/report` |
+| `createTableGroup()` | `POST /api/v2/search-report/table/groups` |
+| `createTableDetail()` | `POST /api/v2/search-report/table/details` |
+| `createProductSearchText()` | `POST /api/v2/search-report/product/search-texts` |
+| `createProductOrder()` | `POST /api/v2/search-report/product/orders` |
+
+Типы CSV: `SEARCH_QUERIES_PREMIUM_REPORT_GROUP`, `SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT` и `SEARCH_QUERIES_PREMIUM_REPORT_TEXT`, создаваемые через `createNmReportDownload()`.
+
+Это свежесть данных, а не лимит запросов и не гарантия новых данных при каждом вызове. Изменение периодичности отдельно от удаления пяти percentile-колонок в TEXT CSV; схемы других отчётов и лимиты запросов этим объявлением не меняются.
+
+Источники: [Поисковые запросы](https://dev.wildberries.ru/docs/openapi/analytics/#tag/searchQueriesForYourItems/operation/postV2SearchReportReport), [CSV-отчёты](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/postV2NmReportDownloads).
+
+## Колонки TEXT CSV с 2026-10-12
+
+Только `SEARCH_QUERIES_PREMIUM_REPORT_TEXT` перестаёт выдавать пять колонок: `OpenCardPercentile`, `AddToCartPercentile`, `OpenToCartPercentile`, `OrdersPercentile`, `CartToOrderPercentile`.
+
+`OpenCard`, `AddToCart`, `OpenToCart`, `Orders`, `CartToOrder`, их метрики прошлого периода и остальные колонки сохраняются в прежней области применимости. Удаление колонок не затрагивает CSV GROUP/PRODUCT или percentile-поля JSON API.
+
+SDK возвращает ZIP как `ArrayBuffer`; встроенного CSV-парсера, проверок обязательных колонок и публичных интерфейсов строк CSV нет. `SearchReportTextReq` описывает запрос генерации, а не строку CSV. В своём обработчике сопоставляйте колонки по именам заголовков, допускайте отсутствие всех пяти колонок и считайте исторические percentile-значения необязательными. Не подставляйте ноль вместо отсутствующего значения и не используйте прежние числовые позиции колонок: после удаления последующие значения сдвигаются.
+
+Например, после распаковки и разбора строки в приложении читайте оставшееся количество заказов по имени:
+
+```typescript
+// Синтетическая строка после 2026-10-12; percentile-колонки не обязательны.
+const row: Record<string, string | undefined> = {
+  Text: 'synthetic query', OpenCard: '20', AddToCart: '10',
+  OpenToCart: '50', Orders: '7', CartToOrder: '70',
+};
+const orders = Number(row['Orders']); // 7
+```
+
+Источник: [Контракт скачивания CSV](https://dev.wildberries.ru/docs/openapi/analytics/#tag/sellerAnalyticsCsv/operation/getV2NmReportDownloadsFileDownloadId).
+
 ## Содержание
 
 - [Что такое CSV-отчёты](#что-такое-csv-отчёты)
@@ -25,7 +72,7 @@ layout: doc
 
 ## Что такое CSV-отчёты
 
-CSV-отчёты -- это долгосрочные аналитические выгрузки, генерируемые асинхронно через API аналитики продавца Wildberries. В отличие от JSON-эндпоинтов реального времени, возвращающих постраничные данные за короткие периоды, CSV-отчёты:
+CSV-отчёты -- это долгосрочные аналитические выгрузки, генерируемые асинхронно через API аналитики продавца Wildberries. В отличие от JSON-эндпоинтов, возвращающих постраничные данные за короткие периоды, CSV-отчёты:
 
 - Охватывают периоды до **1 года** исторических данных
 - Генерируются **асинхронно** -- вы создаёте задачу, затем опрашиваете статус до завершения
@@ -542,6 +589,6 @@ async function safeReportGeneration(sdk: WildberriesSDK): Promise<void> {
 
 - [Справочник модуля Аналитики](/modules/analytics) -- Полный справочник для всех методов аналитики
 - [Определение подписки Jam](/guides/jam-subscription) -- Определение тарифа Jam перед генерацией CSV-отчётов
-- [Аналитика воронки продаж](/guides/sales-funnel-analytics) -- Данные воронки продаж в реальном времени через JSON-эндпоинты
-- [Аналитика поисковых запросов](/guides/search-queries-analytics) -- Данные поисковых запросов в реальном времени через JSON-эндпоинты
+- [Аналитика воронки продаж](/guides/sales-funnel-analytics) -- Данные воронки продаж через JSON-эндпоинты
+- [Аналитика поисковых запросов](/guides/search-queries-analytics) -- Данные поисковых запросов через JSON-эндпоинты
 - [Лучшие практики](/guides/best-practices) -- Общие паттерны использования SDK и советы для продакшена

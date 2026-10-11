@@ -92,6 +92,9 @@ export class AnalyticsModule {
    * В отчётах по воронке продаж можно группировать данные по дням, неделям или месяцам.
    * Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
    *
+   * DETAIL_HISTORY_REPORT и GROUPED_HISTORY_REPORT: С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов. Order Feed заменяет только данные заказов и выкупов, но не просмотры, добавления в корзину или метрики конверсии.
+   * SEARCH_QUERIES_PREMIUM_REPORT_GROUP, SEARCH_QUERIES_PREMIUM_REPORT_PRODUCT и SEARCH_QUERIES_PREMIUM_REPORT_TEXT: С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+   *
    * Rate limit: 3 requests/minute, 20-second interval, burst 3
    *
    * @remarks Daily limit: 20 reports per day per seller account.
@@ -163,6 +166,9 @@ export class AnalyticsModule {
    * Можно получить отчёт, который сгенерирован за последние 48 часов.
    * Отчёт будет загружен внутри архива ZIP в формате CSV.
    *
+   * С 2026-10-12 только SEARCH_QUERIES_PREMIUM_REPORT_TEXT не содержит колонок OpenCardPercentile, AddToCartPercentile, OpenToCartPercentile, OrdersPercentile, CartToOrderPercentile. Остальные поля и варианты отчёта сохраняются.
+   * SDK возвращает ZIP как ArrayBuffer; CSV-парсер и обязательные колонки в SDK отсутствуют.
+   *
    * Rate limit: 3 requests/minute, 20-second interval, burst 3
    *
    * @param downloadId - ID отчёта (UUID format)
@@ -188,6 +194,8 @@ export class AnalyticsModule {
    *
    * Метод формирует набор данных для основной страницы отчёта по поисковым запросам с общей информацией, позициями товаров, данными по видимости и переходам в карточку, данными для таблицы по группам.
    * Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
+   *
+   * С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
    *
    * Rate limit: 3 requests/minute, 20-second interval, burst 3
    *
@@ -219,6 +227,8 @@ export class AnalyticsModule {
    * Пагинация возможна только при наличии фильтра по бренду, предмету или ярлыку.
    * Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
    *
+   * С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+   *
    * Rate limit: 3 requests/minute, 20-second interval, burst 3
    *
    * @param data - Request body data
@@ -249,6 +259,8 @@ export class AnalyticsModule {
    * Пагинация возможна вне зависимости от наличия фильтров.
    * Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
    *
+   * С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+   *
    * Rate limit: 3 requests/minute, 20-second interval, burst 3
    *
    * @param data - Request body data
@@ -278,6 +290,8 @@ export class AnalyticsModule {
    * Метод формирует топ поисковых запросов по товару.
    * Параметры `includeSubstitutedSKUs` и `includeSearchTexts` не могут одновременно иметь значение `false`.
    *
+   * С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+   *
    * Rate limit: 3 requests/minute, 20-second interval, burst 3
    *
    * @param data - Request body data
@@ -305,6 +319,8 @@ export class AnalyticsModule {
    * Заказы и позиции по поисковым запросам товара
    *
    * Метод формирует данные для таблицы по количеству заказов и позиций в поиске по запросам покупателя.
+   *
+   * С 2026-10-12 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
    *
    * Rate limit: 3 requests/minute, 20-second interval, burst 3
    *
@@ -464,6 +480,9 @@ export class AnalyticsModule {
    * Возвращает отчёт о товарах с ключевыми показателями — переходы в карточку,
    * добавления в корзину, заказы — за текущий и прошлый периоды.
    *
+   * С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+   * Order Feed заменяет только данные заказов и выкупов, но не просмотры, добавления в корзину или метрики конверсии.
+   *
    * Rate limit: 3 requests/minute, 20-second interval, 3-request burst
    *
    * @param data - Request parameters
@@ -497,6 +516,9 @@ export class AnalyticsModule {
    *
    * Возвращает статистику карточек товаров по дням или неделям.
    *
+   * С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+   * Order Feed заменяет только данные заказов и выкупов, но не просмотры, добавления в корзину или метрики конверсии.
+   *
    * Rate limit: 3 requests/minute, 20-second interval, 3-request burst
    *
    * @param data - Request parameters
@@ -528,6 +550,9 @@ export class AnalyticsModule {
    * Статистика групп карточек товаров по дням (v3)
    *
    * Возвращает статистику карточек товаров по дням, сгруппированных по предметам, брендам и ярлыкам.
+   *
+   * С 2026-09-24 данные обновляются раз в 2 часа. Это свежесть данных, а не лимит запросов.
+   * Order Feed заменяет только данные заказов и выкупов, но не просмотры, добавления в корзину или метрики конверсии.
    *
    * Rate limit: 3 requests/minute, 20-second interval, 3-request burst
    *

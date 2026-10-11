@@ -60,6 +60,21 @@ export const productsRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 0.6,
     burstLimit: 5,
   },
+  'products.contentDirectoryTnvedAll': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 5,
+  },
+  'products.contentDirectoryOkpd': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 5,
+  },
+  'products.contentDirectoryOkpdAll': {
+    requestsPerMinute: 100,
+    intervalSeconds: 0.6,
+    burstLimit: 5,
+  },
   'products.contentTags': {
     requestsPerMinute: 100,
     intervalSeconds: 0.6,

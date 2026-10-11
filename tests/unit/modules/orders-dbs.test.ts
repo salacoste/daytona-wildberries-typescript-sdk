@@ -13,6 +13,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { OrdersDbsModule } from '../../../src/modules/orders-dbs';
+import type { DBSClientInfo, GetClientInfoResponse } from '../../../src';
 import type { BaseClient } from '../../../src/client/base-client';
 import { AuthenticationError } from '../../../src/errors/auth-error';
 import { RateLimitError } from '../../../src/errors/rate-limit-error';
@@ -433,6 +434,8 @@ describe('OrdersDbsModule', () => {
           phone: '9001234567',
           phoneCode: 7,
           additionalPhoneCodes: [],
+          additionalPhones: ['+70000000001'],
+          replacementAdditionalPhones: ['+70000000002'],
         },
         {
           orderID: 234567,
@@ -441,6 +444,8 @@ describe('OrdersDbsModule', () => {
           phone: '9007654321',
           phoneCode: 7,
           additionalPhoneCodes: [375, 380],
+          additionalPhones: [],
+          replacementAdditionalPhones: [],
         },
       ],
     };
@@ -502,6 +507,48 @@ describe('OrdersDbsModule', () => {
       // Assert
       const client = result.orders?.[1];
       expect(client?.additionalPhoneCodes).toEqual([375, 380]);
+    });
+
+    it('returns optional non-null phone arrays with synthetic values', async () => {
+      mockClient.post.mockResolvedValue(mockClientInfoResponse);
+
+      const result = await ordersDbsModule.getClientInfo([123456, 234567]);
+
+      expect(result.orders?.[0]?.additionalPhones).toEqual(['+70000000001']);
+      expect(result.orders?.[0]?.replacementAdditionalPhones).toEqual(['+70000000002']);
+      expect(result.orders?.[1]?.additionalPhones).toEqual([]);
+      expect(result.orders?.[1]?.replacementAdditionalPhones).toEqual([]);
+
+      const fieldsMayBeAbsent: DBSClientInfo = {
+        orderID: 345678,
+      };
+      expect(fieldsMayBeAbsent.additionalPhones).toBeUndefined();
+      expect(fieldsMayBeAbsent.replacementAdditionalPhones).toBeUndefined();
+
+      const nullIsNotPartOfContract: DBSClientInfo = {
+        // @ts-expect-error provisional local contract rejects null when the field is present
+        additionalPhones: null,
+      };
+      expect(nullIsNotPartOfContract.additionalPhones).toBeNull();
+
+      const replacementNullIsNotPartOfContract: DBSClientInfo = {
+        // @ts-expect-error provisional local contract rejects null when the field is present
+        replacementAdditionalPhones: null,
+      };
+      expect(replacementNullIsNotPartOfContract.replacementAdditionalPhones).toBeNull();
+
+      const rootResponse: GetClientInfoResponse = { orders: [fieldsMayBeAbsent] };
+      expect(rootResponse.orders).toHaveLength(1);
+    });
+
+    it('passes through and publicly types a null top-level orders collection', async () => {
+      const nullResponse: GetClientInfoResponse = { orders: null };
+      mockClient.post.mockResolvedValue(nullResponse);
+
+      const result = await ordersDbsModule.getClientInfo([123456]);
+
+      expect(result).toBe(nullResponse);
+      expect(result.orders).toBeNull();
     });
 
     // Validation tests

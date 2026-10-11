@@ -15,6 +15,7 @@ layout: doc
 - [Что такое DBS?](#что-такое-dbs)
 - [DBS vs FBS vs FBW](#dbs-vs-fbs-vs-fbw)
 - [Быстрый старт](#быстрый-старт)
+- [Создание тестовых заказов в песочнице WB](#создание-тестовых-заказов-в-песочнице-wb)
 - [Доступные методы](#доступные-методы)
 - [Полный процесс обработки заказа](#полный-процесс-обработки-заказа)
 - [Работа с данными покупателя](#работа-с-данными-покупателя)
@@ -87,7 +88,57 @@ console.log(`Найдено ${newOrders.orders?.length ?? 0} новых зака
 WB_API_KEY=your_api_key_here
 ```
 
+## Создание тестовых заказов в песочнице WB
+
+Используйте отдельный экземпляр SDK с токеном области действия **Test**. Метод
+всегда отправляет запрос на фиксированный адрес
+`https://marketplace-api-sandbox.wildberries.ru`; настройки production base URL
+на него не влияют.
+
+```typescript
+import {
+  WildberriesSDK,
+  type CreateTestDbsOrdersRequest,
+} from 'daytona-wildberries-typescript-sdk';
+
+const sandbox = new WildberriesSDK({
+  apiKey: process.env.WB_TEST_TOKEN!,
+  tokenType: 'test',
+});
+
+const request: CreateTestDbsOrdersRequest = {
+  orders: [{ sku: '4600000000001', amount: 1 }],
+  deliveryType: 'dbsPickupPoint',
+  address: {
+    region: 'Москва',
+    locality: 'Москва',
+    street: 'Сумская улица',
+    houseNumber: '6 к 5',
+  },
+};
+
+await sandbox.ordersDBS.createTestOrders(request);
+```
+
+Официальная отображённая схема перечисляет `dbs`, `dbsPickupPoint` и `edbs`.
+У `deliveryType` нет отображённого признака обязательности, а `dbs` показан как
+документированное значение по умолчанию. У `address` также нет признака
+обязательности, а его описание приводит московский адрес по умолчанию. Поэтому
+SDK оставляет оба поля optional, сохраняет их отсутствие и не подставляет
+значения самостоятельно.
+
+Публичный портал не раскрыл raw-метаданные `required` и `nullable` sandbox-схемы;
+live-вызов песочницы не выполнялся. Типы отражают видимый официальный контракт:
+без `null`, без придуманных ограничений строк и без придуманной нижней границы
+для `amount`.
+
 ## Доступные методы
+
+### Создание тестовых заказов в песочнице
+
+| Метод | Описание | Лимит |
+|-------|----------|--------|
+| `createTestOrders(request)` | Создать 1–10 тестовых заказов DBS, DBS-to-PVZ или EDBS на фиксированном sandbox-хосте | 60 запр/мин, интервал 1с, всплеск 1 |
 
 ### Получение заказов
 
@@ -115,7 +166,7 @@ WB_API_KEY=your_api_key_here
 
 | Метод | Описание | Уровень лимита |
 |-------|----------|----------------|
-| `getMetaBulk(request)` | Получить метаданные нескольких заказов | T3 (150 запр/мин) |
+| `checkMetaValidation(request)` | Проверить статус валидации маркировочных метаданных нескольких заказов | T1 (300 запр/мин) |
 | `deleteMetaBulk(request)` | Удалить метаданные нескольких заказов | T3 (150 запр/мин) |
 | `setSgtinBulk(request)` | Установить коды SGTIN для нескольких заказов | T4 (500 запр/мин) |
 | `setUinBulk(request)` | Установить коды UIN для нескольких заказов | T4 (500 запр/мин) |
@@ -123,20 +174,20 @@ WB_API_KEY=your_api_key_here
 | `setGtinBulk(request)` | Установить коды GTIN для нескольких заказов | T4 (500 запр/мин) |
 | `setCustomsDeclarationBulk(request)` | Установить таможенные декларации для нескольких заказов | T4 (500 запр/мин) |
 
-### Устаревшие методы (отключаются 13 апреля 2026)
+### Удалённые методы (v4.0.0)
 
-Следующие устаревшие методы для работы с отдельными заказами объявлены deprecated. Перейдите на их массовые аналоги до указанного срока.
+Следующие устаревшие методы для работы с отдельными заказами удалены в v4.0.0. Используйте их массовые аналоги.
 
-| Устаревший метод | Замена | Срок |
-|------------------|--------|------|
-| `getMeta(orderId)` | `getMetaBulk(request)` | 13 апреля 2026 |
-| `deleteMeta(orderId, key)` | `deleteMetaBulk(request)` | 13 апреля 2026 |
-| `setSgtin(orderId, sgtins)` | `setSgtinBulk(request)` | 13 апреля 2026 |
-| `setUin(orderId, uin)` | `setUinBulk(request)` | 13 апреля 2026 |
-| `setImei(orderId, imei)` | `setImeiBulk(request)` | 13 апреля 2026 |
-| `setGtin(orderId, gtin)` | `setGtinBulk(request)` | 13 апреля 2026 |
-| `setCustomsDeclaration(orderId, cd)` | `setCustomsDeclarationBulk(request)` | 13 апреля 2026 |
-| `getStatuses(orderIds)` | `getStatusesBulk(orderIds)` | 13 апреля 2026 |
+| Удалённый метод | Замена |
+|-----------------|--------|
+| `getMeta(orderId)` | `checkMetaValidation(request)` (статус валидации) |
+| `deleteMeta(orderId, key)` | `deleteMetaBulk(request)` |
+| `setSgtin(orderId, sgtins)` | `setSgtinBulk(request)` |
+| `setUin(orderId, uin)` | `setUinBulk(request)` |
+| `setImei(orderId, imei)` | `setImeiBulk(request)` |
+| `setGtin(orderId, gtin)` | `setGtinBulk(request)` |
+| `setCustomsDeclaration(orderId, cd)` | `setCustomsDeclarationBulk(request)` |
+| `getStatuses(orderIds)` | `getStatusesBulk(orderIds)` |
 | `confirm(orderId)` | `confirmBulk([orderId])` | 13 апреля 2026 |
 | `deliver(orderId)` | `deliverBulk([orderId])` | 13 апреля 2026 |
 | `receive(orderId, code)` | `receiveBulk([{orderId, code}])` | 13 апреля 2026 |
@@ -172,12 +223,25 @@ if (orderIds.length > 0) {
   const clientInfo = await sdk.ordersDBS.getClientInfo(orderIds);
 
   for (const client of clientInfo.orders ?? []) {
-    console.log(`Заказ ${client.orderID}:`);
-    console.log(`  Имя: ${client.fullName}`);
-    console.log(`  Телефон: +${client.phoneCode}${client.phone}`);
+    const additionalCount = client.additionalPhones?.length ?? 0;
+    const replacementAdditionalCount = client.replacementAdditionalPhones?.length ?? 0;
+
+    // Используйте контактные данные только внутри процесса доставки.
+    // Не записывайте имя, телефон или полный ответ API в логи и постоянное хранилище.
+    console.log(
+      `Для заказа ${client.orderID} доступны дополнительные контакты: ` +
+      `${additionalCount + replacementAdditionalCount}`
+    );
   }
 }
 ```
+
+Официальная отображённая схема допускает в верхнеуровневом поле `orders` ответа
+`getClientInfo()` массив или `null`. В элементах массива `additionalPhones` содержит
+дополнительные прямые номера, а `replacementAdditionalPhones` — дополнительные подменные
+номера. Отображённая официальная страница не раскрыла исходные метаданные optionality и
+nullability этих двух полей, поэтому их полевой контракт остаётся предварительным до
+подтверждения по raw-схеме.
 
 ### Шаг 3: Получение информации о группе доставки и датах
 
@@ -236,16 +300,13 @@ if (sgtinOrders.length > 0) {
 ### Шаг 5: Проверка метаданных (массово)
 
 ```typescript
-// Проверка правильности установки метаданных для всех заказов
-const meta = await sdk.ordersDBS.getMetaBulk({ orders: orderIds });
+// Проверка маркировочных метаданных для всех заказов
+const validation = await sdk.ordersDBS.checkMetaValidation({ orders: orderIds });
 
-for (const orderMeta of meta.orders ?? []) {
-  console.log(`Заказ ${orderMeta.orderId}:`);
-  if (orderMeta.imei) {
-    console.log(`  IMEI: ${orderMeta.imei}`);
-  }
-  if (orderMeta.sgtins?.length) {
-    console.log(`  SGTIN: ${orderMeta.sgtins.length} кодов`);
+for (const detail of validation.metaDetails ?? []) {
+  console.log(`Заказ ${detail.orderId}: ${detail.status}`);
+  if (detail.status === 'invalid') {
+    console.warn(`  Исправьте метаданные: ${detail.message ?? 'маркировка не прошла проверку'}`);
   }
 }
 ```
@@ -399,20 +460,14 @@ const cdResult = await sdk.ordersDBS.setCustomsDeclarationBulk({
 ### Проверка метаданных (массово)
 
 ```typescript
-const meta = await sdk.ordersDBS.getMetaBulk({
+const validation = await sdk.ordersDBS.checkMetaValidation({
   orders: [111, 222, 333, 444, 555]
 });
 
-for (const orderMeta of meta.orders ?? []) {
-  console.log(`Заказ ${orderMeta.orderId}:`);
-  if (orderMeta.imei) {
-    console.log(`  IMEI: ${orderMeta.imei}`);
-  }
-  if (orderMeta.sgtins?.length) {
-    console.log(`  Коды SGTIN: ${orderMeta.sgtins.length}`);
-  }
-  if (orderMeta.customsDeclaration) {
-    console.log(`  Таможенная декларация: ${orderMeta.customsDeclaration}`);
+for (const detail of validation.metaDetails ?? []) {
+  console.log(`Заказ ${detail.orderId}: ${detail.status}`);
+  if (detail.status === 'invalid') {
+    console.warn(`  Исправьте маркировочные метаданные: ${detail.message ?? ''}`);
   }
 }
 ```
@@ -488,10 +543,15 @@ DBS API использует **4-уровневую систему лимито�
 
 | Уровень | Название | Запросов/мин | Интервал | Всплеск | Применяется к |
 |---------|----------|-------------|----------|---------|---------------|
-| **T1** | Чтение сборки | 300 | 200мс | 20 | `getNewOrders`, `getOrders`, `getClientInfo`, `getStatusesBulk`, `getB2BInfo`, `getGroupsInfo`, `getDeliveryDates` |
+| **T1** | Чтение сборки | 300 | 200мс | 20 | `getNewOrders`, `getOrders`, `getClientInfo`, `getStatusesBulk`, `getB2BInfo`, `getGroupsInfo`, `getDeliveryDates`, `checkMetaValidation` |
 | **T2** | Запись статуса | 60 | 1с | 10 | `confirmBulk`, `deliverBulk`, `receiveBulk`, `rejectBulk`, `cancelBulk` |
-| **T3** | Чтение/удаление метаданных | 150 | 400мс | 20 | `getMetaBulk`, `deleteMetaBulk` (и устаревшие `getMeta`, `deleteMeta`) |
+| **T3** | Удаление метаданных | 150 | 400мс | 20 | `deleteMetaBulk` |
 | **T4** | Установка метаданных | 500 | 120мс | 20 | `setSgtinBulk`, `setUinBulk`, `setImeiBulk`, `setGtinBulk`, `setCustomsDeclarationBulk` |
+| **Песочница** | Создание тестовых заказов | 60 | 1с | 1 | `createTestOrders` |
+
+Строка песочницы относится к отдельному хосту и категории токена, без штрафного
+множителя. Для `tokenType: 'test'` остаётся 60 запросов в минуту: SDK не применяет
+повторно общий понижающий множитель Basic/Test.
 
 ### Штрафной множитель (ответы 409)
 
@@ -515,7 +575,7 @@ const result = await sdk.ordersDBS.confirmBulk(orderIds); // 1 вызов T2
 
 // Неэффективно: 500 API-вызовов (исчерпает лимит T2 примерно за ~8 минут)
 // for (const id of orderIds) {
-//   await sdk.ordersDBS.confirm(id); // 500 вызовов T2 — НЕ ДЕЛАЙТЕ ТАК
+//   await sdk.ordersDBS.confirmBulk([id]); // 500 вызовов T2 — НЕ ДЕЛАЙТЕ ТАК
 // }
 ```
 
@@ -600,9 +660,9 @@ const result = await sdk.ordersDBS.setImeiBulk({
   ]
 });
 
-// Избегайте: установка метаданных по одному заказу (deprecated, отключается 13 апреля 2026)
-// await sdk.ordersDBS.setImei(111, '123456789012345');
-// await sdk.ordersDBS.setImei(222, '543210987654321');
+// Избегайте: двух отдельных массовых вызовов с одним заказом в каждом
+// await sdk.ordersDBS.setImeiBulk({ orders: [{ orderId: 111, imei: '123456789012345' }] });
+// await sdk.ordersDBS.setImeiBulk({ orders: [{ orderId: 222, imei: '543210987654321' }] });
 ```
 
 ### 2. Проверяйте метаданные перед подтверждением

@@ -4274,14 +4274,14 @@ components:
     SearchReportTextRes:
       description: ''
       value: |
-        Text,NmID,SubjectName,BrandName,VendorCode,Name,Rating,FeedbackRating,MinPrice,MaxPrice,Frequency,MedianPosition,AveragePosition,OpenCard,OpenCardPercentile,AddToCart,AddToCartPercentile,OpenToCart,OpenToCartPercentile,Orders,OrdersPercentile,CartToOrder,CartToOrderPercentile,Visibility,FrequencyPast,MedianPositionPast,AveragePositionPast,OpenCardPast,AddToCartPast,OpenToCartPast,OrdersPast,CartToOrderPast,VisibilityPast
-        267945415,267945415,Термокомплекты для малышей,Lopsa,wb44h5ku68,1,5.5,0.0,47,47,156,1,1,235,100,98,100,42,100,0,100,0,100,100,15,1,1,19,16,84,0,0,100
-        термобелье мужское,267945415,Термокомплекты для малышей,Lopsa,wb44h5ku68,1,5.5,0.0,47,47,52633,2,2,5,0,0,0,0,0,0,0,0,0,100,49975,0,0,0,0,0,0,0,0
-        267945415,296070764,Термокомплекты для малышей,Lopsa,wb51k31eyg,2,1.5,0.0,88,88,156,1,1,82,100,22,100,27,100,0,100,0,100,100,15,5,5,1,1,100,0,0,100
-        термобелье мужское,296070764,Термокомплекты для малышей,Lopsa,wb51k31eyg,2,1.5,0.0,88,88,52633,3,3,2,0,0,0,0,0,0,0,0,0,100,49975,0,0,0,0,0,0,0,0
-        211131895,211131895,Костюмы,H&M,wb51k31eyg!!!,костюм,10.0,5.0,102,102,36,1,1,44,100,6,100,14,0,5,100,83,100,100,0,0,0,0,0,0,0,0,0
-        221411786,211131895,Костюмы,H&M,wb51k31eyg!!!,костюм,10.0,5.0,102,102,19,1,1,2,11,0,0,0,0,0,0,0,0,100,3,0,0,0,0,0,0,0,0
-        женские блузки,211131895,Костюмы,H&M,wb51k31eyg!!!,костюм,10.0,5.0,102,102,38383,14,14,1,0,0,0,0,0,0,0,0,0,79,29764,0,0,0,0,0,0,0,0
+        Text,NmID,SubjectName,BrandName,VendorCode,Name,Rating,FeedbackRating,MinPrice,MaxPrice,Frequency,MedianPosition,AveragePosition,OpenCard,AddToCart,OpenToCart,Orders,CartToOrder,Visibility,FrequencyPast,MedianPositionPast,AveragePositionPast,OpenCardPast,AddToCartPast,OpenToCartPast,OrdersPast,CartToOrderPast,VisibilityPast
+        267945415,267945415,Термокомплекты для малышей,Lopsa,wb44h5ku68,1,5.5,0.0,47,47,156,1,1,235,98,42,0,0,100,15,1,1,19,16,84,0,0,100
+        термобелье мужское,267945415,Термокомплекты для малышей,Lopsa,wb44h5ku68,1,5.5,0.0,47,47,52633,2,2,5,0,0,0,0,100,49975,0,0,0,0,0,0,0,0
+        267945415,296070764,Термокомплекты для малышей,Lopsa,wb51k31eyg,2,1.5,0.0,88,88,156,1,1,82,22,27,0,0,100,15,5,5,1,1,100,0,0,100
+        термобелье мужское,296070764,Термокомплекты для малышей,Lopsa,wb51k31eyg,2,1.5,0.0,88,88,52633,3,3,2,0,0,0,0,100,49975,0,0,0,0,0,0,0,0
+        211131895,211131895,Костюмы,H&M,wb51k31eyg!!!,костюм,10.0,5.0,102,102,36,1,1,44,6,14,5,83,100,0,0,0,0,0,0,0,0,0
+        221411786,211131895,Костюмы,H&M,wb51k31eyg!!!,костюм,10.0,5.0,102,102,19,1,1,2,0,0,0,0,100,3,0,0,0,0,0,0,0,0
+        женские блузки,211131895,Костюмы,H&M,wb51k31eyg!!!,костюм,10.0,5.0,102,102,38383,14,14,1,0,0,0,0,79,29764,0,0,0,0,0,0,0,0
     StocksReportRes:
       description: ''
       value: |

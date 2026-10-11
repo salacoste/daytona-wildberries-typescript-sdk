@@ -2,7 +2,7 @@
 
 # Class: ReturnsModule
 
-Defined in: [modules/returns/index.ts:199](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/returns/index.ts#L199)
+Defined in: [modules/returns/index.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/returns/index.ts#L215)
 
 Returns aggregator module — combines FBO, FBS, and Finance sources into a
 unified `ReturnItem[]` with full partial-failure tolerance.
@@ -34,7 +34,7 @@ new ReturnsModule(
    finances: FinancesModule): ReturnsModule;
 ```
 
-Defined in: [modules/returns/index.ts:209](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/returns/index.ts#L209)
+Defined in: [modules/returns/index.ts:225](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/returns/index.ts#L225)
 
 Constructor parameters `_client` and `_ordersFBS` are reserved for
 v3.10.1 FBS status history implementation. The `_` prefix satisfies
@@ -62,11 +62,11 @@ documented in story 13.2.
 getReturns(params: ReturnsApiRequest): Promise<ReturnsApiResponse>;
 ```
 
-Defined in: [modules/returns/index.ts:288](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/returns/index.ts#L288)
+Defined in: [modules/returns/index.ts:330](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/returns/index.ts#L330)
 
 Unified return analytics aggregator.
 
-Fetches FBO returns from `sdk.reports.getAnalyticsGoodsReturn()`,
+Fetches active and archived FBO returns from `sdk.reports.getAnalyticsV1GoodsReturn()`,
 optionally FBS returns (reserved — currently skipped), and enriches all
 records with financial amounts from `sdk.finances.getSalesReportsDetailed()`.
 
@@ -90,7 +90,7 @@ Unified `ReturnsApiResponse` with data, warnings, partialFailures, _meta
 
 #### Throws
 
-If `dateFrom > dateTo`, range exceeds 31 days, or date strings are invalid
+If `dateFrom >= dateTo`, range exceeds 31 days, or date strings are invalid
 
 #### Example
 
@@ -115,7 +115,7 @@ v3.10.0
 getReturnByOrderId(orderId: string, params: ReturnByOrderIdParams): Promise<ReturnItem | null>;
 ```
 
-Defined in: [modules/returns/index.ts:428](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/returns/index.ts#L428)
+Defined in: [modules/returns/index.ts:463](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/returns/index.ts#L463)
 
 Convenience: fetch a single return record by WB orderId.
 
@@ -166,7 +166,7 @@ v3.10.0
 getReturnStats(params: ReturnStatsParams): Promise<ReturnStatsResult>;
 ```
 
-Defined in: [modules/returns/index.ts:478](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/modules/returns/index.ts#L478)
+Defined in: [modules/returns/index.ts:513](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/modules/returns/index.ts#L513)
 
 Convenience: aggregate return statistics grouped by nmId / category / orderType.
 

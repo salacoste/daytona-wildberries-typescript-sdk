@@ -222,31 +222,35 @@ export class BaseClient {
    * ```
    */
   async post<T>(url: string, data?: unknown, options?: RequestOptions): Promise<T> {
-    return this.retryHandler.executeWithRetry(async () => {
-      // Apply rate limiting if rateLimitKey provided
-      if (options?.rateLimitKey) {
-        await this.rateLimiter.waitForSlot(options.rateLimitKey);
-      }
+    return this.retryHandler.executeWithRetry(
+      async () => {
+        // Apply rate limiting if rateLimitKey provided
+        if (options?.rateLimitKey) {
+          await this.rateLimiter.waitForSlot(options.rateLimitKey);
+        }
 
-      try {
-        this.log('debug', 'POST request', { url });
+        try {
+          this.log('debug', 'POST request', { url });
 
-        const response = await this.axios.post<T>(url, data, {
-          headers: options?.headers,
-          params: options?.params,
-          ...(options?.timeout !== undefined && { timeout: options.timeout }),
-        });
+          const response = await this.axios.post<T>(url, data, {
+            headers: options?.headers,
+            params: options?.params,
+            ...(options?.timeout !== undefined && { timeout: options.timeout }),
+          });
 
-        this.log('debug', 'POST response', {
-          url,
-          status: response.status,
-        });
+          this.log('debug', 'POST response', {
+            url,
+            status: response.status,
+          });
 
-        return response.data;
-      } catch (error) {
-        this.transformError(error);
-      }
-    }, `POST ${url}`);
+          return response.data;
+        } catch (error) {
+          this.transformError(error);
+        }
+      },
+      `POST ${url}`,
+      { operationKey: options?.operationKey }
+    );
   }
 
   /**

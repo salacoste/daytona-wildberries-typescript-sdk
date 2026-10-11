@@ -1,0 +1,2 @@
+SubjectName,SubjectID,BrandName,TagID,AveragePosition,OpenCard,AddToCart,OpenToCart,Orders,CartToOrder,Visibility,AveragePositionPast,OpenCardPast,AddToCartPast,OpenToCartPast,OrdersPast,CartToOrderPast,VisibilityPast
+Synthetic subject,1,Synthetic brand,1,1,1,1,1,7,35,1,1,1,1,1,1,1,1

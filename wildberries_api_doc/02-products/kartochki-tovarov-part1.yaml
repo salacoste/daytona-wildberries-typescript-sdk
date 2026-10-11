@@ -214,6 +214,9 @@ paths:
                         title:
                           type: string
                           description: Наименование товара
+                        gtin:
+                          type: string
+                          description: Дополнительный GTIN для продавцов из РФ. Возвращается, если поле заполнено
                         description:
                           type: string
                           description: Описание товара

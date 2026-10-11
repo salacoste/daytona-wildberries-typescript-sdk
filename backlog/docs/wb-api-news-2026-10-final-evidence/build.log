@@ -1,0 +1,26 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 build
+npm notice run vite build
+vite v6.4.3 building for production...
+transforming...
+✓ 115 modules transformed.
+rendering chunks...
+
+[vite:dts] Start generate declaration files...
+computing gzip size...
+dist/esm/modules/communications/index.js    0.21 kB │ gzip:   0.18 kB │ map:     0.09 kB
+dist/deprecation-Bzv3y9uk.js                0.21 kB │ gzip:   0.18 kB │ map:     1.91 kB
+dist/esm/modules/finances/index.js         19.44 kB │ gzip:   3.32 kB │ map:    25.99 kB
+dist/esm/modules/analytics/index.js        40.95 kB │ gzip:   7.37 kB │ map:    55.42 kB
+dist/esm/modules/reports/index.js          41.61 kB │ gzip:   6.12 kB │ map:    53.99 kB
+dist/index-Dngft3Ov.js                     46.75 kB │ gzip:   8.11 kB │ map:    75.23 kB
+dist/esm/index.js                         615.46 kB │ gzip: 112.15 kB │ map: 1,195.70 kB
+[vite:dts] Declaration files built in 611ms.
+
+dist/deprecation-pRVzMYBK.cjs                0.21 kB │ gzip:  0.18 kB │ map:     1.90 kB
+dist/cjs/modules/communications/index.cjs    0.31 kB │ gzip:  0.23 kB │ map:     0.09 kB
+dist/cjs/modules/finances/index.cjs          2.16 kB │ gzip:  0.50 kB │ map:    24.17 kB
+dist/cjs/modules/analytics/index.cjs         4.21 kB │ gzip:  0.71 kB │ map:    51.74 kB
+dist/cjs/modules/reports/index.cjs           5.80 kB │ gzip:  1.15 kB │ map:    50.89 kB
+dist/index-C0BezufQ.cjs                      7.69 kB │ gzip:  2.18 kB │ map:    71.51 kB
+dist/cjs/index.cjs                         195.92 kB │ gzip: 44.57 kB │ map: 1,122.40 kB
+✓ built in 925ms

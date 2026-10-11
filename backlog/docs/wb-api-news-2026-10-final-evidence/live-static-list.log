@@ -1,0 +1,3 @@
+npm notice run daytona-wildberries-typescript-sdk@4.6.0 npx
+npm notice run 'vitest' list --config vitest.integration.config.ts --filesOnly --staticParse
+tests/integration/api.test.ts

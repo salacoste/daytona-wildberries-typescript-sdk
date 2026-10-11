@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v4.3.0
+# Wildberries API TypeScript SDK v4.6.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -56,7 +56,12 @@ Main entry point
 | [SDKConfig](interfaces/SDKConfig.md) | Configuration options for initializing the Wildberries SDK |
 | [RequestOptions](interfaces/RequestOptions.md) | Per-request options that can override SDK defaults |
 | [SellerMessageRequest](interfaces/SellerMessageRequest.md) | Request body for [CommunicationsModule.createSellerMessage](classes/CommunicationsModule.md#createsellermessage). |
+| [CreateTestDbsOrderItem](interfaces/CreateTestDbsOrderItem.md) | Product and quantity for one test DBS assembly order. |
+| [CreateTestDbsOrdersAddress](interfaces/CreateTestDbsOrdersAddress.md) | Delivery address for test DBS assembly orders. |
+| [CreateTestDbsOrdersRequest](interfaces/CreateTestDbsOrdersRequest.md) | Request body for `ordersDBS.createTestOrders()`. |
+| [DBSClientInfo](interfaces/DBSClientInfo.md) | Customer contact information for DBS orders Returned by getClientInfo |
 | [MetaValidationDetail](interfaces/MetaValidationDetail.md) | Per-order metadata validation status returned in 409 MetaValidationFail responses. When `deliverBulk()` returns this for an order, the marking metadata (SGTIN/IMEI) failed WB's validation — fix the metadata before retrying. |
+| [GetClientInfoResponse](interfaces/GetClientInfoResponse.md) | Response from getClientInfo |
 | [OrderMetaResponse](interfaces/OrderMetaResponse.md) | Response containing metadata for a single order |
 | [OrdersMetaResponse](interfaces/OrdersMetaResponse.md) | Response containing metadata for multiple orders |
 | [OrderMetaItem](interfaces/OrderMetaItem.md) | A single order's metadata entry (used in bulk metadata responses) |
@@ -69,6 +74,13 @@ Main entry point
 | [DBWSetMetaBulkResponse](interfaces/DBWSetMetaBulkResponse.md) | Response from bulk metadata set operations for DBW orders. Mirrors DBS `SetMetaBulkResponse`. |
 | [DBWCheckMetaValidationRequest](interfaces/DBWCheckMetaValidationRequest.md) | Request body for [OrdersFbwModule.checkMetaValidation](classes/OrdersFbwModule.md#checkmetavalidation). |
 | [DBWCheckMetaValidationResponse](interfaces/DBWCheckMetaValidationResponse.md) | Response from [OrdersFbwModule.checkMetaValidation](classes/OrdersFbwModule.md#checkmetavalidation). Each item in `metaDetails[]` reports the validation status of a single order's marking metadata. Use this *before* calling deliverBulk() to detect orders that would fail with 409 MetaValidationFail. |
+| [GetDirectoryTnvedAllOptions](interfaces/GetDirectoryTnvedAllOptions.md) | Query parameters for GET /api/content/v2/directory/tnved/all. |
+| [GetDirectoryOkpdOptions](interfaces/GetDirectoryOkpdOptions.md) | Query parameters for GET /api/content/v2/directory/okpd. |
+| [GetDirectoryOkpdAllOptions](interfaces/GetDirectoryOkpdAllOptions.md) | Query parameters for GET /api/content/v2/directory/okpd/all. |
+| [TnvedDirectoryEntry](interfaces/TnvedDirectoryEntry.md) | TN VED entry returned by GET /api/content/v2/directory/tnved/all. |
+| [OkpdDirectoryEntry](interfaces/OkpdDirectoryEntry.md) | OKPD2 entry returned by the OKPD2 directory methods. |
+| [GetDirectoryTnvedAllResponse](interfaces/GetDirectoryTnvedAllResponse.md) | Successful full TN VED directory response. |
+| [GetDirectoryOkpdResponse](interfaces/GetDirectoryOkpdResponse.md) | Successful OKPD2 directory response. |
 | [CardDocumentInput](interfaces/CardDocumentInput.md) | A single product card document in create requests. Used in `createCardsUpload()` (per variant), `createUploadAdd()` (per card to add). |
 | [CardDocumentsRequest](interfaces/CardDocumentsRequest.md) | Documents block of a product card in create requests (`createCardsUpload()`, `createUploadAdd()`). |
 | [CardUpdateDocumentInput](interfaces/CardUpdateDocumentInput.md) | A single product card document in update requests (`createCardsUpdate()`). |
@@ -130,9 +142,14 @@ Main entry point
 | Type Alias | Description |
 | ------ | ------ |
 | [EndpointLimits](type-aliases/EndpointLimits.md) | Mapping of endpoint keys to their rate limit configurations. |
+| [DbsTestDeliveryType](type-aliases/DbsTestDeliveryType.md) | Delivery model for a test DBS assembly order in the WB sandbox. |
 | [DBWBulkStatusChangeResponse](type-aliases/DBWBulkStatusChangeResponse.md) | Response shape for DBW bulk status-change operations (alias for [BulkStatusChangeResponse](-internal-/interfaces/BulkStatusChangeResponse-1.md)). Maintained as a DBW-prefixed alias to preserve API symmetry with DBW request types. |
 | [DBWStatusSetResponse](type-aliases/DBWStatusSetResponse.md) | Per-order result item in a DBW bulk status-change response (alias for [StatusSetResponse](-internal-/interfaces/StatusSetResponse-1.md)). |
 | [DBWMetaValidationDetail](type-aliases/DBWMetaValidationDetail.md) | Per-order metadata validation detail (alias for [MetaValidationDetail](interfaces/MetaValidationDetail.md)). |
+| [TnvedDirectoryLocale](type-aliases/TnvedDirectoryLocale.md) | Supported response language for the full TN VED directory. |
+| [OkpdDirectoryLocale](type-aliases/OkpdDirectoryLocale.md) | Supported response language for the subject-specific OKPD2 directory. |
+| [OkpdFullDirectoryLocale](type-aliases/OkpdFullDirectoryLocale.md) | Supported response language for the full OKPD2 directory. |
+| [GetDirectoryOkpdAllResponse](type-aliases/GetDirectoryOkpdAllResponse.md) | Successful full OKPD2 directory response. |
 | [CardDocumentType](type-aliases/CardDocumentType.md) | Product card document type (WB register document kinds). |
 | [CardDocumentReason](type-aliases/CardDocumentReason.md) | Reason a card document failed validation. Returned for `verdict.status: 2` (validation rejected) in `getCardsList()` responses. |
 | [CardListingValidationReason](type-aliases/CardListingValidationReason.md) | Reason a card listing failed validation. Returned for `overallVerdict.status: 2` (validation rejected) in `getCardsList()` responses. |

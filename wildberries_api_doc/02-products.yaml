@@ -913,6 +913,233 @@ paths:
                 $ref: '#/components/schemas/responseBodyContentError403'
         '429':
           $ref: '#/components/responses/429'
+  /api/content/v2/directory/tnved/all:
+    servers:
+      - url: https://content-api.wildberries.ru
+    get:
+      operationId: getV2DirectoryTnvedAll
+      x-readonly-method: true
+      x-category: content
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Категории, предметы и характеристики
+      summary: Список кодов ТН ВЭД
+      description: |
+        Метод возвращает справочный список всех кодов ТН ВЭД. Для поиска укажите первые цифры кода.
+        Токен категории Контент. Лимит: 100 запросов в минуту, интервал 600 мс, всплеск 5.
+      parameters:
+        - name: search
+          in: query
+          description: Поиск по первым цифрам кода ТН ВЭД, не более 10 символов
+          schema:
+            type: integer
+            example: 6106
+        - name: locale
+          in: query
+          description: Язык полей ответа
+          schema:
+            type: string
+            enum: [ru, en]
+            default: ru
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, error, errorText, additionalErrors]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required: [tnved, description]
+                      properties:
+                        tnved:
+                          type: string
+                          description: Код ТН ВЭД
+                        description:
+                          type: string
+                          description: Описание товаров в группе
+                  error:
+                    type: boolean
+                  errorText:
+                    type: string
+                  additionalErrors:
+                    type: string
+                    nullable: true
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/content/v2/directory/okpd:
+    servers:
+      - url: https://content-api.wildberries.ru
+    get:
+      operationId: getV2DirectoryOkpd
+      x-readonly-method: true
+      x-category: content
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Категории, предметы и характеристики
+      summary: Код ОКПД2 предмета
+      description: |
+        Метод возвращает коды ОКПД2 по ID предмета и необязательному фрагменту кода.
+        Токен категории Контент. Лимит: 100 запросов в минуту, интервал 600 мс, всплеск 5.
+      parameters:
+        - name: subjectId
+          in: query
+          required: true
+          description: ID предмета
+          schema:
+            type: integer
+        - name: search
+          in: query
+          description: Фрагмент кода ОКПД2; префикс с точками передаётся строкой
+          schema:
+            type: string
+            example: '61.06'
+        - name: locale
+          in: query
+          description: Язык полей ответа
+          schema:
+            type: string
+            enum: [ru]
+            default: ru
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, error, errorText, additionalErrors]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required: [okpd2, description]
+                      properties:
+                        okpd2:
+                          type: string
+                          description: Код ОКПД2
+                        description:
+                          type: string
+                          description: Описание товаров в группе
+                  error:
+                    type: boolean
+                  errorText:
+                    type: string
+                  additionalErrors:
+                    type: string
+                    nullable: true
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/content/v2/directory/okpd/all:
+    servers:
+      - url: https://content-api.wildberries.ru
+    get:
+      operationId: getV2DirectoryOkpdAll
+      x-readonly-method: true
+      x-category: content
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Категории, предметы и характеристики
+      summary: Список кодов ОКПД2
+      description: |
+        Метод возвращает справочный список всех кодов ОКПД2. Текст WB описывает префиксы
+        с точками, но схема объявляет search как number; локальная копия сохраняет тип схемы.
+        Токен категории Контент. Лимит: 100 запросов в минуту, интервал 600 мс, всплеск 5.
+      parameters:
+        - name: search
+          in: query
+          description: Поиск по фрагменту кода ОКПД2; схема объявляет числовой тип
+          schema:
+            type: number
+            example: 61.06
+        - name: locale
+          in: query
+          description: Язык полей ответа
+          schema:
+            type: string
+            enum: [ru]
+            default: ru
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, error, errorText, additionalErrors]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      required: [okpd2, description]
+                      properties:
+                        okpd2:
+                          type: string
+                          description: Код ОКПД2
+                        description:
+                          type: string
+                          description: Описание товаров в группе
+                  error:
+                    type: boolean
+                  errorText:
+                    type: string
+                  additionalErrors:
+                    type: string
+                    nullable: true
+        '400':
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBodyContentError403'
+        '429':
+          $ref: '#/components/responses/429'
+
   /api/content/v1/brands:
     servers:
       - url: https://content-api.wildberries.ru
@@ -1583,6 +1810,9 @@ paths:
                         title:
                           type: string
                           description: Наименование товара
+                        gtin:
+                          type: string
+                          description: Дополнительный GTIN для продавцов из РФ. Возвращается, если поле заполнено
                         description:
                           type: string
                           description: Описание товара
@@ -2116,6 +2346,12 @@ paths:
                     type: string
                     description: Наименование товара
                     maxLength: 60
+                  gtin:
+                    type: string
+                    description: |
+                      Дополнительный GTIN. Можно передать, только если это значение ранее было указано
+                      в `skus` одной из карточек продавца. Значения `skus` не должны повторяться между
+                      разными карточками или размерами. Доступно только продавцам из РФ. Правило проверяет сервер WB.
                   description:
                     type: string
                     description: |
@@ -3116,6 +3352,12 @@ paths:
                           type: string
                           description: Наименование товара
                           maxLength: 60
+                        gtin:
+                          type: string
+                          description: |
+                            Дополнительный GTIN. Можно передать, только если это значение ранее было указано
+                            в `skus` одной из карточек продавца. Значения `skus` не должны повторяться между
+                            разными карточками или размерами. Доступно только продавцам из РФ. Правило проверяет сервер WB.
                         description:
                           type: string
                           description: |
@@ -3361,6 +3603,12 @@ paths:
                         type: string
                         description: Наименование товара
                         maxLength: 60
+                      gtin:
+                        type: string
+                        description: |
+                          Дополнительный GTIN. Можно передать, только если это значение ранее было указано
+                          в `skus` одной из карточек продавца. Значения `skus` не должны повторяться между
+                          разными карточками или размерами. Доступно только продавцам из РФ. Правило проверяет сервер WB.
                       description:
                         type: string
                         description: |
