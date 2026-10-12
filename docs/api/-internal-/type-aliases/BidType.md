@@ -6,7 +6,7 @@
 type BidType = "manual" | "unified";
 ```
 
-Defined in: [types/promotion.types.ts:1617](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L1617)
+Defined in: [types/promotion.types.ts:1617](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L1617)
 
 Bid type for campaign (per WB OpenAPI etalon `08-promotion.yaml` enum).
 - `unified` — единая ставка (Type 8; ставкой управляет WB).

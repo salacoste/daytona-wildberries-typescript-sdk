@@ -18,7 +18,7 @@ Comprehensive guide to testing applications built with the Wildberries TypeScrip
 - [Mocking Strategies](#mocking-strategies)
 - [Test Data Management](#test-data-management)
 - [Performance Testing](#performance-testing)
-- [CI/CD Integration](#cicd-integration)
+- [CI/CD Integration](#ci-cd-integration)
 
 ## Overview
 

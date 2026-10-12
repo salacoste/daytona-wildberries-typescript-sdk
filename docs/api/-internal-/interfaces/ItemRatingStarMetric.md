@@ -2,7 +2,7 @@
 
 # Interface: ItemRatingStarMetric
 
-Defined in: [types/analytics.types.ts:1903](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1903)
+Defined in: [types/analytics.types.ts:1920](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1920)
 
 Per-star feedback counts with current period, total, and optional dynamics.
 
@@ -10,6 +10,6 @@ Per-star feedback counts with current period, total, and optional dynamics.
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="current"></a> `current` | `number` | Feedback increase for the period. | [types/analytics.types.ts:1905](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1905) |
-| <a id="dynamics"></a> `dynamics?` | `number` | Dynamics compared to the previous period (%). Optional. | [types/analytics.types.ts:1907](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1907) |
-| <a id="total"></a> `total` | `number` | Total ratings. | [types/analytics.types.ts:1909](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1909) |
+| <a id="current"></a> `current` | `number` | Feedback increase for the period. | [types/analytics.types.ts:1922](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1922) |
+| <a id="dynamics"></a> `dynamics?` | `number` | Dynamics compared to the previous period (%). Optional. | [types/analytics.types.ts:1924](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1924) |
+| <a id="total"></a> `total` | `number` | Total ratings. | [types/analytics.types.ts:1926](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1926) |

@@ -2,7 +2,7 @@
 
 # Interface: SalesFunnelHistoryProduct
 
-Defined in: [types/analytics.types.ts:1573](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1573)
+Defined in: [types/analytics.types.ts:1590](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1590)
 
 Облегчённая карточка товара для истории v3 (Swagger: HistoryProduct)
 
@@ -10,9 +10,9 @@ Defined in: [types/analytics.types.ts:1573](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmId` | `number` | Артикул WB | [types/analytics.types.ts:1575](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1575) |
-| <a id="title"></a> `title` | `string` | Название карточки товара | [types/analytics.types.ts:1577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1577) |
-| <a id="vendorcode"></a> `vendorCode` | `string` | Артикул продавца | [types/analytics.types.ts:1579](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1579) |
-| <a id="brandname"></a> `brandName` | `string` | Бренд | [types/analytics.types.ts:1581](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1581) |
-| <a id="subjectid"></a> `subjectId` | `number` | ID предмета | [types/analytics.types.ts:1583](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1583) |
-| <a id="subjectname"></a> `subjectName` | `string` | Название предмета | [types/analytics.types.ts:1585](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1585) |
+| <a id="nmid"></a> `nmId` | `number` | Артикул WB | [types/analytics.types.ts:1592](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1592) |
+| <a id="title"></a> `title` | `string` | Название карточки товара | [types/analytics.types.ts:1594](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1594) |
+| <a id="vendorcode"></a> `vendorCode` | `string` | Артикул продавца | [types/analytics.types.ts:1596](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1596) |
+| <a id="brandname"></a> `brandName` | `string` | Бренд | [types/analytics.types.ts:1598](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1598) |
+| <a id="subjectid"></a> `subjectId` | `number` | ID предмета | [types/analytics.types.ts:1600](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1600) |
+| <a id="subjectname"></a> `subjectName` | `string` | Название предмета | [types/analytics.types.ts:1602](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1602) |

@@ -11,7 +11,7 @@ Complete TypeScript API reference for the Wildberries SDK. Browse all modules, c
 ## SDK Core
 
 - **[WildberriesSDK](/api/classes/WildberriesSDK)** - Main SDK class aggregating all 14 modules
-- **[BaseClient](/api/-internal-/classes/BaseClient)** - HTTP client with retry and timeout handling
+- **[BaseClient](/api/classes/BaseClient)** - HTTP client with retry and timeout handling
 - **[RateLimiter](/api/-internal-/classes/RateLimiter)** - Per-endpoint rate limit enforcement
 - **[RetryHandler](/api/-internal-/classes/RetryHandler)** - Exponential backoff retry logic
 
@@ -56,36 +56,21 @@ Comprehensive error hierarchy for precise error handling:
 
 ## Common Interfaces
 
-Frequently used interfaces across modules:
+Frequently used public interfaces across modules:
 
-### Product Management
-- **[ProductCard](/api/interfaces/ProductCard)** - Product card data structure
-- **[CreateProductRequest](/api/interfaces/CreateProductRequest)** - Product creation request
-- **[PricingUpdate](/api/interfaces/PricingUpdate)** - Pricing update request
-- **[StockInfo](/api/-internal-/interfaces/StockInfo)** - Stock information
-
-### Order Management
-- **[Order](/api/interfaces/Order)** - Order data structure
-- **[OrderStatus](/api/interfaces/OrderStatus)** - Order status information
-- **[GetOrdersResponse](/api/interfaces/GetOrdersResponse)** - Orders list response
-
-### Financial Data
-- **[BalanceResponse](/api/interfaces/BalanceResponse)** - Account balance response
-- **[Transaction](/api/interfaces/Transaction)** - Transaction data structure
-- **[Payout](/api/interfaces/Payout)** - Payout information
-
-### Analytics Data
-- **[CardStatistics](/api/interfaces/CardStatistics)** - Product card statistics
-- **[CategoryPerformanceResponse](/api/interfaces/CategoryPerformanceResponse)** - Category performance metrics
+- **[RequestOptions](/api/interfaces/RequestOptions)** - Per-request SDK options
+- **[GetStocksResponse](/api/interfaces/GetStocksResponse)** - Product stock response
+- **[ReturnsApiRequest](/api/interfaces/ReturnsApiRequest)** - Unified returns query
+- **[ReturnsApiResponse](/api/interfaces/ReturnsApiResponse)** - Unified returns result and source telemetry
+- **[GetUsersResponse](/api/interfaces/GetUsersResponse)** - Seller-profile users
 
 ## Type Definitions
 
 Browse complete type definitions for API requests and responses:
 
-- **[Interfaces](/api/interfaces/)** - All interface definitions (261 total)
-- **[Type Aliases](/api/type-aliases/)** - Type alias definitions (46 total)
-- **[Enumerations](/api/enumerations/)** - Enum definitions (7 total)
-- **[Variables](/api/variables/)** - Exported variables and constants
+- **[Interfaces](/api/modules#interfaces)** - All public interface definitions
+- **[Type Aliases](/api/modules#type-aliases)** - Public type aliases
+- **[Variables](/api/modules#variables)** - Exported variables and constants
 
 ## Quick Start Example
 

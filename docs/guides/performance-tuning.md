@@ -2946,7 +2946,7 @@ console.log(errorStats);
 
 ## Additional Resources
 
-- **SDK Documentation**: [/docs/api/README.md](../api/README.md)
+- **SDK Documentation**: [API Reference](/api/)
 - **Best Practices Guide**: [/docs/guides/best-practices.md](./best-practices.md)
 - **Examples**: [/examples/](../../examples/)
 - **Wildberries API Docs**: https://dev.wildberries.ru/

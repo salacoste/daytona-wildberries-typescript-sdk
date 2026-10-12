@@ -2,7 +2,7 @@
 
 # Interface: WbWarehouseStockItem
 
-Defined in: [types/analytics.types.ts:1752](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1752)
+Defined in: [types/analytics.types.ts:1769](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1769)
 
 Single inventory item — 1 size in 1 WB warehouse
 
@@ -14,11 +14,11 @@ Single inventory item — 1 size in 1 WB warehouse
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmid"></a> `nmId` | `number` | WB article ID | [types/analytics.types.ts:1754](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1754) |
-| <a id="chrtid"></a> `chrtId` | `number` | Size ID | [types/analytics.types.ts:1756](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1756) |
-| <a id="warehouseid"></a> `warehouseId` | `number` | WB warehouse ID | [types/analytics.types.ts:1758](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1758) |
-| <a id="warehousename"></a> `warehouseName` | `string` | WB warehouse name | [types/analytics.types.ts:1760](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1760) |
-| <a id="regionname"></a> `regionName` | `string` | Region name | [types/analytics.types.ts:1762](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1762) |
-| <a id="quantity"></a> `quantity` | `number` | Current quantity in warehouse | [types/analytics.types.ts:1764](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1764) |
-| <a id="inwaytoclient"></a> `inWayToClient` | `number` | Quantity in transit to client | [types/analytics.types.ts:1766](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1766) |
-| <a id="inwayfromclient"></a> `inWayFromClient` | `number` | Quantity in transit from client (returns) | [types/analytics.types.ts:1768](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1768) |
+| <a id="nmid"></a> `nmId` | `number` | WB article ID | [types/analytics.types.ts:1771](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1771) |
+| <a id="chrtid"></a> `chrtId` | `number` | Size ID | [types/analytics.types.ts:1773](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1773) |
+| <a id="warehouseid"></a> `warehouseId` | `number` | WB warehouse ID | [types/analytics.types.ts:1775](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1775) |
+| <a id="warehousename"></a> `warehouseName` | `string` | WB warehouse name | [types/analytics.types.ts:1777](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1777) |
+| <a id="regionname"></a> `regionName` | `string` | Region name | [types/analytics.types.ts:1779](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1779) |
+| <a id="quantity"></a> `quantity` | `number` | Current quantity in warehouse | [types/analytics.types.ts:1781](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1781) |
+| <a id="inwaytoclient"></a> `inWayToClient` | `number` | Quantity in transit to client | [types/analytics.types.ts:1783](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1783) |
+| <a id="inwayfromclient"></a> `inWayFromClient` | `number` | Quantity in transit from client (returns) | [types/analytics.types.ts:1785](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1785) |

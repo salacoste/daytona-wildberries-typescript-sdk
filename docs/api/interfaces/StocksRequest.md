@@ -2,7 +2,7 @@
 
 # Interface: StocksRequest
 
-Defined in: [types/products.types.ts:1351](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/products.types.ts#L1351)
+Defined in: [types/products.types.ts:1425](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1425)
 
 Request body for [ProductsModule.getStocks](../classes/ProductsModule.md#getstocks) and [ProductsModule.deleteStock](../classes/ProductsModule.md#deletestock).
 
@@ -24,4 +24,4 @@ const request: StocksRequest = { chrtIds: [12345678] };
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="chrtids"></a> `chrtIds?` | `number`[] | Array of size IDs (from `POST /content/v2/get/cards/list`). **Casing note**: WB API uses `chrtID` (uppercase D) in Content endpoints (`/content/v2/get/cards/list`) but `chrtId` (lowercase d) in this Marketplace stocks endpoint. Pass the same numeric values; the SDK property is `chrtIds` (lowercase d) for stocks methods. **Since** 3.12.0 | [types/products.types.ts:1362](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/products.types.ts#L1362) |
+| <a id="chrtids"></a> `chrtIds?` | `number`[] | Array of size IDs (from `POST /content/v2/get/cards/list`). **Casing note**: WB API uses `chrtID` (uppercase D) in Content endpoints (`/content/v2/get/cards/list`) but `chrtId` (lowercase d) in this Marketplace stocks endpoint. Pass the same numeric values; the SDK property is `chrtIds` (lowercase d) for stocks methods. **Since** 3.12.0 | [types/products.types.ts:1436](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1436) |

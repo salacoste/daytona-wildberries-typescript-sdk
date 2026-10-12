@@ -26,7 +26,7 @@ Complete guide to analyzing Wildberries sales funnels -- combining organic produ
 6. [Data Aggregation Patterns](#data-aggregation-patterns)
 7. [Optimization Strategies](#optimization-strategies)
 8. [Rate Limiting and Performance](#rate-limiting-and-performance)
-9. [Migration Notes (v2.6 to v2.7)](#migration-notes-v26-to-v27)
+9. [Migration Notes (v2.6 to v2.7)](#migration-notes-v2-6-to-v2-7)
 10. [Complete Dashboard Example](#complete-dashboard-example)
 
 ---
@@ -95,7 +95,7 @@ A healthy Wildberries funnel typically shows: card-to-cart conversion of 5-15%, 
 These are the v3 endpoints introduced in SDK v2.7.0, replacing the deprecated v2 endpoints that now return 404.
 
 ::: warning
-The old v2 methods (`createNmReportDetail`, `createDetailHistory`, `createGroupedHistory`) still exist as deprecated wrappers but internally call v3. Migrate to the new methods for correct type safety. See [Migration Notes](#migration-notes-v26-to-v27).
+The old v2 methods (`createNmReportDetail`, `createDetailHistory`, `createGroupedHistory`) still exist as deprecated wrappers but internally call v3. Migrate to the new methods for correct type safety. See [Migration Notes](#migration-notes-v2-6-to-v2-7).
 :::
 
 ### Product-Level Analytics: getSalesFunnelProducts()

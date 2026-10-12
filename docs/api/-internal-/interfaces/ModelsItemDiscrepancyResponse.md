@@ -2,7 +2,7 @@
 
 # Interface: ModelsItemDiscrepancyResponse
 
-Defined in: [types/orders-fbw.types.ts:266](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-fbw.types.ts#L266)
+Defined in: [types/orders-fbw.types.ts:266](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L266)
 
 ## Example
 
@@ -40,8 +40,8 @@ Defined in: [types/orders-fbw.types.ts:266](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="packagecode"></a> `packageCode` | `string` | Идентификатор упаковки | [types/orders-fbw.types.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-fbw.types.ts#L268) |
-| <a id="videourl"></a> `videoUrl` | `string` | Видео расхождений при приёмке | [types/orders-fbw.types.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-fbw.types.ts#L270) |
-| <a id="videostartsat"></a> `videoStartsAt` | `string` | Дата и время записи видео расхождений при приёмке | [types/orders-fbw.types.ts:272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-fbw.types.ts#L272) |
-| <a id="videounavailable"></a> `videoUnavailable` | `boolean` | Доступно ли видео: - `false` — да - `true` — нет | [types/orders-fbw.types.ts:274](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-fbw.types.ts#L274) |
-| <a id="items"></a> `items` | [`ModelsDiscrepancyResponseItem`](ModelsDiscrepancyResponseItem.md)[] | Товары поставки | [types/orders-fbw.types.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-fbw.types.ts#L276) |
+| <a id="packagecode"></a> `packageCode` | `string` | Идентификатор упаковки | [types/orders-fbw.types.ts:268](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L268) |
+| <a id="videourl"></a> `videoUrl` | `string` | Видео расхождений при приёмке | [types/orders-fbw.types.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L270) |
+| <a id="videostartsat"></a> `videoStartsAt` | `string` | Дата и время записи видео расхождений при приёмке | [types/orders-fbw.types.ts:272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L272) |
+| <a id="videounavailable"></a> `videoUnavailable` | `boolean` | Доступно ли видео: - `false` — да - `true` — нет | [types/orders-fbw.types.ts:274](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L274) |
+| <a id="items"></a> `items` | [`ModelsDiscrepancyResponseItem`](ModelsDiscrepancyResponseItem.md)[] | Товары поставки | [types/orders-fbw.types.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L276) |

@@ -132,7 +132,7 @@ if (result.duplicateVariants) {
 await sdk.products.createCardsUpload([{ subjectID: subjectId, variants: /* ... */ }]);
 ```
 
-See the [Mandatory Product Characteristics Guide](/guides/mandatory-product-characteristics#variable-vs-fixed-characteristics-v392) for category-specific rules.
+See the [Mandatory Product Characteristics Guide](/guides/mandatory-product-characteristics#variable-vs-fixed-characteristics-v3-9-2) for category-specific rules.
 
 ---
 

@@ -6,6 +6,6 @@
 type AggregationLevel = "day" | "week";
 ```
 
-Defined in: [types/analytics.types.ts:1379](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1379)
+Defined in: [types/analytics.types.ts:1396](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1396)
 
 Тип агрегации: по дням или по неделям

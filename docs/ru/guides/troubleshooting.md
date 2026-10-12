@@ -809,8 +809,8 @@ RateLimitError: Too many concurrent requests (max: 10)
    ```
 
 2. **Просмотреть документацию:**
-   - См. [Руководство по настройке производительности](/ru/guides/performance-tuning.md#rate-limits)
-   - Проверить [Справочник API](../api/modules.html)
+   - См. [Руководство по настройке производительности](/ru/guides/performance-tuning.md#оптимизация-лимитов-запросов)
+   - Проверить [Справочник API (English)](/api/modules)
    - Просмотреть документацию Wildberries API
 
 3. **Протестировать лимиты запросов:**
@@ -1143,7 +1143,7 @@ Field: categoryId - Must be a valid category ID
    ```
 
 4. **Просмотреть документацию API:**
-   - См. [Справочник API](../api/modules/ProductsModule.html)
+   - См. [ProductsModule API (English)](/api/classes/ProductsModule)
    - Проверить требования к полям в определениях типов
    - Просмотреть примеры в [Лучших практиках](/ru/guides/best-practices.md)
 
@@ -1570,7 +1570,7 @@ TypeError: sdk.products.createCardsUpload is not a function
    ```
 
 2. **Просмотреть документацию:**
-   - Проверить [Справочник API](../api/modules.html)
+   - Проверить [Справочник API (English)](/api/modules)
    - Просмотреть [Лучшие практики](/ru/guides/best-practices.md)
    - Прочитать [Примеры](../../examples/)
 
@@ -1837,7 +1837,7 @@ try {
 
 - **GitHub Issues**: [Поиск закрытых и открытых issues](https://github.com/salacoste/daytona-wildberries-typescript-sdk/issues)
 - **FAQ**: Проверить [Часто задаваемые вопросы](/ru/FAQ.md)
-- **Справочник API**: Просмотреть [Документацию API](../api/modules.html)
+- **Справочник API**: Просмотреть [Документацию API (English)](/api/modules)
 - **Примеры**: Посмотреть [рабочие примеры](../../examples/)
 
 ### 2. Спросить сообщество
@@ -1913,7 +1913,7 @@ try {
 
 - Просмотреть [Руководство по лучшим практикам](/ru/guides/best-practices.md), чтобы избежать распространенных проблем
 - Проверить [Руководство по настройке производительности](/ru/guides/performance-tuning.md) для оптимизации
-- Прочитать [Справочник API](../api/modules.html) для детальной документации
+- Прочитать [Справочник API (English)](/api/modules) для детальной документации
 - Исследовать [Примеры](../../examples/) для рабочих образцов кода
 
 ---

@@ -37,7 +37,7 @@ layout: doc
 
 **Пример:** "Nike", "Adidas", "Samsung"
 
-**Связанные:** [Руководство по созданию товаров](/ru/guides/best-practices.md#product-management)
+**Связанные:** [Руководство по созданию товаров](/ru/guides/best-practices.md)
 
 ---
 
@@ -49,7 +49,7 @@ layout: doc
 - **Подкатегории:** Вложенные уровни (например, "Электроника" → "Смартфоны")
 - **Конечные категории:** Финальный уровень, где создаются товары
 
-**Связанные:** [API категорий](/api/classes/ProductsModule.html#getParentCategories)
+**Связанные:** [API категорий](/api/classes/ProductsModule.html#getparentall)
 
 ---
 
@@ -61,7 +61,7 @@ layout: doc
 - Цвет: "Красный", "Синий", "Черный"
 - Материал: "Хлопок", "Полиэстер", "Шерсть"
 
-**Связанные:** [Характеристики товаров](/ru/guides/best-practices.md#characteristics)
+**Связанные:** [Характеристики товаров](/ru/guides/best-practices.md)
 
 ---
 
@@ -70,14 +70,14 @@ layout: doc
 
 **Расчет:** `Комиссия = Цена продажи × Ставка комиссии`
 
-**Связанные:** [Модуль Tariffs](/api/classes/TariffsModule.html), [Ставки комиссии](/api/interfaces/Commission.html)
+**Связанные:** [Модуль Tariffs](/api/classes/TariffsModule.html), [Ставки комиссии](/api/-internal-/interfaces/Commission.html)
 
 ---
 
 ### Покупатель (Customer)
 Конечный пользователь, покупающий товары на маркетплейсе Wildberries. Информация о покупателе включает адрес доставки, контактные данные и предпочтения по заказам.
 
-**Связанные:** [Управление заказами](/ru/guides/best-practices.md#order-management)
+**Связанные:** [Управление заказами](/ru/guides/best-practices.md)
 
 ---
 
@@ -112,7 +112,7 @@ layout: doc
 
 **Формат:** Числовая строка (например, "12345678")
 
-**Связанные:** [Управление товарами](/ru/guides/best-practices.md#product-ids)
+**Связанные:** [Управление товарами](/ru/guides/best-practices.md)
 
 ---
 
@@ -125,7 +125,7 @@ layout: doc
 - **Заказы FBS:** Выполняются продавцом
 - **Заказы FBW:** Выполняются Wildberries
 
-**Связанные:** [Модуль Order](/api/classes/OrdersFbsModule.html), [Рабочий процесс заказов](/ru/guides/best-practices.md#order-workflow)
+**Связанные:** [Модуль Order](/api/classes/OrdersFbsModule.html), [Рабочий процесс заказов](/ru/guides/best-practices.md)
 
 ---
 
@@ -138,7 +138,7 @@ layout: doc
 - Минус возвраты и возмещения
 - Перевод на банковский счет
 
-**Связанные:** [Модуль Finances](/api/classes/FinancesModule.html), [Интерфейс Payout](/api/interfaces/Payout.html)
+**Связанные:** [Модуль Finances](/api/classes/FinancesModule.html)
 
 ---
 
@@ -161,7 +161,7 @@ layout: doc
 - **Скидка:** Процентное или фиксированное снижение суммы
 - **Финальная цена:** Цена, показываемая покупателям
 
-**Связанные:** [Модуль Products - Ценообразование](/api/classes/ProductsModule.html), [Интерфейс PricingInfo](/api/interfaces/PricingInfo.html)
+**Связанные:** [Модуль Products - Ценообразование](/api/classes/ProductsModule.html)
 
 ---
 
@@ -175,7 +175,7 @@ layout: doc
 - Минимум одна характеристика
 - Информация о ценах
 
-**Связанные:** [Интерфейс ProductCard](/api/interfaces/ProductCard.html), [Пример создания товара](../examples/products-crud.ts)
+**Связанные:** [Модуль Products](/api/classes/ProductsModule.html), [Пример создания товара](../examples/products-crud.ts)
 
 ---
 
@@ -197,7 +197,7 @@ layout: doc
 
 **Процесс:** Покупатель запрашивает возврат → Продавец одобряет/отклоняет → Товар возвращается → Возврат средств обрабатывается
 
-**Связанные:** [Обработка возвратов](/ru/guides/best-practices.md#handling-returns)
+**Связанные:** [Обработка возвратов](/ru/guides/best-practices.md)
 
 ---
 
@@ -209,7 +209,7 @@ layout: doc
 - Ответ на отзывы
 - Отслеживание метрик отзывов
 
-**Связанные:** [Модуль Communications](/api/classes/CommunicationsModule.html), [Интерфейс Review](/api/interfaces/Review.html)
+**Связанные:** [Модуль Communications](/api/classes/CommunicationsModule.html)
 
 ---
 
@@ -218,7 +218,7 @@ layout: doc
 
 **Формула:** `Коэффициент конверсии = (Покупки / Просмотры) × 100`
 
-**Связанные:** [Модуль Analytics](/api/classes/AnalyticsModule.html), [Интерфейс SalesFunnel](/api/interfaces/SalesFunnel.html)
+**Связанные:** [Модуль Analytics](/api/classes/AnalyticsModule.html)
 
 ---
 
@@ -241,7 +241,7 @@ layout: doc
 - **Зарезервировано:** Выделено для ожидающих заказов
 - **В пути:** Перемещение между складами
 
-**Связанные:** [Управление запасами](/ru/guides/best-practices.md#stock-management), [Интерфейс StockInfo](/api/interfaces/StockInfo.html)
+**Связанные:** [Управление запасами](/ru/guides/best-practices.md), [Модуль Products](/api/classes/ProductsModule.html)
 
 ---
 
@@ -275,14 +275,14 @@ layout: doc
 - **Дебет:** Комиссии, сборы, возвраты
 - **Выплата:** Перевод на банковский счет
 
-**Связанные:** [Модуль Finances](/api/classes/FinancesModule.html), [Интерфейс Transaction](/api/interfaces/Transaction.html)
+**Связанные:** [Модуль Finances](/api/classes/FinancesModule.html)
 
 ---
 
 ### Склад (Warehouse)
 Складское помещение для товаров. Wildberries управляет несколькими складами в регионах для выполнения FBW.
 
-**Связанные:** [Интерфейс Warehouse](/api/interfaces/Warehouse.html)
+**Связанные:** [Интерфейс Warehouse](/api/-internal-/interfaces/Warehouse.html)
 
 ---
 
@@ -293,7 +293,7 @@ layout: doc
 
 **Расположение:** `src/client/auth-manager.ts`
 
-**Связанные:** [Руководство по аутентификации](/ru/guides/best-practices.md#authentication)
+**Связанные:** [Руководство по аутентификации](/ru/guides/best-practices.md)
 
 ---
 
@@ -309,7 +309,7 @@ layout: doc
 
 **Расположение:** `src/client/base-client.ts`
 
-**Связанные:** [Документ архитектуры](architecture.md#component-2-baseclient)
+**Связанные:** [Текущий статус проекта](/PROJECT_STATUS_SUMMARY)
 
 ---
 
@@ -328,7 +328,7 @@ Error (native)
 
 **Расположение:** `src/errors/`
 
-**Связанные:** [Руководство по обработке ошибок](/ru/guides/troubleshooting.md#error-handling)
+**Связанные:** [Руководство по обработке ошибок](/ru/guides/best-practices.md#обработка-ошибок)
 
 ---
 
@@ -350,7 +350,7 @@ Error (native)
 
 **Расположение:** `src/modules/[module]/`
 
-**Связанные:** [Модули API](/ru/guides/best-practices.md#module-organization)
+**Связанные:** [Модули API](/ru/guides/best-practices.md)
 
 ---
 
@@ -361,7 +361,7 @@ Error (native)
 
 **Расположение:** `src/client/rate-limiter.ts`
 
-**Связанные:** [Руководство по лимиту запросов](/ru/guides/performance-tuning.md#rate-limiting)
+**Связанные:** [Руководство по лимиту запросов](/ru/guides/best-practices.md#лимит-запросов)
 
 ---
 
@@ -380,7 +380,7 @@ Error (native)
 
 **Расположение:** `src/client/retry-handler.ts`
 
-**Связанные:** [Руководство по логике повторов](/ru/guides/troubleshooting.md#retry-logic)
+**Связанные:** [Руководство по логике повторов](/ru/guides/best-practices.md#логика-повторов)
 
 ---
 
@@ -393,7 +393,7 @@ Error (native)
 
 **Тип:** [Интерфейс SDKConfig](/api/interfaces/SDKConfig.html)
 
-**Связанные:** [Руководство по конфигурации](/ru/guides/best-practices.md#configuration)
+**Связанные:** [Руководство по конфигурации](/ru/guides/configuration.md)
 
 ---
 
@@ -402,7 +402,7 @@ TypeScript интерфейсы, автоматически сгенериров
 
 **Расположение:** `src/types/[module].types.ts`
 
-**Связанные:** [Руководство по типобезопасности](/ru/guides/best-practices.md#type-safety)
+**Связанные:** [Руководство по типобезопасности](/ru/guides/best-practices.md)
 
 ---
 
@@ -418,7 +418,7 @@ sdk.ordersFBS.getOrdersNew();
 
 **Расположение:** `src/index.ts`
 
-**Связанные:** [Инициализация SDK](/ru/getting-started/quickstart.md#initialization)
+**Связанные:** [Инициализация SDK](/ru/getting-started/quickstart.md#шаг-2-инициализация-sdk-1-минута)
 
 ---
 
@@ -432,7 +432,7 @@ sdk.ordersFBS.getOrdersNew();
 const balance = await sdk.finances.getBalance();
 ```
 
-**Связанные:** [Руководство по асинхронному программированию](/ru/guides/best-practices.md#async-patterns)
+**Связанные:** [Руководство по асинхронному программированию](/ru/guides/best-practices.md)
 
 ---
 
@@ -441,7 +441,7 @@ const balance = await sdk.finances.getBalance();
 
 **Заголовок:** `Authorization: Bearer {api_key}`
 
-**Связанные:** [Руководство по аутентификации](/ru/getting-started/quickstart.md#authentication)
+**Связанные:** [Руководство по аутентификации](/ru/getting-started/quickstart.md#шаг-2-инициализация-sdk-1-минута)
 
 ---
 
@@ -450,7 +450,7 @@ const balance = await sdk.finances.getBalance();
 
 **Конфигурация:** Может быть переопределен для каждого модуля в `SDKConfig.baseUrls`
 
-**Связанные:** [Домены API](architecture.md#external-apis)
+**Связанные:** [Текущий статус проекта](/PROJECT_STATUS_SUMMARY)
 
 ---
 
@@ -461,7 +461,7 @@ const balance = await sdk.finances.getBalance();
 
 **Пример:** 1с → 2с → 4с → 8с
 
-**Связанные:** [Логика повторов](/ru/guides/troubleshooting.md#exponential-backoff)
+**Связанные:** [Логика повторов](/ru/guides/best-practices.md#логика-повторов)
 
 ---
 
@@ -473,7 +473,7 @@ const balance = await sdk.finances.getBalance();
 - **PATCH:** Обновление конкретных полей
 - **DELETE:** Удаление ресурсов
 
-**Связанные:** [RESTful API дизайн](/ru/guides/best-practices.md#http-methods)
+**Связанные:** [RESTful API дизайн](/ru/guides/best-practices.md)
 
 ---
 
@@ -503,7 +503,7 @@ const balance = await sdk.finances.getBalance();
 { cursor: 'eyJpZCI6MTIzfQ==' }
 ```
 
-**Связанные:** [Руководство по пагинации](/ru/guides/best-practices.md#pagination)
+**Связанные:** [Руководство по пагинации](/ru/guides/best-practices.md)
 
 ---
 
@@ -512,7 +512,7 @@ const balance = await sdk.finances.getBalance();
 
 **Формат:** "X запросов за Y период времени" (например, "3 запроса в минуту")
 
-**Связанные:** [Руководство по лимиту запросов](/ru/guides/performance-tuning.md#rate-limiting)
+**Связанные:** [Руководство по лимиту запросов](/ru/guides/best-practices.md#лимит-запросов)
 
 ---
 
@@ -521,7 +521,7 @@ const balance = await sdk.finances.getBalance();
 - **Запрос:** Клиент отправляет HTTP запрос с методом, URL, заголовками, телом
 - **Ответ:** Сервер возвращает HTTP ответ с кодом состояния, заголовками, телом
 
-**Связанные:** [Основы HTTP](/ru/guides/best-practices.md#http-basics)
+**Связанные:** [Основы HTTP](/ru/guides/best-practices.md)
 
 ---
 
@@ -552,7 +552,7 @@ const balance = await sdk.finances.getBalance();
 
 **Конфигурация:** `SDKConfig.timeout`
 
-**Связанные:** [Конфигурация таймаутов](/ru/guides/best-practices.md#timeouts)
+**Связанные:** [Конфигурация таймаутов](/ru/guides/best-practices.md)
 
 ---
 
@@ -578,7 +578,7 @@ const balance = await sdk.finances.getBalance();
 - Самодокументируемый код
 - Безопасность рефакторинга
 
-**Связанные:** [Определения типов](#type-definitions)
+**Связанные:** [Определения типов](#определения-типов-type-definitions)
 
 ---
 
@@ -594,7 +594,7 @@ const balance = await sdk.finances.getBalance();
 
 **Безопасность:** Никогда не коммитьте API ключи в систему контроля версий. Используйте переменные окружения.
 
-**Связанные:** [Аутентификация](#authentication)
+**Связанные:** [Аутентификация](#аутентификация-authentication)
 
 ---
 
@@ -608,7 +608,7 @@ Promise-based HTTP клиент для Node.js и браузеров. Испол
 ### CommonJS (CJS)
 Система модулей JavaScript, использующая `require()` и `module.exports`. SDK предоставляет CommonJS сборку для обратной совместимости.
 
-**Связанные:** [Системы модулей](#module-system)
+**Связанные:** [Системы модулей](#система-модулей-module-system)
 
 ---
 
@@ -620,7 +620,7 @@ Promise-based HTTP клиент для Node.js и браузеров. Испол
 ### ESM (ECMAScript Modules)
 Современная система модулей JavaScript, использующая `import` и `export`. Основной формат сборки SDK.
 
-**Связанные:** [Системы модулей](#module-system)
+**Связанные:** [Системы модулей](#система-модулей-module-system)
 
 ---
 
@@ -687,14 +687,14 @@ JavaScript runtime для серверной разработки. SDK треб�
 ### OpenAPI (Swagger)
 Формат спецификации для описания RESTful API. Wildberries предоставляет 11 OpenAPI YAML файлов.
 
-**Связанные:** [Спецификация API](architecture.md#external-apis)
+**Связанные:** [Текущий статус проекта](/PROJECT_STATUS_SUMMARY)
 
 ---
 
 ### Promise
 JavaScript объект, представляющий возможное завершение или сбой асинхронной операции. Все методы SDK возвращают Promises.
 
-**Связанные:** [Async/Await](#asyncawait)
+**Связанные:** [Async/Await](#async-await)
 
 ---
 
@@ -762,7 +762,7 @@ JavaScript объект, представляющий возможное зав�
 - **[Руководство по быстрому старту](/ru/getting-started/quickstart.md)** - Начните работу за 5 минут
 - **[Справочник API](/api/)** - Полная документация TypeDoc
 - **[Лучшие практики](/ru/guides/best-practices.md)** - Паттерны, готовые к production
-- **[Документ архитектуры](architecture.md)** - Обзор системного дизайна
+- **[Текущий статус проекта](/PROJECT_STATUS_SUMMARY)** - Область SDK и карта модулей
 
 ---
 

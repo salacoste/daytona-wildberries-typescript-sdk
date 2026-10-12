@@ -2,10 +2,10 @@
 
 # Interface: NmReportRetryReportResponse
 
-Defined in: [types/analytics.types.ts:875](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L875)
+Defined in: [types/analytics.types.ts:892](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L892)
 
 ## Properties
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | `string` | Уведомление, что началась повторная генерация отчёта | [types/analytics.types.ts:877](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L877) |
+| <a id="data"></a> `data` | `string` | Уведомление, что началась повторная генерация отчёта | [types/analytics.types.ts:894](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L894) |

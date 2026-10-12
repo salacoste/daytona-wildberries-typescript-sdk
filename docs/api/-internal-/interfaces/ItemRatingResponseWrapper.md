@@ -2,7 +2,7 @@
 
 # Interface: ItemRatingResponseWrapper
 
-Defined in: [types/analytics.types.ts:2016](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L2016)
+Defined in: [types/analytics.types.ts:2033](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L2033)
 
 Top-level response wrapper for POST /api/analytics/v1/item-rating.
 
@@ -10,4 +10,4 @@ Top-level response wrapper for POST /api/analytics/v1/item-rating.
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data` | [`ItemRatingResponse`](ItemRatingResponse.md) | Response data. | [types/analytics.types.ts:2018](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L2018) |
+| <a id="data"></a> `data` | [`ItemRatingResponse`](ItemRatingResponse.md) | Response data. | [types/analytics.types.ts:2035](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L2035) |

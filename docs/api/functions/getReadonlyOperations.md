@@ -6,7 +6,7 @@
 function getReadonlyOperations(): string[];
 ```
 
-Defined in: [config/operation-metadata.ts:3106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/config/operation-metadata.ts#L3106)
+Defined in: [config/operation-metadata.ts:3146](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/config/operation-metadata.ts#L3146)
 
 Get all readonly operations
 

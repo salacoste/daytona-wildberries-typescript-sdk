@@ -2,7 +2,7 @@
 
 # Interface: OrderByItemRating
 
-Defined in: [types/analytics.types.ts:1861](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1861)
+Defined in: [types/analytics.types.ts:1878](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1878)
 
 Sorting parameters for item rating.
 
@@ -10,5 +10,5 @@ Sorting parameters for item rating.
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="field"></a> `field` | [`ItemRatingOrderByField`](../type-aliases/ItemRatingOrderByField.md) | Sorting field. | [types/analytics.types.ts:1863](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1863) |
-| <a id="mode"></a> `mode` | [`ItemRatingOrderByMode`](../type-aliases/ItemRatingOrderByMode.md) | Sorting order: `asc` (ascending) or `desc` (descending). | [types/analytics.types.ts:1865](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1865) |
+| <a id="field"></a> `field` | [`ItemRatingOrderByField`](../type-aliases/ItemRatingOrderByField.md) | Sorting field. | [types/analytics.types.ts:1880](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1880) |
+| <a id="mode"></a> `mode` | [`ItemRatingOrderByMode`](../type-aliases/ItemRatingOrderByMode.md) | Sorting order: `asc` (ascending) or `desc` (descending). | [types/analytics.types.ts:1882](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1882) |

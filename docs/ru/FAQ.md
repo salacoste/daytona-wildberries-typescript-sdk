@@ -49,7 +49,7 @@ npm install --save-dev typescript@^5.0.0
 
 **⚠️ Безопасность:** Никогда не коммитьте API ключи в систему контроля версий. Используйте переменные окружения или защищенные хранилища.
 
-**Смотрите также:** [Руководство по аутентификации](/ru/getting-started/quickstart.md#authentication)
+**Смотрите также:** [Руководство по аутентификации](/ru/getting-started/quickstart.md#шаг-2-инициализация-sdk-1-минута)
 
 ---
 
@@ -70,7 +70,7 @@ console.log(ping); // { Status: 'OK', TS: '2024-12-03T15:22:47Z' }
 
 **Лучшая практика:** Храните API ключи в переменных окружения, а не в исходном коде.
 
-**Смотрите также:** [Руководство по быстрому старту](/ru/getting-started/quickstart.md#initialization)
+**Смотрите также:** [Руководство по быстрому старту](/ru/getting-started/quickstart.md#шаг-2-инициализация-sdk-1-минута)
 
 ---
 
@@ -153,7 +153,7 @@ const sdk = new WildberriesSDK({
 });
 ```
 
-**Смотрите также:** [Руководство по обработке ошибок](/ru/guides/troubleshooting.md#retry-logic)
+**Смотрите также:** [Руководство по обработке ошибок](/ru/guides/best-practices.md#логика-повторов)
 
 ---
 
@@ -168,7 +168,7 @@ const sdk = new WildberriesSDK({
 
 **Production:** Используйте `'warn'` или `'error'` для уменьшения шума.
 
-**Смотрите также:** [Руководство по устранению неполадок](/ru/guides/troubleshooting.md#debugging)
+**Смотрите также:** [Руководство по устранению неполадок](/ru/guides/troubleshooting.md#режим-отладки)
 
 ---
 
@@ -250,7 +250,7 @@ result.orders?.forEach(order => {
 
 **Рабочий процесс FBS:** Создайте поставку, добавьте заказы (new -> confirm), доставьте поставку (confirm -> complete), или отмените заказ через `updateOrdersCancel()`.
 
-**Смотрите также:** [Рабочий процесс статусов заказов](/ru/guides/best-practices.md#order-management)
+**Смотрите также:** [Рабочий процесс статусов заказов](/ru/guides/best-practices.md)
 
 ---
 
@@ -392,7 +392,7 @@ const nextPage = await sdk.ordersFBS.orders({
 });
 ```
 
-**Смотрите также:** [Паттерны пагинации](/ru/guides/best-practices.md#pagination)
+**Смотрите также:** [Паттерны пагинации](/ru/guides/best-practices.md)
 
 ---
 
@@ -425,7 +425,7 @@ try {
 }
 ```
 
-**Смотрите также:** [Руководство по обработке ошибок](/ru/guides/troubleshooting.md#error-handling)
+**Смотрите также:** [Руководство по обработке ошибок](/ru/guides/best-practices.md#обработка-ошибок)
 
 ---
 
@@ -442,7 +442,7 @@ try {
 3. Убедитесь, что API ключ имеет необходимые области действия
 4. Пересоздайте API ключ, если он истек
 
-**Смотрите также:** [Устранение неполадок аутентификации](/ru/guides/troubleshooting.md#authentication-errors)
+**Смотрите также:** [Устранение неполадок аутентификации](/ru/guides/troubleshooting.md#проблемы-аутентификации)
 
 ---
 
@@ -461,7 +461,7 @@ try {
 }
 ```
 
-**Смотрите также:** [Руководство по ошибкам валидации](/ru/guides/troubleshooting.md#validation-errors)
+**Смотрите также:** [Руководство по ошибкам валидации](/ru/guides/troubleshooting.md#проблемы-валидации)
 
 ---
 
@@ -504,7 +504,7 @@ try {
 | Analytics | 5 запросов/мин | Запросы производительности |
 | Reports (CSV export) | 1 запрос/2мин | Экспорт больших данных |
 
-**Смотрите также:** [Руководство по производительности](/ru/guides/performance-tuning.md#rate-limits)
+**Смотрите также:** [Руководство по производительности](/ru/guides/performance-tuning.md#оптимизация-лимитов-запросов)
 
 ---
 
@@ -598,7 +598,7 @@ const result = await mockSDK.products.getCardsList();
 expect(result.data).toEqual([]);
 ```
 
-**Смотрите также:** [Лучшие практики тестирования](/ru/guides/best-practices.md#testing)
+**Смотрите также:** [Лучшие практики тестирования](/ru/guides/best-practices.md#стратегии-тестирования)
 
 ---
 
@@ -692,7 +692,7 @@ app.post('/webhooks/wildberries', async (req, res) => {
 4. Проверьте сетевое подключение
 5. Повторите с экспоненциальной задержкой (SDK обрабатывает это автоматически)
 
-**Смотрите также:** [Руководство по конфигурации — Настройка таймаута](/ru/guides/configuration.md#конфигурация-таймаута) | [Ошибки сети](/ru/guides/troubleshooting.md#network-errors)
+**Смотрите также:** [Руководство по конфигурации — Настройка таймаута](/ru/guides/configuration.md#конфигурация-таймаута) | [Ошибки сети](/ru/guides/troubleshooting.md#проблемы-сети)
 
 ---
 
@@ -715,7 +715,7 @@ await sdk.products.getCardsList(); // Проверьте консоль для �
 - Задержка сети
 - Время обработки на стороне сервера
 
-**Смотрите также:** [Диагностика производительности](/ru/guides/performance-tuning.md#diagnostics)
+**Смотрите также:** [Диагностика производительности](/ru/guides/performance-tuning.md#устранение-проблем-производительности)
 
 ---
 

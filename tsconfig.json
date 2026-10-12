@@ -19,8 +19,15 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "outDir": "./dist",
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
   },
-  "include": ["src/**/*", "tests/**/*", "tools/**/*", ".vitepress/**/*", "test-*.ts", "comparison_docs/test-*.cjs"],
-  "exclude": ["node_modules", "dist", "tests/tdd"]
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "tools/**/*",
+    ".vitepress/**/*",
+    "test-*.ts",
+    "comparison_docs/test-*.cjs",
+  ],
+  "exclude": ["node_modules", "dist", "tests/tdd", "tests/fixtures/docs/nodenext"],
 }

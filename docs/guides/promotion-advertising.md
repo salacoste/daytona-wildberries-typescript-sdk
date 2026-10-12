@@ -1157,5 +1157,5 @@ const promotions = await sdk.promotion.getCalendarPromotions({
 - [Tariffs Module](./commissions-fees.md) - For ROI calculations
 - [Best Practices](./best-practices.md) - General SDK best practices
 - [Troubleshooting](./troubleshooting.md) - Common issues
-- [Story 8.3: Promotion Type Fixes](/docs/stories/8.3.promotion-type-fixes.md) - Type definition fixes
-- [Story 9.9: SDK Parameter Fixes](/docs/stories/9.9.promotion-sdk-type-fixes.md) - Required parameter fixes
+- [PromotionModule API reference](/api/classes/PromotionModule) - Current methods and types
+- [Migration v4.0.0](/guides/migration-v4) - Removed methods and supported replacements

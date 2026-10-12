@@ -335,6 +335,6 @@ WB API требует эти параметры - они никогда не б�
 ## См. также
 
 - [Руководство по рекламе](/ru/guides/promotion-advertising) - Полная документация модуля
-- [Справочник API Promotion](/api/promotion-api-reference) - Полный справочник API
-- [Story 9.9: Исправления параметров SDK](/docs/stories/9.9.promotion-sdk-type-fixes.md) - Технические детали
+- [Справочник PromotionModule API (English)](/api/classes/PromotionModule) - Полный справочник API
+- [PromotionModule API (English)](/api/classes/PromotionModule) - Актуальные сигнатуры методов
 - [Устранение неполадок](/ru/guides/troubleshooting) - Типичные проблемы и решения

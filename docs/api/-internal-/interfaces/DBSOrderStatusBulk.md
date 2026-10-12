@@ -2,7 +2,7 @@
 
 # Interface: DBSOrderStatusBulk
 
-Defined in: [types/orders-dbs.types.ts:179](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L179)
+Defined in: [types/orders-dbs.types.ts:228](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L228)
 
 Order status from bulk status info endpoint
 
@@ -10,7 +10,7 @@ Order status from bulk status info endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orderid"></a> `orderId?` | `number` | Order ID | [types/orders-dbs.types.ts:181](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L181) |
-| <a id="supplierstatus"></a> `supplierStatus?` | [`DBSSupplierStatus`](../type-aliases/DBSSupplierStatus.md) | Supplier status (triggered by seller actions) | [types/orders-dbs.types.ts:183](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L183) |
-| <a id="wbstatus"></a> `wbStatus?` | `string` | WB system status | [types/orders-dbs.types.ts:185](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L185) |
-| <a id="errors"></a> `errors?` | \{ `code?`: `number`; `detail?`: `string`; \}[] | Errors if any occurred | [types/orders-dbs.types.ts:187](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L187) |
+| <a id="orderid"></a> `orderId?` | `number` | Order ID | [types/orders-dbs.types.ts:230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L230) |
+| <a id="supplierstatus"></a> `supplierStatus?` | [`DBSSupplierStatus`](../type-aliases/DBSSupplierStatus.md) | Supplier status (triggered by seller actions) | [types/orders-dbs.types.ts:232](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L232) |
+| <a id="wbstatus"></a> `wbStatus?` | `string` | WB system status | [types/orders-dbs.types.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L234) |
+| <a id="errors"></a> `errors?` | \{ `code?`: `number`; `detail?`: `string`; \}[] | Errors if any occurred | [types/orders-dbs.types.ts:236](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L236) |

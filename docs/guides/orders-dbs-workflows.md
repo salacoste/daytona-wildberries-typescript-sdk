@@ -21,7 +21,7 @@ This guide covers common workflows for processing DBS (Delivery by Seller) order
 - [B2B Order Handling](#b2b-order-handling)
 - [Batch Processing](#batch-processing)
 - [Error Recovery](#error-recovery)
-- [Migrating from Deprecated Methods](#migrating-from-deprecated-methods)
+- [Migrating from Deprecated Methods](#migrating-from-removed-methods)
 
 ## Order Lifecycle Overview
 

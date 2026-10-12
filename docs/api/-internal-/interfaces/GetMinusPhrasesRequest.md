@@ -2,7 +2,7 @@
 
 # Interface: GetMinusPhrasesRequest
 
-Defined in: [types/promotion.types.ts:2001](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L2001)
+Defined in: [types/promotion.types.ts:2001](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2001)
 
 Request to get minus phrases for campaigns
 
@@ -10,4 +10,4 @@ Request to get minus phrases for campaigns
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="items"></a> `items` | [`GetMinusPhrasesRequestItem`](GetMinusPhrasesRequestItem.md)[] | Array of campaign/product items (max 100) | [types/promotion.types.ts:2003](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/promotion.types.ts#L2003) |
+| <a id="items"></a> `items` | [`GetMinusPhrasesRequestItem`](GetMinusPhrasesRequestItem.md)[] | Array of campaign/product items (max 100) | [types/promotion.types.ts:2003](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2003) |

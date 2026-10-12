@@ -6,7 +6,7 @@
 function getOperationsByCategory(category: string): string[];
 ```
 
-Defined in: [config/operation-metadata.ts:3087](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/config/operation-metadata.ts#L3087)
+Defined in: [config/operation-metadata.ts:3127](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/config/operation-metadata.ts#L3127)
 
 Get all operations for a specific category
 

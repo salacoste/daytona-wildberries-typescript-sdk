@@ -2,7 +2,7 @@
 
 # Interface: GetStatusInfoResponse
 
-Defined in: [types/orders-dbs.types.ts:352](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L352)
+Defined in: [types/orders-dbs.types.ts:401](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L401)
 
 Response from bulk status info endpoint
 
@@ -10,4 +10,4 @@ Response from bulk status info endpoint
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | [`DBSOrderStatusBulk`](DBSOrderStatusBulk.md)[] | List of order statuses | [types/orders-dbs.types.ts:354](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L354) |
+| <a id="orders"></a> `orders?` | [`DBSOrderStatusBulk`](DBSOrderStatusBulk.md)[] | List of order statuses | [types/orders-dbs.types.ts:403](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L403) |

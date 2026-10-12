@@ -20,7 +20,7 @@ The Communications module provides comprehensive tools for engaging with custome
 ## Table of Contents
 
 - [Customer Chat Management](#customer-chat-management)
-- [Product Q&A System](#product-qa-system)
+- [Product Q&A System](#product-q-a-system)
 - [Reviews & Ratings](#reviews--ratings)
 - [Best Practices](#best-practices)
 - [Rate Limits](#rate-limits)
@@ -711,12 +711,9 @@ function analyzeNegativeReview(text: string): { issue: string; resolution: strin
 ## Related Resources
 
 - **[API Reference](https://salacoste.github.io/daytona-wildberries-typescript-sdk/api/)** - Complete TypeDoc documentation
+- **[CommunicationsModule API](/api/classes/CommunicationsModule.html)** - Rendered module reference
 - **[Customer Support Example](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/examples/customer-support.ts)** - Full working example
 - **[Official Wildberries Docs](https://dev.wildberries.ru/openapi/user-communication)** - Official API documentation
-- **[Story 3.5: Customer Chat](../stories/3.5.communications-customer-chat.md)** - Implementation story
-- **[Story 3.6: Q&A and Reviews](../stories/3.6.communications-qa-reviews.md)** - Q&A and reviews story
-- **[Story 3.7: Chat Last Message](../stories/3.7.communications-chat-lastmessage.md)** - lastMessage feature story
-- **[Epic 3: Communications Module](../epics/epic-3-communications-module.md)** - Complete module overview
 
 ---
 

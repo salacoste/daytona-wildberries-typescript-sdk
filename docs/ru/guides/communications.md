@@ -730,12 +730,9 @@ function analyzeNegativeReview(text: string): { issue: string; resolution: strin
 ## Связанные Ресурсы
 
 - **[Справочник API](https://salacoste.github.io/daytona-wildberries-typescript-sdk/api/)** - Полная TypeDoc документация
+- **[CommunicationsModule API (English)](/api/classes/CommunicationsModule.html)** - Общая страница модуля
 - **[Пример Поддержки Клиентов](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/examples/customer-support.ts)** - Полный рабочий пример
 - **[Официальная Документация Wildberries](https://dev.wildberries.ru/openapi/user-communication)** - Официальная документация API
-- **[Story 3.5: Чат с Клиентами](../../stories/3.5.communications-customer-chat.md)** - История реализации
-- **[Story 3.6: Вопросы-Ответы и Отзывы](../../stories/3.6.communications-qa-reviews.md)** - История вопросов-ответов и отзывов
-- **[Story 3.7: Последнее Сообщение в Чате](../../stories/3.7.communications-chat-lastmessage.md)** - История функции lastMessage
-- **[Epic 3: Модуль Communications](../../epics/epic-3-communications-module.md)** - Полный обзор модуля
 
 ---
 

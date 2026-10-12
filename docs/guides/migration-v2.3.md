@@ -335,8 +335,8 @@ Please report issues at: https://github.com/salacoste/daytona-wildberries-typesc
 ## See Also
 
 - [Promotion & Advertising Guide](/guides/promotion-advertising) - Complete module documentation
-- [Promotion API Reference](/api/promotion-api-reference) - Full API reference
-- [Story 9.9: SDK Parameter Fixes](/docs/stories/9.9.promotion-sdk-type-fixes.md) - Technical details
+- [PromotionModule API Reference](/api/classes/PromotionModule) - Full API reference
+- [PromotionModule API reference](/api/classes/PromotionModule) - Current method signatures
 - [Troubleshooting Guide](/guides/troubleshooting) - Common issues and solutions
 
 ## Related Migration Guides

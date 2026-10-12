@@ -41,7 +41,7 @@ Quick solutions for common Wildberries SDK issues. This guide helps you diagnose
 - [Rate limit exceeded](#issue-6-429-too-many-requests)
 - [Connection timeout](#issue-11-etimedout)
 - [Validation error](#issue-13-validation-error)
-- [**getCardsList() validation errors**](#issue-13a-createcardslist-validation-errors--common-issue)
+- [**getCardsList() validation errors**](#issue-13a-getcardslist-validation-errors-common-issue)
 - [Module not found](#issue-17-module-not-found)
 
 ---
@@ -808,7 +808,7 @@ RateLimitError: Too many concurrent requests (max: 10)
    ```
 
 2. **Review documentation:**
-   - See [Performance Tuning Guide](./performance-tuning.md#rate-limits)
+   - See [Performance Tuning Guide](./performance-tuning.md#rate-limit-optimization)
    - Check [API Reference](../api/modules.md)
    - Review Wildberries API documentation
 

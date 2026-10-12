@@ -37,7 +37,7 @@ Official brand name of a product. Required field for product creation in Wildber
 
 **Example:** "Nike", "Adidas", "Samsung"
 
-**Related:** [Product Creation Guide](guides/best-practices.md#product-management)
+**Related:** [Product Creation Guide](guides/best-practices.md)
 
 ---
 
@@ -49,7 +49,7 @@ Hierarchical product classification in Wildberries marketplace. Categories defin
 - **Subcategories:** Nested levels (e.g., "Electronics" → "Smartphones")
 - **Leaf Categories:** Final level where products are created
 
-**Related:** [Category API](api/classes/ProductsModule.html#getParentCategories)
+**Related:** [Category API](api/classes/ProductsModule.html#getparentall)
 
 ---
 
@@ -61,7 +61,7 @@ Product attribute defining specific properties (size, color, material, etc.). Ca
 - Color: "Red", "Blue", "Black"
 - Material: "Cotton", "Polyester", "Wool"
 
-**Related:** [Product Characteristics](guides/best-practices.md#characteristics)
+**Related:** [Product Characteristics](guides/best-practices.md)
 
 ---
 
@@ -70,14 +70,14 @@ Fee charged by Wildberries for selling products on the marketplace. Commission r
 
 **Calculation:** `Commission = Sale Price × Commission Rate`
 
-**Related:** [Tariffs Module](api/classes/TariffsModule.html), [Commission Rates](api/interfaces/Commission.html)
+**Related:** [Tariffs Module](api/classes/TariffsModule.html), [Commission Rates](api/-internal-/interfaces/Commission.html)
 
 ---
 
 ### Customer
 End user purchasing products from Wildberries marketplace. Customer information includes delivery address, contact details, and order preferences.
 
-**Related:** [Order Management](guides/best-practices.md#order-management)
+**Related:** [Order Management](guides/best-practices.md)
 
 ---
 
@@ -112,7 +112,7 @@ Unique product identifier in Wildberries system. Automatically assigned when cre
 
 **Format:** Numeric string (e.g., "12345678")
 
-**Related:** [Product Management](guides/best-practices.md#product-ids)
+**Related:** [Product Management](guides/best-practices.md)
 
 ---
 
@@ -125,7 +125,7 @@ Customer purchase requiring fulfillment. Orders contain product items, quantitie
 - **FBS Orders:** Fulfilled by seller
 - **FBW Orders:** Fulfilled by Wildberries
 
-**Related:** [Order Module](api/classes/OrdersFBSModule.html), [Order Workflow](guides/best-practices.md#order-workflow)
+**Related:** [Order Module](api/classes/OrdersFbsModule.html), [Order Workflow](guides/best-practices.md)
 
 ---
 
@@ -138,7 +138,7 @@ Transfer of funds from Wildberries account to seller's bank account. Payouts occ
 - Minus refunds and returns
 - Transfer to bank account
 
-**Related:** [Finances Module](api/classes/FinancesModule.html), [Payout Interface](api/interfaces/Payout.html)
+**Related:** [Finances Module](api/classes/FinancesModule.html)
 
 ---
 
@@ -161,7 +161,7 @@ Product sale price configuration. Includes base price, discounts, and promotiona
 - **Discount:** Percentage or fixed amount reduction
 - **Final Price:** Price shown to customers
 
-**Related:** [Products Module - Pricing](api/classes/ProductsModule.html), [Pricing Interface](api/interfaces/PricingInfo.html)
+**Related:** [Products Module - Pricing](api/classes/ProductsModule.html)
 
 ---
 
@@ -175,7 +175,7 @@ Complete product listing in Wildberries marketplace. Contains all product inform
 - At least one characteristic
 - Pricing information
 
-**Related:** [Product Card Interface](api/interfaces/ProductCard.html), [Product Creation Example](../examples/products-crud.ts)
+**Related:** [ProductsModule](api/classes/ProductsModule.html), [Product Creation Example](../examples/products-crud.ts)
 
 ---
 
@@ -197,7 +197,7 @@ Customer-initiated product return. Returns impact account balance and inventory 
 
 **Process:** Customer requests return → Seller approves/rejects → Product returned → Refund processed
 
-**Related:** [Order Returns](guides/best-practices.md#handling-returns)
+**Related:** [Order Returns](guides/best-practices.md)
 
 ---
 
@@ -209,7 +209,7 @@ Customer product review including rating (1-5 stars), text comment, and optional
 - Respond to reviews
 - Track review metrics
 
-**Related:** [Communications Module](api/classes/CommunicationsModule.html), [Reviews Interface](api/interfaces/Review.html)
+**Related:** [Communications Module](api/classes/CommunicationsModule.html)
 
 ---
 
@@ -218,7 +218,7 @@ Analytics showing conversion from product views to purchases. Key metrics: views
 
 **Formula:** `Conversion Rate = (Purchases / Views) × 100`
 
-**Related:** [Analytics Module](api/classes/AnalyticsModule.html), [Sales Funnel Interface](api/interfaces/SalesFunnel.html)
+**Related:** [Analytics Module](api/classes/AnalyticsModule.html)
 
 ---
 
@@ -241,7 +241,7 @@ Product quantity available for sale. Stock levels tracked per warehouse for FBW 
 - **Reserved:** Allocated to pending orders
 - **In Transit:** Moving between warehouses
 
-**Related:** [Stock Management](guides/best-practices.md#stock-management), [Stock Interface](api/interfaces/StockInfo.html)
+**Related:** [Stock Management](guides/best-practices.md), [ProductsModule](api/classes/ProductsModule.html)
 
 ---
 
@@ -250,7 +250,7 @@ Batch of products sent to Wildberries warehouse (FBW only). Supplies must be cre
 
 **Process:** Create supply → Add products → Generate labels → Ship to warehouse → WB receives and stores
 
-**Related:** [OrdersFBW Module - Supplies](api/classes/OrdersFBWModule.html)
+**Related:** [OrdersFBW Module - Supplies](api/classes/OrdersFbwModule.html)
 
 ---
 
@@ -275,14 +275,14 @@ Financial record of money movement in seller account. Includes sales, refunds, c
 - **Debit:** Commissions, fees, refunds
 - **Payout:** Transfer to bank account
 
-**Related:** [Finances Module](api/classes/FinancesModule.html), [Transaction Interface](api/interfaces/Transaction.html)
+**Related:** [Finances Module](api/classes/FinancesModule.html)
 
 ---
 
 ### Warehouse
 Storage facility for products. Wildberries operates multiple warehouses across regions for FBW fulfillment.
 
-**Related:** [Warehouse Interface](api/interfaces/Warehouse.html)
+**Related:** [Warehouse Interface](api/-internal-/interfaces/Warehouse.html)
 
 ---
 
@@ -293,7 +293,7 @@ SDK component responsible for API key validation and authentication header injec
 
 **Location:** `src/client/auth-manager.ts`
 
-**Related:** [Authentication Guide](guides/best-practices.md#authentication)
+**Related:** [Authentication Guide](guides/best-practices.md)
 
 ---
 
@@ -309,7 +309,7 @@ Core HTTP client providing centralized request handling. All API modules delegat
 
 **Location:** `src/client/base-client.ts`
 
-**Related:** [Architecture Document](architecture.md#component-2-baseclient)
+**Related:** [Project Status](/PROJECT_STATUS_SUMMARY)
 
 ---
 
@@ -328,7 +328,7 @@ Error (native)
 
 **Location:** `src/errors/`
 
-**Related:** [Error Handling Guide](guides/troubleshooting.md#error-handling)
+**Related:** [Error Handling Guide](guides/best-practices.md#error-handling)
 
 ---
 
@@ -353,7 +353,7 @@ API endpoint groups organized by functionality. SDK includes 14 modules correspo
 
 **Location:** `src/modules/[module]/`
 
-**Related:** [API Modules](guides/best-practices.md#module-organization)
+**Related:** [API Modules](guides/best-practices.md)
 
 ---
 
@@ -364,7 +364,7 @@ Component enforcing per-endpoint rate limits using token bucket algorithm. Preve
 
 **Location:** `src/client/rate-limiter.ts`
 
-**Related:** [Rate Limiting Guide](guides/performance-tuning.md#rate-limiting)
+**Related:** [Rate Limiting Guide](guides/best-practices.md#rate-limiting)
 
 ---
 
@@ -383,7 +383,7 @@ Component implementing exponential backoff retry logic for transient failures. A
 
 **Location:** `src/client/retry-handler.ts`
 
-**Related:** [Retry Logic Guide](guides/troubleshooting.md#retry-logic)
+**Related:** [Retry Logic Guide](guides/best-practices.md#retry-logic)
 
 ---
 
@@ -396,7 +396,7 @@ Configuration object passed to SDK constructor. Defines API key, timeouts, retry
 
 **Type:** [SDKConfig Interface](api/interfaces/SDKConfig.html)
 
-**Related:** [Configuration Guide](guides/best-practices.md#configuration)
+**Related:** [Configuration Guide](guides/configuration.md)
 
 ---
 
@@ -405,7 +405,7 @@ TypeScript interfaces auto-generated from OpenAPI schemas. Provides full type sa
 
 **Location:** `src/types/[module].types.ts`
 
-**Related:** [Type Safety Guide](guides/best-practices.md#type-safety)
+**Related:** [Type Safety Guide](guides/best-practices.md)
 
 ---
 
@@ -421,7 +421,7 @@ sdk.ordersFBS.getOrdersNew();
 
 **Location:** `src/index.ts`
 
-**Related:** [SDK Initialization](getting-started/quickstart.md#initialization)
+**Related:** [SDK Initialization](getting-started/quickstart.md#step-2-initialize-sdk-1-minute)
 
 ---
 
@@ -435,7 +435,7 @@ Modern JavaScript pattern for handling asynchronous operations. All SDK methods 
 const balance = await sdk.finances.getBalance();
 ```
 
-**Related:** [Async Programming Guide](guides/best-practices.md#async-patterns)
+**Related:** [Async Programming Guide](guides/best-practices.md)
 
 ---
 
@@ -444,7 +444,7 @@ Process of verifying API key and authorizing requests. SDK uses Bearer token aut
 
 **Header:** `Authorization: Bearer {api_key}`
 
-**Related:** [Authentication Guide](getting-started/quickstart.md#authentication)
+**Related:** [Authentication Guide](getting-started/quickstart.md#step-2-initialize-sdk-1-minute)
 
 ---
 
@@ -453,7 +453,7 @@ Root URL for API endpoints. Different Wildberries APIs use different base URLs (
 
 **Configuration:** Can be overridden per module in `SDKConfig.baseUrls`
 
-**Related:** [API Domains](architecture.md#external-apis)
+**Related:** [Project Status](/PROJECT_STATUS_SUMMARY)
 
 ---
 
@@ -464,7 +464,7 @@ Retry strategy where delay between retries increases exponentially. Prevents ove
 
 **Example:** 1s → 2s → 4s → 8s
 
-**Related:** [Retry Logic](guides/troubleshooting.md#exponential-backoff)
+**Related:** [Retry Logic](guides/best-practices.md#retry-logic)
 
 ---
 
@@ -476,7 +476,7 @@ Request types for API operations:
 - **PATCH:** Update specific fields
 - **DELETE:** Remove resources
 
-**Related:** [RESTful API Design](guides/best-practices.md#http-methods)
+**Related:** [RESTful API Design](guides/best-practices.md)
 
 ---
 
@@ -506,7 +506,7 @@ Pattern for retrieving large datasets in smaller chunks. Wildberries APIs use of
 { cursor: 'eyJpZCI6MTIzfQ==' }
 ```
 
-**Related:** [Pagination Guide](guides/best-practices.md#pagination)
+**Related:** [Pagination Guide](guides/best-practices.md)
 
 ---
 
@@ -515,7 +515,7 @@ Restriction on number of API requests within a time period. Prevents abuse and e
 
 **Format:** "X requests per Y time period" (e.g., "3 requests per minute")
 
-**Related:** [Rate Limiting Guide](guides/performance-tuning.md#rate-limiting)
+**Related:** [Rate Limiting Guide](guides/best-practices.md#rate-limiting)
 
 ---
 
@@ -524,7 +524,7 @@ Communication pattern between client and server:
 - **Request:** Client sends HTTP request with method, URL, headers, body
 - **Response:** Server returns HTTP response with status code, headers, body
 
-**Related:** [HTTP Basics](guides/best-practices.md#http-basics)
+**Related:** [HTTP Basics](guides/best-practices.md)
 
 ---
 
@@ -555,7 +555,7 @@ Maximum time allowed for API request to complete. Prevents indefinite waiting fo
 
 **Configuration:** `SDKConfig.timeout`
 
-**Related:** [Timeout Configuration](guides/best-practices.md#timeouts)
+**Related:** [Timeout Configuration](guides/best-practices.md)
 
 ---
 
@@ -690,14 +690,14 @@ Package manager for JavaScript. SDK distributed via npm registry.
 ### OpenAPI (Swagger)
 Specification format for describing RESTful APIs. Wildberries provides 14 OpenAPI YAML files.
 
-**Related:** [API Specification](architecture.md#external-apis)
+**Related:** [Project Status](/PROJECT_STATUS_SUMMARY)
 
 ---
 
 ### Promise
 JavaScript object representing eventual completion or failure of async operation. All SDK methods return Promises.
 
-**Related:** [Async/Await](#asyncawait)
+**Related:** [Async/Await](#async-await)
 
 ---
 
@@ -765,7 +765,7 @@ Typed superset of JavaScript adding static type checking. SDK written in TypeScr
 - **[Quickstart Guide](getting-started/quickstart.md)** - Get started in 5 minutes
 - **[API Reference](api/)** - Complete TypeDoc documentation
 - **[Best Practices](guides/best-practices.md)** - Production-ready patterns
-- **[Architecture Document](architecture.md)** - System design overview
+- **[Project Status](/PROJECT_STATUS_SUMMARY)** - Current SDK scope and module map
 
 ---
 

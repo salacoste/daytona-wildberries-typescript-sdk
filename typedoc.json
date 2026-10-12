@@ -44,11 +44,11 @@
   "searchInComments": true,
   "navigationLinks": {
     "Wildberries API Docs": "https://dev.wildberries.ru/",
-    "GitHub": "https://github.com/anthropics/wildberries-typescript-sdk",
+    "GitHub": "https://github.com/salacoste/daytona-wildberries-typescript-sdk",
     "NPM": "https://www.npmjs.com/package/daytona-wildberries-typescript-sdk"
   },
   "sidebarLinks": {
-    "GitHub": "https://github.com/anthropics/wildberries-typescript-sdk",
+    "GitHub": "https://github.com/salacoste/daytona-wildberries-typescript-sdk",
     "Documentation": "https://dev.wildberries.ru/"
   },
   "hideGenerator": false,

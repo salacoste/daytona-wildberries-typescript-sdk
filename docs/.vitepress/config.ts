@@ -10,9 +10,59 @@
  * Configuration uses TypeScript with `defineConfig` for full IntelliSense support.
  */
 
-import { defineConfig } from 'vitepress';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { dirname, extname, join, relative, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { defineConfigWithTheme, type DefaultTheme } from 'vitepress';
+import { normalizeDocumentationFragment } from './fragment-utils';
 
-export default defineConfig({
+interface DocumentationThemeConfig extends DefaultTheme.Config {
+  localeCounterparts?: string[];
+}
+
+const docsDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+
+const collectMarkdownFiles = (directory: string): string[] => readdirSync(directory, { withFileTypes: true })
+  .flatMap((entry) => {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) return collectMarkdownFiles(path);
+    return entry.isFile() && entry.name.endsWith('.md') ? [path] : [];
+  });
+
+const markdownFiles = collectMarkdownFiles(docsDirectory);
+const markdownRelativePath = (path: string): string => relative(docsDirectory, path).split('\\').join('/');
+const explicitFragmentIds = new Map(
+  markdownFiles.map((path) => [
+    markdownRelativePath(path),
+    new Set([...readFileSync(path, 'utf8').matchAll(/<a id="([a-z0-9_-]+)"><\/a>/g)].map((match) => match[1])),
+  ])
+);
+
+const explicitIdsForLink = (sourceRelativePath: string, hrefPath: string): ReadonlySet<string> => {
+  let targetPath: string;
+  if (!hrefPath) {
+    targetPath = sourceRelativePath;
+  } else if (hrefPath.startsWith('/')) {
+    targetPath = hrefPath.slice(1);
+  } else {
+    targetPath = markdownRelativePath(resolve(docsDirectory, dirname(sourceRelativePath), hrefPath));
+  }
+
+  if (extname(targetPath) === '.html') targetPath = targetPath.replace(/\.html$/, '.md');
+  else if (!extname(targetPath)) {
+    const filePath = `${targetPath}.md`;
+    targetPath = explicitFragmentIds.has(filePath) ? filePath : `${targetPath.replace(/\/$/, '')}/index.md`;
+  }
+
+  return explicitFragmentIds.get(targetPath) ?? new Set();
+};
+
+const localeCounterparts = collectMarkdownFiles(join(docsDirectory, 'ru'))
+  .map((path) => relative(join(docsDirectory, 'ru'), path).split('\\').join('/'))
+  .filter((path) => path !== 'README.md' && existsSync(join(docsDirectory, path)))
+  .sort();
+
+export default defineConfigWithTheme<DocumentationThemeConfig>({
   // Base URL for GitHub Pages deployment
   // Development: uses '/' for local testing
   // Production: uses '/daytona-wildberries-typescript-sdk/' for GitHub Pages
@@ -29,45 +79,115 @@ export default defineConfig({
     // Disable Vue template syntax in markdown (fixes TypeDoc generic parsing)
     // TypeDoc outputs \< and \> for TypeScript generics which Vue parses as HTML
     config: (md) => {
-      // Disable HTML tags in markdown to prevent Vue from parsing escaped brackets as HTML
+      // Keep general inline HTML escaped so TypeScript-like text cannot be parsed as
+      // Vue templates. TypeDoc's exact empty member anchors are restored below.
       md.set({ html: false });
+
+      md.core.ruler.after('inline', 'typedoc-member-anchors', (state) => {
+        const anchorPattern = /<a id="[a-z0-9_-]+"><\/a>/g;
+
+        for (const token of state.tokens) {
+          if (token.type !== 'inline' || !token.children) continue;
+
+          const children = [];
+          for (const child of token.children) {
+            if (child.type !== 'text' || !anchorPattern.test(child.content)) {
+              anchorPattern.lastIndex = 0;
+              children.push(child);
+              continue;
+            }
+
+            anchorPattern.lastIndex = 0;
+            let start = 0;
+            for (const match of child.content.matchAll(anchorPattern)) {
+              if (match.index > start) {
+                const textToken = new state.Token('text', '', 0);
+                textToken.content = child.content.slice(start, match.index);
+                children.push(textToken);
+              }
+
+              const anchorToken = new state.Token('html_inline', '', 0);
+              anchorToken.content = match[0];
+              children.push(anchorToken);
+              start = match.index + match[0].length;
+            }
+
+            if (start < child.content.length) {
+              const textToken = new state.Token('text', '', 0);
+              textToken.content = child.content.slice(start);
+              children.push(textToken);
+            }
+          }
+
+          token.children = children;
+        }
+      });
+
+      const defaultLinkOpen = md.renderer.rules.link_open ??
+        ((tokens, index, options, _env, self) => self.renderToken(tokens, index, options));
+      md.renderer.rules.link_open = (tokens, index, options, env, self) => {
+        const href = tokens[index].attrGet('href');
+        if (href?.startsWith('/openapi/')) {
+          tokens[index].attrSet('href', `https://dev.wildberries.ru${href}`);
+        } else if (href?.startsWith('/examples/') && /\.[cm]?[jt]s(?:#.*)?$/.test(href)) {
+          tokens[index].attrSet(
+            'href',
+            `https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main${href}`
+          );
+        } else if (href && /^(?:\.\.\/)+examples\/$/.test(href)) {
+          tokens[index].attrSet('href', '/examples/');
+        } else if (href && /^(?:\.\.\/)+examples\/(.+)$/.test(href)) {
+          const examplePath = href.match(/^(?:\.\.\/)+examples\/(.+)$/)?.[1];
+          tokens[index].attrSet(
+            'href',
+            `https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/examples/${examplePath}`
+          );
+        } else if (href && /(?:^|\/)CHANGELOG(?:\.md)?(?:#.*)?$/.test(href)) {
+          const fragment = href.includes('#') ? `#${href.split('#')[1]}` : '';
+          tokens[index].attrSet(
+            'href',
+            `https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/CHANGELOG.md${fragment}`
+          );
+        } else if (href && /^(?:(?:\.\.\/)+|\/)src\/(.+)$/.test(href)) {
+          const sourcePath = href.match(/^(?:(?:\.\.\/)+|\/)src\/(.+)$/)?.[1];
+          tokens[index].attrSet(
+            'href',
+            `https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/src/${sourcePath}`
+          );
+        } else if (href && /(?:^|\/)(README|CONTRIBUTING|CODE_OF_CONDUCT|SECURITY|LICENSE)\.md$/.test(href)) {
+          const file = href.match(/(?:^|\/)(README|CONTRIBUTING|CODE_OF_CONDUCT|SECURITY|LICENSE)\.md$/)?.[1];
+          tokens[index].attrSet(
+            'href',
+            `https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/main/${file}.md`
+          );
+        } else if (href && /(?:^|\/)api\/[^#]+#[^#]+$/.test(href)) {
+          const [path, fragment] = href.split('#');
+          tokens[index].attrSet('href', `${path}#${fragment.toLowerCase()}`);
+        }
+
+        const renderedHref = tokens[index].attrGet('href');
+        if (renderedHref && !/^(?:https?:|mailto:|tel:|\/\/)/i.test(renderedHref) && renderedHref.includes('#')) {
+          const [path, fragment] = renderedHref.split('#');
+          let decodedFragment = fragment;
+          try {
+            decodedFragment = decodeURIComponent(fragment);
+          } catch {
+            // Keep malformed fragments visible to the rendered-site validator.
+          }
+          const explicitIds = explicitIdsForLink(env.relativePath, path.split('?')[0]);
+          tokens[index].attrSet(
+            'href',
+            `${path}#${normalizeDocumentationFragment(decodedFragment, explicitIds)}`
+          );
+        }
+        return defaultLinkOpen(tokens, index, options, env, self);
+      };
     }
   },
 
-  // Dead links to ignore (external links or intentionally missing)
-  // TODO: Phase 6 documentation update - fix remaining dead links:
-  // 1. Create missing use-case examples (pricing-updates, stock-management, shipping, returns, etc.)
-  // 2. Create tutorials/index.md files
-  // 3. Sync Russian localization with English version
-  ignoreDeadLinks: [
-    // External links
-    /^https?:\/\//,
-    // API reference links (TypeDoc generated, may have different structure)
-    /\/api\//,
-    // Relative links to non-existent pages (will be created in future)
-    /^\.\//,
-    // Russian version links (need localization sync)
-    /\/ru\//,
-    // Internal docs (excluded from build via srcExclude, referenced from module pages)
-    /\/epics\//,
-    /\/stories\//,
-    // Root-level docs referenced from nested folders
-    /README$/,
-    /CONTRIBUTING$/,
-    /CODE_OF_CONDUCT$/,
-    /SECURITY$/,
-    /CHANGELOG$/,
-    /LICENSE$/,
-    /architecture$/,
-    /faq$/i,
-    // Tutorial indexes (to be created)
-    /tutorials\/index/,
-    // Wildberries API doc links from TypeDoc
-    /work-with-products/,
-    /orders-fbw/,
-    /promotion/,
-    /openapi/
-  ],
+  // VitePress emits external URLs unchanged. The rendered-site validator
+  // inventories them without network requests and validates same-origin
+  // absolute URLs as internal routes and fragments.
 
   // Exclude planning/development files from documentation build
   // Only include actual user-facing documentation (guides, getting-started, etc.)
@@ -79,6 +199,10 @@ export default defineConfig({
     'architecture.md',        // Architecture planning
     'EPIC_5_DOCUMENTATION.md', // Other Epic files
     'EPIC_4_PLAN.md',
+    'epics.md',
+    'epics/**',               // Historical implementation planning
+    'ru/README.md',           // Repository README translation, not a site route
+    'sprint-1-epics.md',
     'stories/**',             // Development stories
     'qa/**'                   // QA reports and testing docs
   ],
@@ -136,6 +260,7 @@ export default defineConfig({
               { text: 'Migration v2.2 → v2.3', link: '/guides/migration-v2.3' },
               { text: 'Best Practices', link: '/guides/best-practices' },
               { text: 'Performance Tuning', link: '/guides/performance' },
+              { text: 'NodeNext ESM & CommonJS', link: '/guides/nodenext' },
               { text: 'Security Guide', link: '/guides/security' },
               { text: 'Configuration Guide', link: '/guides/configuration' },
               { text: 'Troubleshooting', link: '/guides/troubleshooting' },
@@ -274,7 +399,9 @@ export default defineConfig({
                   { text: 'CommunicationsModule', link: '/api/classes/CommunicationsModule' },
                   { text: 'PromotionModule', link: '/api/classes/PromotionModule' },
                   { text: 'TariffsModule', link: '/api/classes/TariffsModule' },
-                  { text: 'InStorePickupModule', link: '/api/classes/InStorePickupModule' }
+                  { text: 'InStorePickupModule', link: '/api/classes/InStorePickupModule' },
+                  { text: 'ReturnsModule', link: '/api/classes/ReturnsModule' },
+                  { text: 'UserManagementModule', link: '/api/classes/UserManagementModule' }
                 ]
               },
               {
@@ -282,8 +409,7 @@ export default defineConfig({
                 collapsed: true,
                 items: [
                   { text: 'Interfaces', link: '/api/modules#interfaces' },
-                  { text: 'Type Aliases', link: '/api/modules#type-aliases' },
-                  { text: 'Enumerations', link: '/api/modules#enumerations' }
+                  { text: 'Type Aliases', link: '/api/modules#type-aliases' }
                 ]
               }
             ]
@@ -397,6 +523,7 @@ export default defineConfig({
               { text: 'Миграция v2.2 → v2.3', link: '/ru/guides/migration-v2.3' },
               { text: 'Лучшие практики', link: '/ru/guides/best-practices' },
               { text: 'Настройка производительности', link: '/ru/guides/performance' },
+              { text: 'NodeNext: ESM и CommonJS', link: '/ru/guides/nodenext' },
               { text: 'Руководство по безопасности', link: '/ru/guides/security' },
               { text: 'Руководство по настройке', link: '/ru/guides/configuration' },
               { text: 'Устранение неполадок', link: '/ru/guides/troubleshooting' },
@@ -496,7 +623,7 @@ export default defineConfig({
             ]
           },
           {
-            text: 'Модули',
+            text: 'Модули (общие страницы, English)',
             items: [
               { text: 'General', link: '/modules/general' },
               { text: 'Products', link: '/modules/products' },
@@ -515,7 +642,7 @@ export default defineConfig({
             ]
           },
           {
-            text: 'Справочник API',
+            text: 'Справочник API (общие страницы, English)',
             items: [
               { text: 'Обзор', link: '/api/' },
               {
@@ -540,7 +667,9 @@ export default defineConfig({
                   { text: 'CommunicationsModule', link: '/api/classes/CommunicationsModule' },
                   { text: 'PromotionModule', link: '/api/classes/PromotionModule' },
                   { text: 'TariffsModule', link: '/api/classes/TariffsModule' },
-                  { text: 'InStorePickupModule', link: '/api/classes/InStorePickupModule' }
+                  { text: 'InStorePickupModule', link: '/api/classes/InStorePickupModule' },
+                  { text: 'ReturnsModule (English)', link: '/api/classes/ReturnsModule' },
+                  { text: 'UserManagementModule (English)', link: '/api/classes/UserManagementModule' }
                 ]
               },
               {
@@ -548,8 +677,7 @@ export default defineConfig({
                 collapsed: true,
                 items: [
                   { text: 'Интерфейсы', link: '/api/modules#interfaces' },
-                  { text: 'Псевдонимы типов', link: '/api/modules#type-aliases' },
-                  { text: 'Перечисления', link: '/api/modules#enumerations' }
+                  { text: 'Псевдонимы типов', link: '/api/modules#type-aliases' }
                 ]
               }
             ]
@@ -602,6 +730,12 @@ export default defineConfig({
 
   // Theme configuration (shared across locales)
   themeConfig: {
+    // The documentation has partial Russian coverage. A language switch must
+    // therefore use a valid locale home instead of inventing a mirrored route
+    // that does not exist in the target locale.
+    i18nRouting: false,
+    localeCounterparts,
+
     // Social links in navigation
     // Based on Context7 VitePress socialLinks configuration patterns
     socialLinks: [

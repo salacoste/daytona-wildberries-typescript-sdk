@@ -26,7 +26,7 @@ type AccessCode =
   | "brandzoneSubscribe";
 ```
 
-Defined in: [types/general.types.ts:83](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/general.types.ts#L83)
+Defined in: [types/general.types.ts:83](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L83)
 
 Access code for user permissions
 Determines which sections of the seller profile the user can access

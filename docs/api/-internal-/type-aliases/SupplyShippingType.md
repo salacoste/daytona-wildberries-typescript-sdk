@@ -6,7 +6,7 @@
 type SupplyShippingType = "selfShipping" | "transportCompany";
 ```
 
-Defined in: [types/orders-fbs.types.ts:1169](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/types/orders-fbs.types.ts#L1169)
+Defined in: [types/orders-fbs.types.ts:1169](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L1169)
 
 Type of shipping to the shipping point:
 - `selfShipping` — shipping at the seller's expense

@@ -6,7 +6,7 @@
 function reconcileAcceptanceDelta(input: ReconcileAcceptanceDeltaInput): ReconcileAcceptanceDeltaResult;
 ```
 
-Defined in: [utils/reconcileAcceptanceDelta.ts:89](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/utils/reconcileAcceptanceDelta.ts#L89)
+Defined in: [utils/reconcileAcceptanceDelta.ts:89](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/utils/reconcileAcceptanceDelta.ts#L89)
 
 Reconciles declared vs accepted quantity per nmId for FBO acceptance.
 

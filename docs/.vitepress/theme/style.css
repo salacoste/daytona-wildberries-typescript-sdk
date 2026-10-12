@@ -1,0 +1,6 @@
+/* The custom switch preserves an existing counterpart and falls back to the
+ * target locale home when a translation does not exist. */
+.VPNavBarTranslations,
+.VPNavScreenTranslations {
+  display: none !important;
+}

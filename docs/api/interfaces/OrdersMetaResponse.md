@@ -2,7 +2,7 @@
 
 # Interface: OrdersMetaResponse
 
-Defined in: [types/orders-fbs.types.ts:378](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-fbs.types.ts#L378)
+Defined in: [types/orders-fbs.types.ts:378](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L378)
 
 Response containing metadata for multiple orders
 
@@ -10,4 +10,4 @@ Response containing metadata for multiple orders
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | [`OrderMetaItem`](OrderMetaItem.md)[] | List of order metadata items | [types/orders-fbs.types.ts:380](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-fbs.types.ts#L380) |
+| <a id="orders"></a> `orders?` | [`OrderMetaItem`](OrderMetaItem.md)[] | List of order metadata items | [types/orders-fbs.types.ts:380](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L380) |

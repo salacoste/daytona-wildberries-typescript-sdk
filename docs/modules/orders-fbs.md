@@ -1135,20 +1135,9 @@ A supply can only contain orders of the **same B2B status**. The first order add
 
 ## Related Resources
 
-### EPICs
-
-- [EPIC 22: Orders FBS URL Fixes](/docs/epics/EPIC_22_FBS_URL_FIXES.md) - Critical URL and endpoint fixes
-- [EPIC 23: Orders FBS Type Safety](/docs/epics/EPIC_23_FBS_TYPE_SAFETY.md) - Type improvements and naming cleanup
-- [EPIC 24: Orders FBS Rate Limits](/docs/epics/EPIC_24_FBS_RATE_LIMITS.md) - Rate limit configuration audit
-- [EPIC 25: Orders FBS Testing](/docs/epics/EPIC_25_FBS_TESTING.md) - Test coverage improvements
-
-### User Stories
-
-- [Story 2.5: Order Retrieval and Status](/docs/stories/2.5.orders-fbs-retrieval-status.md)
-- [Story 2.6: Shipping and Supply Management](/docs/stories/2.6.orders-fbs-shipping-supplies.md)
-
 ### API Documentation
 
+- [OrdersFbsModule API reference](/api/classes/OrdersFbsModule)
 - [Wildberries FBS API Reference](https://openapi.wildberries.ru/#tag/Sborochnye-zadaniya-FBS)
 - [Wildberries FBS Supplies](https://openapi.wildberries.ru/#tag/Postavki-FBS)
 - [Wildberries FBS Metadata](https://openapi.wildberries.ru/#tag/Metadannye-FBS)

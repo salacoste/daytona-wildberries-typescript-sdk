@@ -15,7 +15,7 @@ type CardDocumentReason =
   | "document_dates_mismatch";
 ```
 
-Defined in: [types/products.types.ts:1198](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/products.types.ts#L1198)
+Defined in: [types/products.types.ts:1272](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1272)
 
 Reason a card document failed validation.
 Returned for `verdict.status: 2` (validation rejected) in `getCardsList()` responses.

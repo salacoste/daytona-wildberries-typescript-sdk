@@ -18,7 +18,7 @@ read directly from the shipped source (`src/modules/orders-fbs/index.ts`, `src/m
 3. [List supplies: `supplies()` (and the `getSupplies()` alias)](#3-list-supplies-supplies-and-the-getsupplies-alias)
 4. [Method reference table](#4-method-reference-table)
 5. [Marking-validation gates (critical for `updateSuppliesDeliver`)](#5-marking-validation-gates-critical-for-updatesuppliesdeliver)
-6. [Acceptance & «акт приёмки» (reconciliation recipe)](#6-acceptance--акт-приёмки-reconciliation-recipe)
+6. [Acceptance & «акт приёмки» (reconciliation recipe)](#_6-acceptance-«акт-приемки»-reconciliation-recipe)
 7. [Rate limits summary](#7-rate-limits-summary)
 8. [End-to-end example](#8-end-to-end-example)
 9. [Related resources](#9-related-resources)
@@ -200,7 +200,7 @@ All methods below are on `sdk.ordersFBS` unless noted. Signatures are reproduced
 | `deleteSuppliesTrbx` | `(supplyId: string, data?: TrbxDeleteRequest) => Promise<void>` | `DELETE /api/v3/supplies/{id}/trbx` | Only **during assembly** (before deliver) |
 | `createTrbxSticker` | `(supplyId: string, options?: BarcodeParams, data?: TrbxStickerRequest) => Promise<{ stickers?: TrbxStickers[] }>` | `POST /api/v3/supplies/{id}/trbx/stickers` | Returns QR stickers (580×400 px); format via `options.type` |
 | `addOrdersToSupply` | `(supplyId: string, data: AddOrdersToSupplyRequest) => Promise<void>` | `PATCH /api/marketplace/v3/supplies/{id}/orders` | Bulk-attach assembly tasks; `data = { orders: number[] }` |
-| `getSupplyOrderIds` | `(supplyId: string) => Promise<SupplyOrderIdsResponse>` | `GET /api/marketplace/v3/supplies/{id}/order-ids` | Returns `{ orderIds: number[] }` — the declared set for reconciliation (see [§6](#6-acceptance--акт-приёмки-reconciliation-recipe)) |
+| `getSupplyOrderIds` | `(supplyId: string) => Promise<SupplyOrderIdsResponse>` | `GET /api/marketplace/v3/supplies/{id}/order-ids` | Returns `{ orderIds: number[] }` — the declared set for reconciliation (see [§6](#_6-acceptance-«акт-приемки»-reconciliation-recipe)) |
 | `getOrderStatuses` | `(data: { orders: number[] }) => Promise<OrderStatusResponse>` | `POST /api/v3/orders/status` | Granular per-task status (`OrderSupplierStatus` + `OrderWbStatus`) |
 | `getOrdersMetaBulk` | `(data: GetMetaMultiRequest) => Promise<OrdersMetaResponse>` | `POST /api/marketplace/v3/orders/meta` | Max 100 order IDs; **pre-flight for marking validation** before `updateSuppliesDeliver` |
 | `getOrdersReshipment` | `() => Promise<ReshipmentResponse>` | `GET /api/v3/supplies/orders/reshipment` | Tasks needing reshipment (scanned at reception but with unscanned items) |

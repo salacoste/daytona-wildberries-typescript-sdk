@@ -6,7 +6,7 @@
 type CardDocumentType = 1 | 2 | 3 | 4 | 5 | 7 | 8 | 9;
 ```
 
-Defined in: [types/products.types.ts:1090](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/products.types.ts#L1090)
+Defined in: [types/products.types.ts:1164](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1164)
 
 Product card document type (WB register document kinds).
 

@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "types": ["node"]
+  },
+  "include": ["config.ts", "fragment-utils.ts"]
+}

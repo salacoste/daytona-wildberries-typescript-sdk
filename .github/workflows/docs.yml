@@ -56,10 +56,7 @@ jobs:
 
       # 6. Validate documentation output
       - name: Validate documentation output
-        run: |
-          test -d docs/.vitepress/dist || exit 1
-          test -f docs/.vitepress/dist/index.html || exit 1
-          echo "✓ Documentation build validated successfully"
+        run: npm run validate:docs:site
 
       # 7. Extract version for commit message
       - name: Extract SDK version

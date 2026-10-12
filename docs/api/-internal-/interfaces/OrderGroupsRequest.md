@@ -2,7 +2,7 @@
 
 # Interface: OrderGroupsRequest
 
-Defined in: [types/orders-dbs.types.ts:394](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L394)
+Defined in: [types/orders-dbs.types.ts:443](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L443)
 
 Request body for getGroupsInfo
 Used to query order group information
@@ -11,4 +11,4 @@ Used to query order group information
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | `number`[] | Array of order IDs to query groups for | [types/orders-dbs.types.ts:396](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L396) |
+| <a id="orders"></a> `orders` | `number`[] | Array of order IDs to query groups for | [types/orders-dbs.types.ts:445](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L445) |

@@ -786,19 +786,7 @@ The following methods are deprecated and will be removed in a future version. Us
 
 ## Related Documentation
 
-### Stories
-- [Story 2.1: Categories & Structure](/docs/stories/2.1.products-categories-structure.md)
-- [Story 2.2: CRUD Operations](/docs/stories/2.2.products-crud-operations.md)
-- [Story 2.3: Media & Pricing](/docs/stories/2.3.products-media-pricing.md)
-- [Story 2.4: Warehouse & Stock](/docs/stories/2.4.products-warehouse-stock.md)
-
-### EPICs
-- [EPIC 16: Products Brands Endpoint](/docs/epics/EPIC_16_PRODUCTS_BRANDS.md)
-- [EPIC 17: Products Rate Limits](/docs/epics/EPIC_17_PRODUCTS_RATE_LIMITS.md)
-- [EPIC 18: Products Metadata Support](/docs/epics/EPIC_18_METADATA_SUPPORT.md)
-- [EPIC 19: Products Type Safety](/docs/epics/EPIC_19_PRODUCTS_TYPE_SAFETY.md)
-- [EPIC 20: Products Naming Fixes](/docs/epics/EPIC_20_PRODUCTS_NAMING.md)
-- [EPIC 21: Products Testing](/docs/epics/EPIC_21_PRODUCTS_TESTING.md)
-
-### Official Documentation
+- [ProductsModule API reference](/api/classes/ProductsModule)
+- [Working with product cards](/guides/working-with-product-cards)
+- [Product card merging](/guides/product-card-merging)
 - [Wildberries API: Work with Products](https://dev.wildberries.ru/openapi/work-with-products)

@@ -6,7 +6,7 @@
 function isOperationReadonly(operationKey: string): boolean;
 ```
 
-Defined in: [config/operation-metadata.ts:2994](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/config/operation-metadata.ts#L2994)
+Defined in: [config/operation-metadata.ts:3034](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/config/operation-metadata.ts#L3034)
 
 Check if an operation is readonly (safe to retry)
 

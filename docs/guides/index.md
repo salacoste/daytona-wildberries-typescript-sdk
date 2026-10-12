@@ -43,6 +43,7 @@ In-depth guides for production deployment and advanced SDK usage.
 
 ## Production Guides
 
+- **[NodeNext ESM and CommonJS](/guides/nodenext)** - Strict `.mts` and `.cts` setup using supported package exports
 - **[Best Practices](/guides/best-practices)** - Error handling, security, and testing patterns
 - **[Performance Tuning](/guides/performance)** - Optimize rate limits, caching, and memory
 - **[Performance Tuning (Extended)](/guides/performance-tuning)** - Comprehensive performance optimization for production deployments -- rate limits, caching, monitoring, and benchmarking

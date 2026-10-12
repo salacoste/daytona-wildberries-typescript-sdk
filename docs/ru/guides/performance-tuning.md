@@ -2946,7 +2946,7 @@ console.log(errorStats);
 
 ## Дополнительные ресурсы
 
-- **Документация SDK**: [/docs/api/README.md](/ru/api/README.md)
+- **Документация SDK**: [Справочник API (English)](/api/)
 - **Руководство по лучшим практикам**: [/docs/guides/best-practices.md](/ru/guides/best-practices.md)
 - **Примеры**: [/examples/](../../examples/)
 - **Документация API Wildberries**: https://dev.wildberries.ru/

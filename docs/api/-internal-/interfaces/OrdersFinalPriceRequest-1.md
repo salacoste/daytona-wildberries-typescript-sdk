@@ -2,7 +2,7 @@
 
 # Interface: OrdersFinalPriceRequest
 
-Defined in: [types/orders-dbs.types.ts:642](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L642)
+Defined in: [types/orders-dbs.types.ts:691](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L691)
 
 Request body for [OrdersDbsModule.getOrdersFinalPrice](../../classes/OrdersDbsModule.md#getordersfinalprice).
 
@@ -10,4 +10,4 @@ Request body for [OrdersDbsModule.getOrdersFinalPrice](../../classes/OrdersDbsMo
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | `number`[] | Assembly order IDs to get prices for. | [types/orders-dbs.types.ts:644](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-dbs.types.ts#L644) |
+| <a id="orders"></a> `orders?` | `number`[] | Assembly order IDs to get prices for. | [types/orders-dbs.types.ts:693](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L693) |

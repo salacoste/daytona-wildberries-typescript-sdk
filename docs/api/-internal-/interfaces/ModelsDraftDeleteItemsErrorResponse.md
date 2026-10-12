@@ -2,7 +2,7 @@
 
 # Interface: ModelsDraftDeleteItemsErrorResponse
 
-Defined in: [types/orders-fbw.types.ts:758](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-fbw.types.ts#L758)
+Defined in: [types/orders-fbw.types.ts:758](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L758)
 
 Ответ на удаление товаров из черновика поставки.
 
@@ -17,4 +17,4 @@ task-193
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="results"></a> `results` | `unknown`[] | Результат операции | [types/orders-fbw.types.ts:760](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/orders-fbw.types.ts#L760) |
+| <a id="results"></a> `results` | `unknown`[] | Результат операции | [types/orders-fbw.types.ts:760](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L760) |

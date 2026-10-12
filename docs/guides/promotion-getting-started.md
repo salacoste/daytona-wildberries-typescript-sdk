@@ -21,7 +21,7 @@ This guide covers everything you need to know to work with advertising campaigns
 - [Bidding Operations](#bidding-operations)
 - [Campaign Finances](#campaign-finances)
 - [Statistics and Analytics](#statistics-and-analytics)
-- [Deprecated Methods](#deprecated-methods)
+- [Deprecated Methods](#removed-methods-v4-0-0)
 - [Error Handling](#error-handling)
 - [Rate Limits](#rate-limits)
 - [Best Practices](#best-practices)

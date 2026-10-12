@@ -2,7 +2,7 @@
 
 # Interface: OrderFeedResponse
 
-Defined in: [types/analytics.types.ts:2225](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L2225)
+Defined in: [types/analytics.types.ts:2242](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L2242)
 
 Response payload (the `data` object) for POST /api/analytics/v1/order-feed.
 
@@ -10,6 +10,6 @@ Response payload (the `data` object) for POST /api/analytics/v1/order-feed.
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="snapshottime"></a> `snapshotTime` | `string` | Cursor — date and time of the last update of the data. | [types/analytics.types.ts:2227](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L2227) |
-| <a id="currency"></a> `currency` | `string` | Report currency (e.g. `"RUB"`). | [types/analytics.types.ts:2229](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L2229) |
-| <a id="orders"></a> `orders` | [`OrderFeedOrder`](OrderFeedOrder.md)[] | Orders matching the request filters. | [types/analytics.types.ts:2231](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L2231) |
+| <a id="snapshottime"></a> `snapshotTime` | `string` | Cursor — date and time of the last update of the data. | [types/analytics.types.ts:2244](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L2244) |
+| <a id="currency"></a> `currency` | `string` | Report currency (e.g. `"RUB"`). | [types/analytics.types.ts:2246](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L2246) |
+| <a id="orders"></a> `orders` | [`OrderFeedOrder`](OrderFeedOrder.md)[] | Orders matching the request filters. | [types/analytics.types.ts:2248](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L2248) |

@@ -6,7 +6,7 @@
 type GoodsReturnStatus = "active" | "archive";
 ```
 
-Defined in: [types/reports.types.ts:800](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/6e8d6269140e3ae0a5aa5cb12ac714f457af4263/src/types/reports.types.ts#L800)
+Defined in: [types/reports.types.ts:800](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/reports.types.ts#L800)
 
 Return status filter for the goods-return report (v1, analytics)
 

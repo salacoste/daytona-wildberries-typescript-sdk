@@ -78,19 +78,16 @@ jobs:
         with:
           fail_ci_if_error: false
 
-      # 9. Generate API documentation (Node 20.x only)
-      - name: Generate API documentation
+      # 9. Build and validate the rendered documentation (Node 20.x only)
+      - name: Build documentation
         if: matrix.node-version == '20.x'
-        run: npm run docs:api
+        env:
+          NODE_ENV: production
+        run: npm run docs:build
 
-      - name: Validate API documentation
+      - name: Validate rendered documentation and NodeNext guide fixtures
         if: matrix.node-version == '20.x'
-        run: |
-          test -d docs/api || exit 1
-          test -f docs/api/modules.md || exit 1
-          test -d docs/api/classes || exit 1
-          test -d docs/api/interfaces || exit 1
-          echo "✓ API documentation (Markdown) validated successfully"
+        run: npm run validate:docs:site
 
       # 10. Upload API docs artifact for deployment job
       - name: Upload API docs artifact
@@ -147,10 +144,7 @@ jobs:
         run: npm run docs:build
 
       - name: Validate documentation output
-        run: |
-          test -d docs/.vitepress/dist || exit 1
-          test -f docs/.vitepress/dist/index.html || exit 1
-          echo "✓ Documentation build validated successfully"
+        run: npm run validate:docs:site
 
       # 6. Extract version for commit message
       - name: Extract SDK version

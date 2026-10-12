@@ -49,7 +49,7 @@ npm install --save-dev typescript@^5.0.0
 
 **⚠️ Security:** Never commit API keys to version control. Use environment variables or secure vaults.
 
-**See also:** [Authentication Guide](getting-started/quickstart.md#authentication)
+**See also:** [Authentication Guide](getting-started/quickstart.md#step-2-initialize-sdk-1-minute)
 
 ---
 
@@ -69,7 +69,7 @@ console.log(ping); // { Status: 'OK', TS: '2024-12-03T15:22:47Z' }
 
 **Best Practice:** Store API keys in environment variables, not source code.
 
-**See also:** [Quickstart Guide](getting-started/quickstart.md#initialization)
+**See also:** [Quickstart Guide](getting-started/quickstart.md#step-2-initialize-sdk-1-minute)
 
 ---
 
@@ -152,7 +152,7 @@ const sdk = new WildberriesSDK({
 });
 ```
 
-**See also:** [Error Handling Guide](guides/troubleshooting.md#retry-logic)
+**See also:** [Error Handling Guide](guides/best-practices.md#retry-logic)
 
 ---
 
@@ -167,7 +167,7 @@ const sdk = new WildberriesSDK({
 
 **Production:** Use `'warn'` or `'error'` to reduce noise.
 
-**See also:** [Troubleshooting Guide](guides/troubleshooting.md#debugging)
+**See also:** [Troubleshooting Guide](guides/troubleshooting.md#debug-mode)
 
 ---
 
@@ -247,7 +247,7 @@ result.orders?.forEach(order => {
 
 **Supplier statuses:** `new` → `confirm` → `complete` (or `cancel`)
 
-**See also:** [Order Status Workflow](guides/best-practices.md#order-management)
+**See also:** [Order Status Workflow](guides/best-practices.md)
 
 ---
 
@@ -383,7 +383,7 @@ const result = await sdk.ordersFBS.orders({
 });
 ```
 
-**See also:** [Pagination Patterns](guides/best-practices.md#pagination)
+**See also:** [Pagination Patterns](guides/best-practices.md)
 
 ---
 
@@ -416,7 +416,7 @@ try {
 }
 ```
 
-**See also:** [Error Handling Guide](guides/troubleshooting.md#error-handling)
+**See also:** [Error Handling Guide](guides/best-practices.md#error-handling)
 
 ---
 
@@ -433,7 +433,7 @@ try {
 3. Ensure API key has required scopes
 4. Regenerate API key if expired
 
-**See also:** [Authentication Troubleshooting](guides/troubleshooting.md#authentication-errors)
+**See also:** [Authentication Troubleshooting](guides/troubleshooting.md#authentication-issues)
 
 ---
 
@@ -452,7 +452,7 @@ try {
 }
 ```
 
-**See also:** [Validation Error Guide](guides/troubleshooting.md#validation-errors)
+**See also:** [Validation Error Guide](guides/troubleshooting.md#validation-issues)
 
 ---
 
@@ -495,7 +495,7 @@ Rate limits vary by endpoint:
 | Analytics | 5 req/min | Performance queries |
 | Reports (CSV export) | 1 req/2min | Large data exports |
 
-**See also:** [Performance Guide](guides/performance-tuning.md#rate-limits)
+**See also:** [Performance Guide](guides/performance-tuning.md#rate-limit-optimization)
 
 ---
 
@@ -589,7 +589,7 @@ const result = await mockSDK.products.getCardsList();
 expect(result.data).toEqual([]);
 ```
 
-**See also:** [Testing Best Practices](guides/best-practices.md#testing)
+**See also:** [Testing Best Practices](guides/best-practices.md#testing-strategies)
 
 ---
 
@@ -681,7 +681,7 @@ app.post('/webhooks/wildberries', async (req, res) => {
 4. Check network connectivity
 5. Retry with exponential backoff (SDK handles this automatically)
 
-**See also:** [Configuration Guide — Timeout Configuration](guides/configuration.md#timeout-configuration) | [Network Errors](guides/troubleshooting.md#network-errors)
+**See also:** [Configuration Guide — Timeout Configuration](guides/configuration.md#timeout-configuration) | [Network Errors](guides/troubleshooting.md#network-issues)
 
 ---
 
@@ -704,7 +704,7 @@ await sdk.products.getCardsList(); // Check console for timing logs
 - Network latency
 - Server-side processing time
 
-**See also:** [Performance Diagnostics](guides/performance-tuning.md#diagnostics)
+**See also:** [Performance Diagnostics](guides/performance-tuning.md#troubleshooting-performance-issues)
 
 ---
 

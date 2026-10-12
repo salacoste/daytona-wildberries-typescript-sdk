@@ -2,7 +2,7 @@
 
 # Interface: PartialFailure
 
-Defined in: [types/returns.types.ts:113](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/returns.types.ts#L113)
+Defined in: [types/returns.types.ts:115](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/returns.types.ts#L115)
 
 Per-source failure record returned in ReturnsApiResponse.
 
@@ -14,5 +14,5 @@ v3.10.0
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="source"></a> `source` | `"finance"` \| `"fbo"` \| `"fbs"` | [types/returns.types.ts:114](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/returns.types.ts#L114) |
-| <a id="error"></a> `error` | `string` | [types/returns.types.ts:115](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/returns.types.ts#L115) |
+| <a id="source"></a> `source` | `"finance"` \| `"fbo"` \| `"fbs"` | [types/returns.types.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/returns.types.ts#L116) |
+| <a id="error"></a> `error` | `string` | [types/returns.types.ts:117](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/returns.types.ts#L117) |

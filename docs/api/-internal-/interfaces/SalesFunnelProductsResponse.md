@@ -2,7 +2,7 @@
 
 # Interface: SalesFunnelProductsResponse
 
-Defined in: [types/analytics.types.ts:1701](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1701)
+Defined in: [types/analytics.types.ts:1718](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1718)
 
 Ответ списка товаров воронки продаж v3 (Swagger: ProductsResponse)
 
@@ -10,5 +10,5 @@ Defined in: [types/analytics.types.ts:1701](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="products"></a> `products` | \{ `product`: [`SalesFunnelProduct`](SalesFunnelProduct.md); `statistic`: [`SalesFunnelStatistics`](SalesFunnelStatistics.md); \}[] | Список карточек товаров | [types/analytics.types.ts:1703](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1703) |
-| <a id="currency"></a> `currency?` | `string` | Валюта (например, "RUB") | [types/analytics.types.ts:1710](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L1710) |
+| <a id="products"></a> `products` | \{ `product`: [`SalesFunnelProduct`](SalesFunnelProduct.md); `statistic`: [`SalesFunnelStatistics`](SalesFunnelStatistics.md); \}[] | Список карточек товаров | [types/analytics.types.ts:1720](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1720) |
+| <a id="currency"></a> `currency?` | `string` | Валюта (например, "RUB") | [types/analytics.types.ts:1727](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1727) |

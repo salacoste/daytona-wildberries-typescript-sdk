@@ -2,7 +2,7 @@
 
 # Interface: CommonReportFilters
 
-Defined in: [types/analytics.types.ts:948](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L948)
+Defined in: [types/analytics.types.ts:965](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L965)
 
 Общие фильтры по отчёту
 
@@ -10,12 +10,12 @@ Defined in: [types/analytics.types.ts:948](https://github.com/salacoste/daytona-
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmids"></a> `nmIDs?` | `number`[] | Список артикулов WB для фильтрации | [types/analytics.types.ts:950](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L950) |
-| <a id="subjectids"></a> `subjectIDs?` | `number`[] | Список ID предметов для фильтрации | [types/analytics.types.ts:952](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L952) |
-| <a id="brandnames"></a> `brandNames?` | `string`[] | Список брендов для фильтрации | [types/analytics.types.ts:954](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L954) |
-| <a id="tagids"></a> `tagIDs?` | `number`[] | Список ID ярлыков для фильтрации | [types/analytics.types.ts:956](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L956) |
-| <a id="currentperiod"></a> `currentPeriod` | [`PeriodSt`](PeriodSt.md) | - | [types/analytics.types.ts:957](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L957) |
-| <a id="stocktype"></a> `stockType` | [`StockType`](../type-aliases/StockType.md) | - | [types/analytics.types.ts:958](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L958) |
-| <a id="skipdeletednm"></a> `skipDeletedNm` | `boolean` | Скрыть удалённые товары | [types/analytics.types.ts:960](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L960) |
-| <a id="availabilityfilters"></a> `availabilityFilters` | [`AvailabilityFilters`](../type-aliases/AvailabilityFilters.md) | - | [types/analytics.types.ts:961](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L961) |
-| <a id="orderby"></a> `orderBy` | [`TableOrderBy`](TableOrderBy.md) | - | [types/analytics.types.ts:962](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L962) |
+| <a id="nmids"></a> `nmIDs?` | `number`[] | Список артикулов WB для фильтрации | [types/analytics.types.ts:967](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L967) |
+| <a id="subjectids"></a> `subjectIDs?` | `number`[] | Список ID предметов для фильтрации | [types/analytics.types.ts:969](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L969) |
+| <a id="brandnames"></a> `brandNames?` | `string`[] | Список брендов для фильтрации | [types/analytics.types.ts:971](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L971) |
+| <a id="tagids"></a> `tagIDs?` | `number`[] | Список ID ярлыков для фильтрации | [types/analytics.types.ts:973](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L973) |
+| <a id="currentperiod"></a> `currentPeriod` | [`PeriodSt`](PeriodSt.md) | - | [types/analytics.types.ts:974](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L974) |
+| <a id="stocktype"></a> `stockType` | [`StockType`](../type-aliases/StockType.md) | - | [types/analytics.types.ts:975](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L975) |
+| <a id="skipdeletednm"></a> `skipDeletedNm` | `boolean` | Скрыть удалённые товары | [types/analytics.types.ts:977](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L977) |
+| <a id="availabilityfilters"></a> `availabilityFilters` | [`AvailabilityFilters`](../type-aliases/AvailabilityFilters.md) | - | [types/analytics.types.ts:978](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L978) |
+| <a id="orderby"></a> `orderBy` | [`TableOrderBy`](TableOrderBy.md) | - | [types/analytics.types.ts:979](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L979) |

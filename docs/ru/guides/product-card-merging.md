@@ -132,7 +132,7 @@ if (result.duplicateVariants) {
 await sdk.products.createCardsUpload([{ subjectID: subjectId, variants: /* ... */ }]);
 ```
 
-См. [Руководство по обязательным характеристикам](/ru/guides/mandatory-product-characteristics#варьируемые-и-фиксированные-характеристики-v392) для правил по конкретным категориям.
+См. [Руководство по обязательным характеристикам](/ru/guides/mandatory-product-characteristics#варьируемые-и-фиксированные-характеристики-v3-9-2) для правил по конкретным категориям.
 
 ---
 
@@ -1876,9 +1876,9 @@ for (const nmID of [111, 222, 333]) {
 
 ## Связанные Ресурсы
 
-- **[Руководство по Модулю Products](./products-module.md)** - Полная справка по управлению товарами
+- **[Модуль Products (English)](/modules/products)** - Полная справка по управлению товарами
 - **[Руководство по Рекламе (Promotion)](./promotion-advertising.md)** - Управление рекламными кампаниями
-- **[Руководство по Модулю Analytics](./analytics-module.md)** - Отслеживание производительности и отчетность
+- **[Модуль Analytics (English)](/modules/analytics)** - Отслеживание производительности и отчетность
 - **[Лучшие Практики](./best-practices.md)** - Общие лучшие практики использования SDK
 - **[Справочник API](../api/)** - Полная TypeDoc документация
 

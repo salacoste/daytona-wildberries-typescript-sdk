@@ -2,7 +2,7 @@
 
 # Interface: OrderFeedSelectedPeriod
 
-Defined in: [types/analytics.types.ts:2126](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L2126)
+Defined in: [types/analytics.types.ts:2143](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L2143)
 
 Requested period for the Order Feed report — by date of the current order status.
 
@@ -10,5 +10,5 @@ Requested period for the Order Feed report — by date of the current order stat
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="start"></a> `start` | `string` | Start date and time of the period (date-time). No later than `end`. No earlier than 31 days from today. | [types/analytics.types.ts:2131](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L2131) |
-| <a id="end"></a> `end?` | `string` | End date and time of the period (date-time). | [types/analytics.types.ts:2133](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/d9429ff00e3f45f265229867faf00f60ceb73dd6/src/types/analytics.types.ts#L2133) |
+| <a id="start"></a> `start` | `string` | Start date and time of the period (date-time). No later than `end`. No earlier than 31 days from today. | [types/analytics.types.ts:2148](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L2148) |
+| <a id="end"></a> `end?` | `string` | End date and time of the period (date-time). | [types/analytics.types.ts:2150](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L2150) |

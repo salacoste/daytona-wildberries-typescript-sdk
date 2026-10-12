@@ -1812,7 +1812,7 @@ fullCampaignLifecycle()
 **Дополнительные гайды:**
 - [Лучшие практики: Аналитика воронки продаж](./best-practices-sales-funnel.md)
 - [Статистика рекламных кампаний: Подробный гайд](./advertising-statistics-guide.md)
-- [Promotion API Reference](../api-reference/promotion-advertising.md)
+- [PromotionModule API (English)](/api/classes/PromotionModule)
 - [Общие лучшие практики SDK](./best-practices.md)
 - [Troubleshooting Guide](./troubleshooting.md)
 

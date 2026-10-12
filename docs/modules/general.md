@@ -882,18 +882,10 @@ Available access codes for user permissions:
 - [User Management](#user-management-4-methods) - Team management with invitations, permissions, and user lifecycle (documented in this module)
 - [Jam Subscription Detection](/guides/jam-subscription) - Detect and use Jam tier for analytics limit optimization
 
-### EPICs
-
-- [EPIC 14: User Management Module](/docs/epics/EPIC_14_USER_MANAGEMENT.md) - New endpoints for team management (depends on General module patterns)
-- [EPIC 15: General Compliance](/docs/epics/EPIC_15_GENERAL_COMPLIANCE.md) - Rate limit fixes and error response standardization
-
-### Stories
-
-- [Story 1.9: General Module Implementation](/docs/stories/1.9.general-module-implementation.md) - Original implementation story with detailed context
-
 ### API Reference
 
-- [GeneralModule Class](/docs/api/classes/GeneralModule.html) - TypeDoc generated reference
+- [GeneralModule Class](/api/classes/GeneralModule.html) - TypeDoc generated reference
+- [UserManagementModule Class](/api/classes/UserManagementModule.html) - User and access management reference
 - [Wildberries API Information](https://dev.wildberries.ru/openapi/api-information) - Official API documentation
 
 ### Related Modules
