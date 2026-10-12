@@ -19,4 +19,4 @@ This is an additive minor release for the 4.x line. Future-v5 removals remain tr
 
 The source baseline includes the bounded prior-news audit through 2026-09-24 inclusive plus nine supplied October announcements; it is not a claim that every WB announcement through the release date was exhaustively audited. Repository tests, static checks, mocked integrations, generated documentation, and packed-consumer checks establish local behavior. Eight historical read-only WB attempts ended in `NetworkError`, so they provide no successful live runtime proof. No sandbox write was performed, and sandbox server-side defaulting remains unproven.
 
-See [CHANGELOG.md](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/v4.7.0/CHANGELOG.md) for the full release record.
+See [CHANGELOG.md](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/f7fc0e2de8f35e107d68d0f149ae17631184d3fe/CHANGELOG.md) for the full release record.
