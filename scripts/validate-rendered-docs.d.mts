@@ -4,7 +4,14 @@ export interface RequiredRenderedLink {
 }
 
 export interface RenderedDocumentationError {
-  type: 'base' | 'fragment' | 'required-link' | 'required-route' | 'route';
+  type:
+    | 'base'
+    | 'fragment'
+    | 'literal-script-setup'
+    | 'required-favicon'
+    | 'required-link'
+    | 'required-route'
+    | 'route';
   reference: string;
   detail: string;
 }
@@ -15,6 +22,8 @@ export interface RenderedDocumentationValidationOptions {
   siteOrigin?: string;
   requiredRoutes?: string[];
   requiredLinks?: RequiredRenderedLink[];
+  requiredFavicon?: boolean;
+  forbidLiteralScriptSetupRoutes?: string[];
 }
 
 export interface RenderedDocumentationValidationResult {
@@ -27,6 +36,7 @@ export interface RenderedDocumentationValidationResult {
   fragmentReferences: number;
   externalReferences: number;
   externalUrls: string[];
+  faviconReferences: number;
   errors: RenderedDocumentationError[];
 }
 

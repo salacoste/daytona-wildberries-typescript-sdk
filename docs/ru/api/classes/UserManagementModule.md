@@ -6,14 +6,7 @@ description: API Reference для UserManagementModule
 # UserManagementModule
 
 ::: info API Documentation
-Справочник API доступен только на английском языке.
+Справочник API доступен только на английском языке. Автоматический переход не выполняется.
 
-[Перейти к документации UserManagementModule →](/api/classes/UserManagementModule)
+[Открыть английскую документацию UserManagementModule →](/api/classes/UserManagementModule)
 :::
-
-<script setup>
-if (typeof window !== 'undefined') {
-  // Redirect to English API docs
-  window.location.href = '/daytona-wildberries-typescript-sdk/api/classes/UserManagementModule.html';
-}
-</script>

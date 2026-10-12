@@ -150,6 +150,56 @@ describe('validateRenderedSite', () => {
     ]);
   });
 
+  it('accepts a base-aware local SVG favicon and clean Russian API placeholder', async () => {
+    const site = await createSite({
+      'index.html': '<link rel="icon" type="image/svg+xml" href="/sdk/favicon.svg">',
+      'favicon.svg': '<svg xmlns="http://www.w3.org/2000/svg"></svg>',
+      'ru/api/classes/Module.html': '<p>Справочник доступен на английском языке.</p>',
+    });
+
+    const result = await validateRenderedSite({
+      distDirectory: site,
+      base: '/sdk/',
+      requiredFavicon: true,
+      forbidLiteralScriptSetupRoutes: ['/ru/api/'],
+    });
+
+    expect(result.errors).toEqual([]);
+    expect(result.faviconReferences).toBe(1);
+  });
+
+  it.each([
+    ['missing favicon', { 'index.html': '<h1>Docs</h1>' }, 'required-favicon'],
+    [
+      'wrong-base favicon',
+      {
+        'index.html': '<link rel="icon" type="image/svg+xml" href="/favicon.svg">',
+        'favicon.svg': '<svg xmlns="http://www.w3.org/2000/svg"></svg>',
+      },
+      'base',
+    ],
+    [
+      'literal script setup placeholder',
+      {
+        'index.html': '<link rel="icon" type="image/svg+xml" href="/sdk/favicon.svg">',
+        'favicon.svg': '<svg xmlns="http://www.w3.org/2000/svg"></svg>',
+        'ru/api/classes/Module.html': '<p>&lt;script setup&gt;</p>',
+      },
+      'literal-script-setup',
+    ],
+  ])('rejects %s', async (_label, files, errorType) => {
+    const site = await createSite(files);
+
+    const result = await validateRenderedSite({
+      distDirectory: site,
+      base: '/sdk/',
+      requiredFavicon: true,
+      forbidLiteralScriptSetupRoutes: ['/ru/api/'],
+    });
+
+    expect(result.errors).toContainEqual(expect.objectContaining({ type: errorType }));
+  });
+
   it.each([
     ['locale switch', '/', '/ru/'],
     ['sidebar target', '/guide.html', '/target.html'],

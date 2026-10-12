@@ -21,6 +21,9 @@ interface DocumentationThemeConfig extends DefaultTheme.Config {
 }
 
 const docsDirectory = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const documentationBase = process.env.NODE_ENV === 'production'
+  ? '/daytona-wildberries-typescript-sdk/'
+  : '/';
 
 const collectMarkdownFiles = (directory: string): string[] => readdirSync(directory, { withFileTypes: true })
   .flatMap((entry) => {
@@ -66,9 +69,11 @@ export default defineConfigWithTheme<DocumentationThemeConfig>({
   // Base URL for GitHub Pages deployment
   // Development: uses '/' for local testing
   // Production: uses '/daytona-wildberries-typescript-sdk/' for GitHub Pages
-  base: process.env.NODE_ENV === 'production'
-    ? '/daytona-wildberries-typescript-sdk/'
-    : '/',
+  base: documentationBase,
+
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: `${documentationBase}favicon.svg` }]
+  ],
 
   // Output directory for production build (relative to docs/)
   outDir: './.vitepress/dist',

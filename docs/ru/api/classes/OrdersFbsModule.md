@@ -6,14 +6,7 @@ description: API Reference для OrdersFbsModule
 # OrdersFbsModule
 
 ::: info API Documentation
-Справочник API доступен только на английском языке.
+Справочник API доступен только на английском языке. Автоматический переход не выполняется.
 
-[Перейти к документации OrdersFbsModule →](/api/classes/OrdersFbsModule)
+[Открыть английскую документацию OrdersFbsModule →](/api/classes/OrdersFbsModule)
 :::
-
-<script setup>
-if (typeof window !== 'undefined') {
-  // Redirect to English API docs
-  window.location.href = '/daytona-wildberries-typescript-sdk/api/classes/OrdersFbsModule.html';
-}
-</script>

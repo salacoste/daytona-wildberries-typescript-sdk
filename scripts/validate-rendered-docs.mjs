@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const NON_ROUTE_SCHEMES = /^(?:data:|javascript:)/i;
 const HTTP_PROTOCOLS = new Set(['http:', 'https:']);
+const LITERAL_SCRIPT_SETUP = /(?:<|&lt;)script\s+setup(?:>|&gt;)/i;
 
 function decodeHtml(value) {
   return value
@@ -78,6 +79,18 @@ function extractAttributeValues(html, attribute) {
   return values;
 }
 
+function extractFaviconHrefs(html) {
+  const hrefs = [];
+  for (const match of html.matchAll(/<link\b[^>]*>/gis)) {
+    const link = match[0];
+    const rel = extractAttributeValues(link, 'rel')[0] ?? '';
+    if (!rel.split(/\s+/).some((value) => value.toLowerCase() === 'icon')) continue;
+    const href = extractAttributeValues(link, 'href')[0];
+    if (href) hrefs.push(href.trim());
+  }
+  return hrefs;
+}
+
 function renderedPathForFile(distDirectory, file) {
   const path = relative(distDirectory, file).split(sep).join('/');
   if (path === 'index.html') return '/';
@@ -131,6 +144,8 @@ export async function validateRenderedSite({
   siteOrigin = 'https://docs.invalid',
   requiredRoutes = [],
   requiredLinks = [],
+  requiredFavicon = false,
+  forbidLiteralScriptSetupRoutes = [],
 }) {
   const normalizedBase = normalizeBase(base);
   const normalizedOrigin = normalizeOrigin(siteOrigin);
@@ -150,6 +165,8 @@ export async function validateRenderedSite({
   let fragmentReferences = 0;
   let rootLocaleRoutes = 0;
   let russianLocaleRoutes = 0;
+  let faviconReferences = 0;
+  let validFaviconReferences = 0;
 
   async function loadHtml(file) {
     if (!htmlCache.has(file)) htmlCache.set(file, await readFile(file, 'utf8'));
@@ -174,6 +191,41 @@ export async function validateRenderedSite({
       `${normalizedOrigin}/`
     );
     const html = await loadHtml(htmlFile);
+
+    if (
+      forbidLiteralScriptSetupRoutes.some((routePrefix) => sourceRoute.startsWith(routePrefix)) &&
+      LITERAL_SCRIPT_SETUP.test(html)
+    ) {
+      errors.push({
+        type: 'literal-script-setup',
+        reference: sourceRoute,
+        detail: 'rendered placeholder exposes a literal <script setup> block',
+      });
+    }
+
+    if (sourceRoute === '/') {
+      const faviconHrefs = extractFaviconHrefs(html);
+      faviconReferences = faviconHrefs.length;
+      for (const href of faviconHrefs) {
+        try {
+          const targetUrl = new URL(href, sourceUrl);
+          if (
+            HTTP_PROTOCOLS.has(targetUrl.protocol) &&
+            targetUrl.origin === normalizedOrigin &&
+            targetUrl.pathname.startsWith(normalizedBase) &&
+            targetUrl.pathname.endsWith('.svg')
+          ) {
+            const routePath = `/${targetUrl.pathname.slice(normalizedBase.length)}`.replace(
+              /\/+/g,
+              '/'
+            );
+            if (await resolveRenderedTarget(absoluteDist, routePath)) validFaviconReferences += 1;
+          }
+        } catch {
+          // The normal href validation below reports malformed URLs.
+        }
+      }
+    }
 
     for (const rawHref of extractAttributeValues(html, 'href')) {
       const href = rawHref.trim();
@@ -287,6 +339,14 @@ export async function validateRenderedSite({
     }
   }
 
+  if (requiredFavicon && validFaviconReferences === 0) {
+    errors.push({
+      type: 'required-favicon',
+      reference: '/',
+      detail: `root page must reference an existing local SVG favicon under ${normalizedBase}`,
+    });
+  }
+
   return {
     base: normalizedBase,
     siteOrigin: normalizedOrigin,
@@ -297,6 +357,7 @@ export async function validateRenderedSite({
     fragmentReferences,
     externalReferences,
     externalUrls: [...externalUrls].sort(),
+    faviconReferences,
     errors,
   };
 }
@@ -308,13 +369,18 @@ function readArguments(argv) {
     siteOrigin: 'https://docs.invalid',
     requiredRoutes: [],
     requiredLinks: [],
+    requiredFavicon: true,
+    forbidLiteralScriptSetupRoutes: ['/ru/api/'],
   };
   for (let index = 0; index < argv.length; index += 1) {
     if (argv[index] === '--dist') values.distDirectory = argv[++index];
     else if (argv[index] === '--base') values.base = argv[++index];
     else if (argv[index] === '--origin') values.siteOrigin = argv[++index];
     else if (argv[index] === '--require-route') values.requiredRoutes.push(argv[++index]);
-    else if (argv[index] === '--require-link') {
+    else if (argv[index] === '--require-favicon') values.requiredFavicon = true;
+    else if (argv[index] === '--forbid-literal-script-setup') {
+      values.forbidLiteralScriptSetupRoutes.push(argv[++index]);
+    } else if (argv[index] === '--require-link') {
       const value = argv[++index];
       const separator = value.indexOf('=>');
       if (separator < 1 || separator === value.length - 2) {
@@ -336,6 +402,7 @@ async function main() {
   );
   console.log(`Internal link references: ${String(result.internalReferences)}`);
   console.log(`Fragment references: ${String(result.fragmentReferences)}`);
+  console.log(`Favicon references on root route: ${String(result.faviconReferences)}`);
   console.log(
     `External link references: ${String(result.externalReferences)} (${String(result.externalUrls.length)} unique; reported separately, network not requested)`
   );
