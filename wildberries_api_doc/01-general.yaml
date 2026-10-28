@@ -58,8 +58,10 @@ paths:
         | Аналитика | `https://seller-analytics-api.wildberries.ru/ping` |
         | Цены и скидки | `https://discounts-prices-api.wildberries.ru/ping`  `https://discounts-prices-api-sandbox.wildberries.ru/ping` |
         | Маркетплейс | `https://marketplace-api.wildberries.ru/ping` |
-        | Статистика | `https://statistics-api.wildberries.ru/ping`  `https://statistics-api-sandbox.wildberries.ru/ping` |
-        | Продвижение | `https://advert-api.wildberries.ru/ping`  `https://advert-api-sandbox.wildberries.ru/ping` |
+        | Статистика | `https://statistics-api.wildberries.ru/ping` |
+        | Продвижение | `https://advert-api.wildberries.ru/ping` |
+
+        Песочницы statistics-api-sandbox и advert-api-sandbox отключены Wildberries 2026-11-05 — для этих строк указаны только продакшен-адреса.
         | Вопросы и отзывы | `https://feedbacks-api.wildberries.ru/ping`  `https://feedbacks-api-sandbox.wildberries.ru/ping` |
         | Чат с покупателями | `https://buyer-chat-api.wildberries.ru/ping` |
         | Поставки | `https://supplies-api.wildberries.ru/ping` |
@@ -91,6 +93,220 @@ paths:
                 Status: OK
         '401':
           $ref: '#/components/responses/401'
+        '429':
+          $ref: '#/components/responses/429'
+  /api/communications/v1/notifications:
+    servers:
+      - url: https://common-api.wildberries.ru
+    get:
+      operationId: getV1Notifications
+      x-readonly-method: true
+      x-category: commonapi
+      x-token-types:
+        - personal
+        - service
+      tags:
+        - API новостей
+      security:
+        - HeaderApiKey: []
+      summary: Получение уведомлений кабинета продавца
+      description: |
+        Метод возвращает список уведомлений кабинета продавца на русском языке.
+        Уведомления в ответе упорядочены от новых к старым.
+
+        Доступен только продавцам из Российской Федерации.
+
+        Пагинация — курсорная, через параметр `from`:
+        1. Первый запрос — без параметра `from`.
+        2. В следующих запросах передавайте значение `date` последнего
+        уведомления из предыдущего ответа в параметре `from`.
+
+        Лимит запросов на один аккаунт продавца:
+        | Период | Лимит | Интервал | Всплеск |
+        | --- | --- | --- | --- |
+        | 1 мин | 1 запрос | 1 мин | 10 запросов |
+      parameters:
+        - in: query
+          name: from
+          required: false
+          allowEmptyValue: true
+          schema:
+            type: string
+            format: date-time
+            example: '2025-02-13T11:18:09.308Z'
+          description: |
+            Фильтр по дате и времени: в ответе только уведомления, полученные до указанного момента.
+            Значение должно быть не позже текущего. Для самых свежих уведомлений не передавайте параметр.
+            Используйте параметр для пагинации: передавайте значение `date` последнего уведомления из ответа.
+        - in: query
+          name: timezone
+          required: false
+          schema:
+            type: string
+            default: Europe/Moscow
+            example: Europe/Moscow
+          description: Часовой пояс в формате IANA
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            format: int64
+            default: 10
+            minimum: 5
+            maximum: 100
+            example: 10
+          description: Количество уведомлений в ответе
+      responses:
+        '200':
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    description: Список уведомлений
+                    items:
+                      type: object
+                      required:
+                        - date
+                        - id
+                        - text
+                        - title
+                      properties:
+                        date:
+                          type: string
+                          format: date-time
+                          description: Дата и время отправки уведомления
+                          example: '2025-02-13T11:18:09.308Z'
+                        id:
+                          type: string
+                          format: uuid
+                          description: ID уведомления
+                          example: 9f70d38a-2f66-4ba6-82bd-1e513ac03b0d
+                        linkData:
+                          type: object
+                          description: Данные кнопки уведомления
+                          required:
+                            - linkHref
+                            - linkText
+                          properties:
+                            linkHref:
+                              type: string
+                              description: URL кнопки уведомления
+                              example: https://seller.wildberries.ru/supply-plan-upload/orders
+                            linkText:
+                              type: string
+                              description: Текст кнопки уведомления
+                              example: К заказу
+                        text:
+                          type: string
+                          description: Текст уведомления
+                          example: Обработайте заказ...
+                        title:
+                          type: string
+                          description: Заголовок уведомления
+                          example: У вас новый заказ
+              example:
+                data:
+                  - date: '2025-02-13T11:18:09.308Z'
+                    id: 9f70d38a-2f66-4ba6-82bd-1e513ac03b0d
+                    linkData:
+                      linkHref: https://seller.wildberries.ru/supply-plan-upload/orders
+                      linkText: К заказу
+                    text: Обработайте заказ...
+                    title: У вас новый заказ
+                  - date: '2025-02-13T10:10:10.100Z'
+                    id: b1e2f3a4-5b6c-4d7e-8f90-1a2b3c4d5e6f
+                    text: Проверьте остатки
+                    title: Остатки закончились
+        '400':
+          description: Неправильный запрос
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                required:
+                  - status
+                  - title
+                  - detail
+                  - origin
+                  - code
+                  - requestId
+                properties:
+                  status:
+                    type: integer
+                    description: Код HTTP-статуса
+                  title:
+                    type: string
+                    description: Заголовок ошибки
+                  detail:
+                    type: string
+                    description: Детали ошибки
+                  origin:
+                    type: string
+                    description: ID внутреннего сервиса WB
+                  errors:
+                    type: array
+                    description: Список ошибок
+                    items:
+                      type: object
+                      required:
+                        - location
+                        - message
+                      properties:
+                        location:
+                          type: string
+                          description: Параметр запроса, вызвавший ошибку
+                          example: body.name
+                        message:
+                          type: string
+                          description: Описание ошибки
+                          example: expected string
+                  code:
+                    type: string
+                    description: Внутренний код ошибки
+                  requestId:
+                    type: string
+                    description: ID запроса
+              example:
+                status: 400
+                title: Validation failed
+                detail: Invalid request
+                origin: notifications-public
+                code: validationError
+                requestId: 0582f92d-abb5-4e41-8f7a-c8cd447ba551
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Доступ запрещён
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/SellerNotificationsError'
+                  - $ref: '#/components/schemas/Response4XX'
+              examples:
+                NotOwner:
+                  value:
+                    status: 403
+                    title: Access denied
+                    detail: Seller is not an owner
+                    origin: notifications-public
+                    code: ownerError
+                    requestId: 0582f92d-abb5-4e41-8f7a-c8cd447ba551
+                Country:
+                  value:
+                    status: 403
+                    title: Access denied
+                    detail: Seller is not from Russia
+                    origin: notifications-public
+                    code: countryError
+                    requestId: 0582f92d-abb5-4e41-8f7a-c8cd447ba551
         '429':
           $ref: '#/components/responses/429'
   /api/communications/v2/news:
@@ -251,10 +467,18 @@ paths:
                   tradeMark:
                     type: string
                     description: Торговое наименование продавца
+                  tin:
+                    type: string
+                    description: ИНН партнёра
+                  country:
+                    type: string
+                    description: Страна регистрации аккаунта продавца
               example:
                 name: ИП Кружинин В. Р.
                 sid: e8923014-e233-47q8-898e-3cc86d67ea61
                 tradeMark: Flax Store
+                tin: '1234567890'
+                country: ru
         '401':
           $ref: '#/components/responses/401'
         '429':
@@ -656,6 +880,87 @@ components:
       name: Authorization
       in: header
   schemas:
+    SellerNotificationsError:
+      type: object
+      required:
+      - status
+      - title
+      - detail
+      - origin
+      - code
+      - requestId
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+        title:
+          type: string
+          description: Error title
+        detail:
+          type: string
+          description: Error details
+        origin:
+          type: string
+          description: WB internal service ID
+        errors:
+          type: array
+          description: Errors list
+          items:
+            type: object
+            required:
+            - location
+            - message
+            properties:
+              location:
+                type: string
+                description: Request parameter that caused the error
+                example: body.name
+              message:
+                type: string
+                description: Error description
+                example: expected string
+        code:
+          type: string
+          description: Internal error code
+        requestId:
+          type: string
+          description: Request ID
+    Response4XX:
+      type: object
+      required:
+      - title
+      - detail
+      - requestId
+      - origin
+      - status
+      - statusText
+      - timestamp
+      properties:
+        title:
+          type: string
+          description: Error title
+        detail:
+          type: string
+          description: Error details
+        code:
+          type: string
+          description: Internal error code
+        requestId:
+          type: string
+          description: Request ID
+        origin:
+          type: string
+          description: WB internal service ID
+        status:
+          type: number
+          description: HTTP status code
+        statusText:
+          type: string
+          description: Text of the HTTP status code
+        timestamp:
+          type: string
+          format: date-time
+          description: Request date and time
     Access:
       type: array
       description: Настройки доступа к разделам профиля продавца

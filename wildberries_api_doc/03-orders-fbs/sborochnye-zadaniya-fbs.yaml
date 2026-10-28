@@ -241,6 +241,27 @@ paths:
                             - postponed_delivery
                             - accepted_by_carrier
                             - sent_to_carrier
+                        isCancellable:
+                          type: boolean
+                          nullable: false
+                          description: |
+                            Доступно ли [отменение](./orders-fbs#tag/fbsAssemblyOrders/operation/patchV3OrdersOrderIdCancel) сборочного задания:
+                              - `false` — недоступно
+                              - `true` — доступно
+                          example: false
+                        isTransferable:
+                          type: boolean
+                          nullable: false
+                          description: |
+                            Можно ли [переместить](./orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesSupplyIdOrdersTransfer) сборочное задание из доставки в сборку:
+                              - `false` — нельзя
+                              - `true` — можно
+
+                            Сборочное задание можно переместить из доставки в сборку, если одновременно выполняются условия:
+                              - сборочное задание находится в статусе `complete` — в доставке
+                              - поставка, в которую нужно переместить сборочное задание, [не передана в доставку](./orders-fbs#tag/fbsSupplies/operation/patchV3SuppliesSupplyIdDeliver)
+                              - сборочное задание ранее не перемещалось из доставки в сборку
+                          example: false
         "400":
           description: Неправильный запрос
           content:

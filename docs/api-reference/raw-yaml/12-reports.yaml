@@ -3,6 +3,8 @@ info:
   title: Reports
   version: reports
   description: |
+
+    The statistics sandbox (`statistics-api-sandbox.wildberries.ru`) was disabled by Wildberries on 2026-11-05; sandbox testing for statistics reports is no longer available.
     <div class="api-block">
 
     Reports on items, retentions, acceptance expenses, and paid storage
@@ -38,9 +40,6 @@ paths:
       - url: https://statistics-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://statistics-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: true
       x-category: statistics
@@ -157,9 +156,6 @@ paths:
       - url: https://statistics-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://statistics-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: true
       x-category: statistics

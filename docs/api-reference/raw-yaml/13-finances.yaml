@@ -3,6 +3,8 @@ info:
   version: finances
   title: Documents and Accounting
   description: |
+
+    The statistics sandbox (`statistics-api-sandbox.wildberries.ru`) was disabled by Wildberries on 2026-11-05; sandbox testing for financial reports is no longer available.
     <div class="api-block">
 
     View seller [balance](/openapi/financial-reports-and-accounting#tag/Balance), [financial reports](/openapi/financial-reports-and-accounting#tag/Financial-Reports), and [documents](/openapi/financial-reports-and-accounting#tag/Documents).
@@ -257,9 +259,6 @@ paths:
       - url: https://statistics-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://statistics-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       deprecated: true
       x-readonly-method: true

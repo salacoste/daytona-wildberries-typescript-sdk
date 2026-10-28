@@ -1163,6 +1163,10 @@ paths:
         - Поставки FBS
       summary: Get Supply Shipping Points
       description: |
+        The deprecated method will be disabled on [November 20](https://dev.wildberries.ru/en/release-notes?id=585).
+
+        Use the per-supply version instead — [get supply shipping points by supply ID](./orders-fbs#tag/fbsSupplies/operation/getV3FbsSuppliesSupplyIdShippingPoints).
+
         The method returns available supply shipping points with filters:
           - by Russian localities
           - by the type of items a shipping point can accept
@@ -1222,6 +1226,210 @@ paths:
           $ref: "#/components/responses/401"
         "403":
           $ref: "#/components/responses/AccessDenied"
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/fbs/supplies/{supplyId}/shipping-points:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    get:
+      operationId: getV3FbsSuppliesSupplyIdShippingPoints
+      x-readonly-method: true
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Поставки FBS
+      summary: Get Supply Shipping Points by Supply ID
+      description: |
+        The method returns shipping points available for the supply.
+
+        Use this method data to set [supply shipping methods](./orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesShippingMethod).
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for <strong>FBS assembly orders, supplies, passes and auto-return settings</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+
+        </div>
+      parameters:
+        - name: supplyId
+          in: path
+          description: Supply ID
+          required: true
+          example: WB-GI-100
+          schema:
+            type: string
+        - name: city
+          in: query
+          description: Locality for shipping the supply, Cyrillic
+          required: true
+          example: Москва
+          schema:
+            type: string
+        - name: officeType
+          in: query
+          description: |
+            Shipping point type:
+              - `sc` — sorting center
+              - `sw` — warehouse
+              - `pp` — pickup point
+              - `pfc` — partner fulfillment center
+              - `gpp` — items acceptance point
+          required: true
+          example: sc,pp
+          schema:
+            type: string
+        - name: shippingDt
+          in: query
+          description: |
+            Planned supply shipping date, format `YYYY-MM-DD`.
+            Required for orders for small-sized items (`"cargoType":1`) and dimensional cargo+ (`"cargoType":3`).
+
+            If the value passed, you will get only the shipping points where the supply can be shipped on the specified date
+          example: 2026-08-31
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupplyShippingPointsResponse"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/AccessDenied"
+        "404":
+          description: Поставка не найдена
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                code: "404"
+                data: {}
+                message: supply not found
+        "409":
+          description: В поставке нет сборочных заданий
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                code: SupplyHasZeroOrders
+                data: {}
+                message: Failed to process the supply. Make sure it has at least one assembly task assigned to it.
+        "429":
+          $ref: "#/components/responses/429"
+  /api/marketplace/v3/fbs/supplies/{supplyId}/orders/transfer:
+    servers:
+      - url: https://marketplace-api.wildberries.ru
+    patch:
+      operationId: patchV3FbsSuppliesSupplyIdOrdersTransfer
+      x-readonly-method: false
+      x-category: marketplace
+      security:
+        - HeaderApiKey: []
+      tags:
+        - Поставки FBS
+      summary: Transfer Orders From Supply To Assembly
+      description: |
+        The method transfers assembly orders from the `complete` status — in delivery to the `confirm` status — in assembly.
+
+        Use the method to move an assembly order from a closed supply to an open one.
+
+        An assembly order can be moved from delivery to assembly if all conditions are met:
+          - the assembly order is in the `complete` status — in delivery
+          - the supply to which the assembly order needs to be moved is not transferred to delivery
+          - the assembly order has not previously been moved from delivery to assembly
+
+        To check whether an assembly order can be moved from delivery to assembly, use the [assembly order statuses](./orders-fbs#tag/fbsAssemblyOrders/operation/postV3OrdersStatus), the isTransferable field.
+
+        <div class="description_limit">
+        <a href='./api-information#tag/introduction/Rate-Limits'>Request limit</a> per one seller account for <strong>FBS assembly orders, supplies, passes and auto-return settings</strong> methods:
+
+        | Period | Limit | Interval | Burst |
+        | --- | --- | --- | --- |
+        | 1 min | 300 requests | 200 ms | 20 requests |
+
+        One request with <code>4XX</code> response codes is counted as 10 requests
+
+        </div>
+      parameters:
+        - name: supplyId
+          in: path
+          required: true
+          description: ID of the supply from which orders will be moved
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orderIds
+                - newSupplyId
+              properties:
+                orderIds:
+                  type: array
+                  description: List of assembly order IDs that need to be moved to assembly
+                  items:
+                    type: integer
+                newSupplyId:
+                  type: string
+                  description: ID of the supply to which orders will be moved. The supply must not be in a delivery status
+      responses:
+        "200":
+          description: Успешно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/v3.TransferOrdersToAssemblyResponse"
+              examples:
+                v3.TransferOrdersToAssemblyResponse:
+                  $ref: "#/components/examples/v3.TransferOrdersToAssemblyResponse"
+        "400":
+          description: Неправильный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                IncorrectParameter:
+                  $ref: "#/components/examples/IncorrectParameter"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Доступ запрещён
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                AccessDenied:
+                  $ref: "#/components/examples/AccessDenied"
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Response4XX"
+              examples:
+                Response403TokenCategory:
+                  $ref: "#/components/examples/Response403TokenCategory"
         "429":
           $ref: "#/components/responses/429"
   /api/marketplace/v3/fbs/supplies/shipping-method:

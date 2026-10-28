@@ -259,6 +259,11 @@ components:
               - `false` — заказ сделан на товар с ненулевым остатком
               - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену
           example: false
+        trackNumber:
+          type: string
+          nullable: false
+          description: Трек-номер для заказов Cross-Border
+          example: NRU56565656
         options:
           type: object
           description: Опции заказа
@@ -564,6 +569,11 @@ components:
               - `false` — заказ сделан на товар с ненулевым остатком
               - `true` — заказ сделан на товар с нулевым остатком. Такой заказ можно отменить без штрафа за отмену
           example: false
+        trackNumber:
+          type: string
+          nullable: false
+          description: Трек-номер для заказов Cross-Border
+          example: NRU56565656
         options:
           type: object
           description: Опции заказа
@@ -981,6 +991,122 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ShippingPoint"
+    SupplyShippingPoint:
+      description: Shipping point data (per-supply method)
+      type: object
+      required:
+        - id
+        - name
+        - address
+        - city
+        - officeType
+        - latitude
+        - longitude
+        - fulfillment
+        - available
+      properties:
+        id:
+          format: int64
+          type: integer
+          example: 100
+          description: Shipping point ID
+        name:
+          type: string
+          description: Name
+          example: Москва Морской
+        address:
+          type: string
+          description: Address
+          example: г Москва, Морской Проспект 54
+        city:
+          type: string
+          example: Москва
+          description: Locality
+        officeType:
+          description: |
+            Shipping point type:
+              - `sc` — sorting center
+              - `sw` — warehouse
+              - `pp` — pickup point
+              - `pfc` — partner fulfillment center
+              - `gpp` — items acceptance point
+          type: string
+          example: pp
+        latitude:
+          type: number
+          description: Latitude
+          example: 37.588898
+        longitude:
+          type: number
+          description: Longitude
+          example: 55.386871
+        fulfillment:
+          type: boolean
+          description: |
+            Whether the **Fulfillment in SC** service is available for FBS supplies:
+              - `true` — available
+              - `false` — unavailable
+          example: true
+        available:
+          type: boolean
+          description: |
+            Whether the shipping point is available for the supply:
+              - `true` — available
+              - `false` — unavailable. Returns for the pickup point if it is
+                overloaded on the planned supply shipping date
+          example: true
+    SupplyShippingPointsResponse:
+      type: object
+      required:
+        - shippingPoints
+      properties:
+        shippingPoints:
+          description: Shipping points list for the supply
+          type: array
+          items:
+            $ref: "#/components/schemas/SupplyShippingPoint"
+    v3.TransferOrderToAssembly:
+      type: object
+      required:
+        - newStickerId
+        - oldStickerId
+        - orderId
+      properties:
+        orderId:
+          type: integer
+          nullable: false
+          description: Assembly order ID
+        oldStickerId:
+          type: integer
+          nullable: false
+          description: Old sticker ID
+        newStickerId:
+          type: integer
+          nullable: false
+          description: New sticker ID
+        success:
+          type: boolean
+          nullable: false
+          description: Whether the request was processed successfully. Can only be `true`
+        error:
+          type: object
+          description: Error detail
+          properties:
+            code:
+              type: integer
+              nullable: false
+              description: Internal error code
+            detail:
+              type: string
+              nullable: false
+              description: Error details
+    v3.TransferOrdersToAssemblyResponse:
+      type: object
+      properties:
+        transferredOrders:
+          type: array
+          items:
+            $ref: "#/components/schemas/v3.TransferOrderToAssembly"
     UpdateSuppliesShippingMethodRequest:
       type: object
       required:
@@ -1591,6 +1717,19 @@ components:
             code: AccessDenied
             message: Доступ запрещён
   examples:
+    v3.TransferOrdersToAssemblyResponse:
+      value:
+        transferredOrders:
+          - orderId: 5457166056
+            oldStickerId: 0
+            newStickerId: 0
+            error:
+              code: 409
+              detail: Failed to assign the assembly order to the supply. Make sure that the assembly task and the supply meet all the necessary requirements.
+          - orderId: 5678954321
+            oldStickerId: 9876543210
+            newStickerId: 1234567890
+            success: true
     ApiError400V3:
       value:
         detail: Not Found

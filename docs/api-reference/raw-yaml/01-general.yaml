@@ -66,9 +66,10 @@ paths:
         | Analytics | `https://seller-analytics-api.wildberries.ru/ping` |
         | Prices and Discounts | `https://discounts-prices-api.wildberries.ru/ping`<br>`https://discounts-prices-api-sandbox.wildberries.ru/ping` |
         | Marketplace | `https://marketplace-api.wildberries.ru/ping` |
-        | Statistics | `https://statistics-api.wildberries.ru/ping`<br>`https://statistics-api-sandbox.wildberries.ru/ping` |
-        | Promotion | `https://advert-api.wildberries.ru/ping`<br>`https://advert-api-sandbox.wildberries.ru/ping` |
+        | Statistics | `https://statistics-api.wildberries.ru/ping` |
+        | Promotion | `https://advert-api.wildberries.ru/ping` |
         | Feedbacks and Questions | `https://feedbacks-api.wildberries.ru/ping`<br>`https://feedbacks-api-sandbox.wildberries.ru/ping` |
+        The statistics and advert sandboxes (`statistics-api-sandbox`, `advert-api-sandbox`) were disabled by Wildberries on 2026-11-05 — the ping URLs above are production only for those rows.
         | Buyers Chat | `https://buyer-chat-api.wildberries.ru/ping` |
         | Supplies | `https://supplies-api.wildberries.ru/ping` |
         | Buyers Returns | `https://returns-api.wildberries.ru/ping` |

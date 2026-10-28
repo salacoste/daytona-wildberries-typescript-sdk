@@ -3,6 +3,8 @@ info:
   title: Marketing and Promotion
   version: promotion
   description: |
+
+    The advert sandbox (`advert-api-sandbox.wildberries.ru`) was disabled by Wildberries on 2026-11-05; sandbox testing for promotion methods is no longer available.
     <div class="api-block">
 
     Promo calendar, campaign management, bid settings, financial data accounting, and settings for with standard and custom bid and media campaigns.
@@ -39,9 +41,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: true
       x-category: advert
@@ -419,9 +418,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     post:
       x-readonly-method: false
       x-category: advert
@@ -532,9 +528,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: true
       x-category: advert
@@ -608,9 +601,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     post:
       x-readonly-method: true
       x-category: advert
@@ -686,9 +676,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: false
       x-category: advert
@@ -743,9 +730,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     post:
       x-readonly-method: false
       x-category: advert
@@ -822,9 +806,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: false
       x-category: advert
@@ -890,9 +871,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: false
       x-category: advert
@@ -955,9 +933,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: false
       x-category: advert
@@ -1296,9 +1271,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: true
       x-category: advert
@@ -1385,9 +1357,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: true
       x-category: advert
@@ -1462,9 +1431,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     post:
       x-readonly-method: false
       x-category: advert
@@ -1570,9 +1536,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: true
       x-category: advert
@@ -1697,9 +1660,6 @@ paths:
       - url: https://advert-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://advert-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: true
       x-category: advert

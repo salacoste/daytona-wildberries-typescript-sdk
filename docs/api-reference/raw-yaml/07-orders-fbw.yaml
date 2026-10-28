@@ -3,6 +3,8 @@ info:
   title: FBW Supplies
   version: ordersfbw
   description: |
+
+    The supplies sandbox (`supplies-api-sandbox.wildberries.ru`) was disabled by Wildberries on 2026-11-05; sandbox testing for FBW supplies is no longer available (no replacement announced).
     <div class="api-block">
 
     This section describes the methods for getting:
@@ -26,9 +28,6 @@ paths:
       - url: https://supplies-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://supplies-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     post:
       x-readonly-method: true
       x-category: supplies
@@ -104,9 +103,6 @@ paths:
       - url: https://supplies-api.wildberries.ru
         description: |
           **Prod**
-      - url: https://supplies-api-sandbox.wildberries.ru
-        description: |
-          **Sandbox**
     get:
       x-readonly-method: true
       x-category: supplies
