@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.0] - 2026-10-29
+
+### Removed
+
+- **reports: `getAnalyticsGoodsReturn()`** — the legacy goods-return report
+  (GET `/api/v1/analytics/goods-return`). WB **disabled the endpoint on
+  2026-10-26** ([release note](https://dev.wildberries.ru/en/release-notes?id=577));
+  calls now return 404/410. Use `getAnalyticsV1GoodsReturn()`
+  (GET `/api/analytics/v1/item-returns`, shipped in v4.6.0): `status=active|archive`
+  filter, `limit`/`offset` pagination, `count` total for the period. Also removed:
+  the `GoodsReturnItem`/`GoodsReturnResponse` types, the
+  `reports.analyticsGoodsReturn` rate-limit entry and the operation-metadata row.
+
+### Changed
+
+- **utils: `enrichReturnsWithType()`** — the FBO input is now the structural
+  `FboReturnInput` type (was the removed `GoodsReturnItem`). The utility keeps
+  working with the live v1 report: map `returnReason` → `reason` when feeding
+  `getAnalyticsV1GoodsReturn().report` items (see the updated JSDoc example).
+  `WbReturn`/`FbsReturnInput`/`reconcileBuyoutsAndReturns` are unchanged.
+
+### Migration
+
+See [migration-v4.md — Looking ahead: v5](./docs/guides/migration-v4.md#looking-ahead-v5).
+Remaining dated removals (region-sale 2026-11-03, getAdvBudget 2026-11-16,
+getShippingPoints 2026-11-20) target the next major after their WB deadlines.
+
+SDK totals: 312 public methods, 2,619 tests.
+
 ## [4.8.0] - 2026-10-28
 
 ### Added
