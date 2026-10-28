@@ -2,7 +2,7 @@
 
 # Class: CustomsDeclarationIsRequiredError
 
-Defined in: [errors/customs-declaration-is-required-error.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L38)
+Defined in: [errors/customs-declaration-is-required-error.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L38)
 
 Error thrown when WB returns HTTP 409 with body `code: 'CustomsDeclarationIsRequired'`
 — at least one assembly order in the request lacks a required customs-declaration
@@ -62,7 +62,7 @@ new CustomsDeclarationIsRequiredError(
    timestamp?: string): CustomsDeclarationIsRequiredError;
 ```
 
-Defined in: [errors/customs-declaration-is-required-error.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L54)
+Defined in: [errors/customs-declaration-is-required-error.ts:54](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L54)
 
 Creates a CustomsDeclarationIsRequiredError (HTTP 409)
 
@@ -89,12 +89,12 @@ Creates a CustomsDeclarationIsRequiredError (HTTP 409)
 
 | Property | Modifier | Type | Description | Inherited from | Defined in |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/base-error.ts#L25) |
-| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/base-error.ts#L30) |
-| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/base-error.ts#L35) |
-| <a id="origin"></a> `origin?` | `readonly` | `string` | Origin service identifier from RFC 7807 problem+json responses. Indicates which internal Wildberries service originated the error (e.g., "s2s-api-auth-catalog"). | [`WBAPIError`](WBAPIError.md).[`origin`](WBAPIError.md#origin) | [errors/base-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/base-error.ts#L43) |
-| <a id="timestamp"></a> `timestamp?` | `readonly` | `string` | ISO 8601 timestamp from RFC 7807 problem+json responses. Indicates when the error occurred on the server side (e.g., "2024-09-30T06:52:38Z"). | [`WBAPIError`](WBAPIError.md).[`timestamp`](WBAPIError.md#timestamp) | [errors/base-error.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/base-error.ts#L51) |
-| <a id="code"></a> `code` | `readonly` | `string` | WB error code from the response body (`'CustomsDeclarationIsRequired'`). | - | [errors/customs-declaration-is-required-error.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L42) |
+| <a id="statuscode"></a> `statusCode?` | `readonly` | `number` | HTTP status code if applicable | [`WBAPIError`](WBAPIError.md).[`statusCode`](WBAPIError.md#statuscode) | [errors/base-error.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/base-error.ts#L25) |
+| <a id="response"></a> `response?` | `readonly` | `unknown` | API response body if available | [`WBAPIError`](WBAPIError.md).[`response`](WBAPIError.md#response) | [errors/base-error.ts:30](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/base-error.ts#L30) |
+| <a id="requestid"></a> `requestId?` | `readonly` | `string` | Correlation ID for debugging and tracing requests | [`WBAPIError`](WBAPIError.md).[`requestId`](WBAPIError.md#requestid) | [errors/base-error.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/base-error.ts#L35) |
+| <a id="origin"></a> `origin?` | `readonly` | `string` | Origin service identifier from RFC 7807 problem+json responses. Indicates which internal Wildberries service originated the error (e.g., "s2s-api-auth-catalog"). | [`WBAPIError`](WBAPIError.md).[`origin`](WBAPIError.md#origin) | [errors/base-error.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/base-error.ts#L43) |
+| <a id="timestamp"></a> `timestamp?` | `readonly` | `string` | ISO 8601 timestamp from RFC 7807 problem+json responses. Indicates when the error occurred on the server side (e.g., "2024-09-30T06:52:38Z"). | [`WBAPIError`](WBAPIError.md).[`timestamp`](WBAPIError.md#timestamp) | [errors/base-error.ts:51](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/base-error.ts#L51) |
+| <a id="code"></a> `code` | `readonly` | `string` | WB error code from the response body (`'CustomsDeclarationIsRequired'`). | - | [errors/customs-declaration-is-required-error.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L42) |
 
 ## Methods
 
@@ -104,7 +104,7 @@ Creates a CustomsDeclarationIsRequiredError (HTTP 409)
 getUserMessage(): string;
 ```
 
-Defined in: [errors/customs-declaration-is-required-error.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L72)
+Defined in: [errors/customs-declaration-is-required-error.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L72)
 
 Returns a user-friendly error message with recovery guidance.
 
@@ -135,7 +135,7 @@ toJSON(): {
 };
 ```
 
-Defined in: [errors/customs-declaration-is-required-error.ts:91](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L91)
+Defined in: [errors/customs-declaration-is-required-error.ts:91](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L91)
 
 Custom JSON serialization to include the code property
 
@@ -158,14 +158,14 @@ Object representation including code
 
 | Name | Type | Defined in |
 | ------ | ------ | ------ |
-| `name` | `string` | [errors/customs-declaration-is-required-error.ts:92](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L92) |
-| `message` | `string` | [errors/customs-declaration-is-required-error.ts:93](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L93) |
-| `statusCode?` | `number` | [errors/customs-declaration-is-required-error.ts:94](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L94) |
-| `code` | `string` | [errors/customs-declaration-is-required-error.ts:95](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L95) |
-| `response?` | `unknown` | [errors/customs-declaration-is-required-error.ts:96](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L96) |
-| `requestId?` | `string` | [errors/customs-declaration-is-required-error.ts:97](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L97) |
-| `origin?` | `string` | [errors/customs-declaration-is-required-error.ts:98](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L98) |
-| `timestamp?` | `string` | [errors/customs-declaration-is-required-error.ts:99](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/errors/customs-declaration-is-required-error.ts#L99) |
+| `name` | `string` | [errors/customs-declaration-is-required-error.ts:92](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L92) |
+| `message` | `string` | [errors/customs-declaration-is-required-error.ts:93](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L93) |
+| `statusCode?` | `number` | [errors/customs-declaration-is-required-error.ts:94](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L94) |
+| `code` | `string` | [errors/customs-declaration-is-required-error.ts:95](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L95) |
+| `response?` | `unknown` | [errors/customs-declaration-is-required-error.ts:96](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L96) |
+| `requestId?` | `string` | [errors/customs-declaration-is-required-error.ts:97](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L97) |
+| `origin?` | `string` | [errors/customs-declaration-is-required-error.ts:98](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L98) |
+| `timestamp?` | `string` | [errors/customs-declaration-is-required-error.ts:99](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/errors/customs-declaration-is-required-error.ts#L99) |
 
 #### Overrides
 

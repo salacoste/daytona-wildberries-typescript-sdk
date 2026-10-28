@@ -2,7 +2,7 @@
 
 # Interface: DBWClientInfo
 
-Defined in: [types/orders-fbw.types.ts:471](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L471)
+Defined in: [types/orders-fbw.types.ts:471](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbw.types.ts#L471)
 
 Buyer information for a DBW order
 
@@ -14,9 +14,9 @@ Buyer information for a DBW order
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orderid"></a> `orderID?` | `number` | Order ID | [types/orders-fbw.types.ts:473](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L473) |
-| <a id="firstname"></a> `firstName?` | `string` | Customer first name | [types/orders-fbw.types.ts:475](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L475) |
-| <a id="fullname"></a> `fullName?` | `string` | Customer full name | [types/orders-fbw.types.ts:477](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L477) |
-| <a id="phone"></a> `phone?` | `string` | Phone number (without country code) | [types/orders-fbw.types.ts:479](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L479) |
-| <a id="phonecode"></a> `phoneCode?` | `number` | Phone country code | [types/orders-fbw.types.ts:481](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L481) |
-| <a id="additionalphonecodes"></a> `additionalPhoneCodes?` | `number`[] | Additional phone country codes | [types/orders-fbw.types.ts:483](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L483) |
+| <a id="orderid"></a> `orderID?` | `number` | Order ID | [types/orders-fbw.types.ts:473](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbw.types.ts#L473) |
+| <a id="firstname"></a> `firstName?` | `string` | Customer first name | [types/orders-fbw.types.ts:475](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbw.types.ts#L475) |
+| <a id="fullname"></a> `fullName?` | `string` | Customer full name | [types/orders-fbw.types.ts:477](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbw.types.ts#L477) |
+| <a id="phone"></a> `phone?` | `string` | Phone number (without country code) | [types/orders-fbw.types.ts:479](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbw.types.ts#L479) |
+| <a id="phonecode"></a> `phoneCode?` | `number` | Phone country code | [types/orders-fbw.types.ts:481](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbw.types.ts#L481) |
+| <a id="additionalphonecodes"></a> `additionalPhoneCodes?` | `number`[] | Additional phone country codes | [types/orders-fbw.types.ts:483](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbw.types.ts#L483) |

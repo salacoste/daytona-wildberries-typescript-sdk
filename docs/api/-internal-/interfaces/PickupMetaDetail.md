@@ -2,7 +2,7 @@
 
 # Interface: PickupMetaDetail
 
-Defined in: [types/in-store-pickup.types.ts:202](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L202)
+Defined in: [types/in-store-pickup.types.ts:202](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L202)
 
 Per-order label-identifier validation detail (meta/details response).
 
@@ -10,6 +10,6 @@ Per-order label-identifier validation detail (meta/details response).
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="key"></a> `key` | `string` | Identifier name: imei | uin | gtin | sgtin | customsDeclaration | originCountryCode. | [types/in-store-pickup.types.ts:204](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L204) |
-| <a id="value"></a> `value?` | `string` \| `null` | Identifier value (null when not set). | [types/in-store-pickup.types.ts:206](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L206) |
-| <a id="decision"></a> `decision` | `string` | Validation status (filled, optional, pending, required, imeiInvalidFormat, sgtinNotFound, …). | [types/in-store-pickup.types.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L208) |
+| <a id="key"></a> `key` | `string` | Identifier name: imei | uin | gtin | sgtin | customsDeclaration | originCountryCode. | [types/in-store-pickup.types.ts:204](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L204) |
+| <a id="value"></a> `value?` | `string` \| `null` | Identifier value (null when not set). | [types/in-store-pickup.types.ts:206](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L206) |
+| <a id="decision"></a> `decision` | `string` | Validation status (filled, optional, pending, required, imeiInvalidFormat, sgtinNotFound, …). | [types/in-store-pickup.types.ts:208](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L208) |

@@ -741,59 +741,6 @@ export interface BannedProductsShadowedResponse {
 }
 
 /**
- * Goods return report item
- * @see EPIC 43 - Extracted from inline type literal
- */
-export interface GoodsReturnItem {
-  /** Баркод */
-  barcode?: string;
-  /** Бренд */
-  brand?: string;
-  /** Дата завершения */
-  completedDt?: string;
-  /** Адрес ПВЗ назначения */
-  dstOfficeAddress?: string;
-  /** ID ПВЗ назначения */
-  dstOfficeId?: number;
-  /** Дата истечения срока */
-  expiredDt?: string;
-  /** Статус активности: 0 — неактивен, 1 — активен */
-  isStatusActive?: 0 | 1;
-  /** Артикул WB */
-  nmId?: number;
-  /** Дата заказа */
-  orderDt?: string;
-  /** ID заказа */
-  orderId?: number;
-  /** Дата готовности к возврату */
-  readyToReturnDt?: string;
-  /** Причина возврата */
-  reason?: string;
-  /** Тип возврата */
-  returnType?: string;
-  /** ID ШК */
-  shkId?: number;
-  /** Srid */
-  srid?: string;
-  /** Статус */
-  status?: string;
-  /** ID стикера */
-  stickerId?: string;
-  /** Предмет */
-  subjectName?: string;
-  /** Размер */
-  techSize?: string;
-}
-
-/**
- * Response for getAnalyticsGoodsReturn
- * @see EPIC 43 - Extracted from inline type literal
- */
-export interface GoodsReturnResponse {
-  report?: GoodsReturnItem[];
-}
-
-/**
  * Return status filter for the goods-return report (v1, analytics)
  * @see task-212 - WB news 2026-09-24 (#16)
  */

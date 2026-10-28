@@ -2,7 +2,7 @@
 
 # Interface: B2bWholesaleUploadTaskResponse
 
-Defined in: [types/products.types.ts:724](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L724)
+Defined in: [types/products.types.ts:724](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L724)
 
 Response for B2B wholesale discount upload
 (POST /api/discounts-prices/v1/upload/task/b2b/wholesale).
@@ -15,6 +15,6 @@ in an `error` object. See [B2bWholesaleTaskResult](B2bWholesaleTaskResult.md) fo
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`B2bWholesaleTaskResult`](B2bWholesaleTaskResult.md)[] | Per-item processing results | [types/products.types.ts:726](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L726) |
-| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:728](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L728) |
-| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:730](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L730) |
+| <a id="data"></a> `data?` | [`B2bWholesaleTaskResult`](B2bWholesaleTaskResult.md)[] | Per-item processing results | [types/products.types.ts:726](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L726) |
+| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:728](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L728) |
+| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:730](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L730) |

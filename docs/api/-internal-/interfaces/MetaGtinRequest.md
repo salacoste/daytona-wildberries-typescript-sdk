@@ -2,7 +2,7 @@
 
 # Interface: MetaGtinRequest
 
-Defined in: [types/orders-fbs.types.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L116)
+Defined in: [types/orders-fbs.types.ts:116](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L116)
 
 Request body for attaching a GTIN to an order
 
@@ -10,4 +10,4 @@ Request body for attaching a GTIN to an order
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="gtin"></a> `gtin` | `string` | Global Trade Item Number | [types/orders-fbs.types.ts:118](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L118) |
+| <a id="gtin"></a> `gtin` | `string` | Global Trade Item Number | [types/orders-fbs.types.ts:118](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L118) |

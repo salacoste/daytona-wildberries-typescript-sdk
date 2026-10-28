@@ -2,7 +2,7 @@
 
 # Class: GeneralModule
 
-Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L24)
+Defined in: [modules/general/index.ts:26](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L26)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/general/index.ts:24](https://github.com/salacoste/daytona-w
 new GeneralModule(client: BaseClient): GeneralModule;
 ```
 
-Defined in: [modules/general/index.ts:25](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L25)
+Defined in: [modules/general/index.ts:27](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L27)
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Defined in: [modules/general/index.ts:25](https://github.com/salacoste/daytona-w
 ping(): Promise<PingResponse>;
 ```
 
-Defined in: [modules/general/index.ts:70](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L70)
+Defined in: [modules/general/index.ts:72](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L72)
 
 Проверка подключения к WB API
 
@@ -104,7 +104,7 @@ console.log(result.Status); // 'OK'
 news(options?: NewsRequestParams): Promise<NewsResponse>;
 ```
 
-Defined in: [modules/general/index.ts:106](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L106)
+Defined in: [modules/general/index.ts:108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L108)
 
 Получение новостей портала продавцов
 
@@ -160,13 +160,87 @@ for (const item of result.data) {
 
 ***
 
+### getNotifications()
+
+```ts
+getNotifications(params?: GetNotificationsParams): Promise<GetNotificationsResponse>;
+```
+
+Defined in: [modules/general/index.ts:158](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L158)
+
+Получение уведомлений кабинета продавца
+
+Возвращает список уведомлений портала продавца
+([seller.wildberries.ru](https://seller.wildberries.ru)) на русском языке.
+Уведомления в ответе упорядочены от новых к старым.
+
+**Доступно только продавцам из Российской Федерации** — для остальных
+метод вернёт 403 (`code: countryError`, «Seller is not from Russia»).
+
+Пагинация — курсорная, через параметр `from`:
+1. Первый запрос — без `from`.
+2. В следующих запросах передавайте `date` последнего уведомления
+   из предыдущего ответа.
+
+Rate limit:
+| Период | Лимит | Интервал | Всплеск |
+| --- | --- | --- | --- |
+| 1 мин | 1 запрос | 1 мин | 10 запросов |
+
+#### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `params?` | [`GetNotificationsParams`](../-internal-/interfaces/GetNotificationsParams.md) | Параметры запроса |
+
+#### Returns
+
+`Promise`\<[`GetNotificationsResponse`](../-internal-/interfaces/GetNotificationsResponse.md)\>
+
+Список уведомлений
+
+#### Throws
+
+When API key is invalid (401)
+
+#### Throws
+
+When rate limit exceeded (429)
+
+#### Throws
+
+When request data is invalid (400)
+
+#### Throws
+
+When network request fails or times out
+
+#### See
+
+[https://dev.wildberries.ru/docs/openapi/api-information#tag/newsApi/operation/getV1Notifications](https://dev.wildberries.ru/docs/openapi/api-information#tag/newsApi/operation/getV1Notifications)
+
+#### Since
+
+task-239
+
+#### Example
+
+```typescript
+const result = await sdk.general.getNotifications({ limit: 20 });
+for (const n of result.data) {
+  console.log(n.title, n.date);
+}
+```
+
+***
+
 ### sellerInfo()
 
 ```ts
 sellerInfo(): Promise<SellerInfoResponse>;
 ```
 
-Defined in: [modules/general/index.ts:140](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L140)
+Defined in: [modules/general/index.ts:192](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L192)
 
 Получение информации о продавце
 
@@ -219,7 +293,7 @@ console.log(seller.name, seller.sid);
 createInvite(data: CreateInviteRequest): Promise<CreateInviteResponse>;
 ```
 
-Defined in: [modules/general/index.ts:182](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L182)
+Defined in: [modules/general/index.ts:234](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L234)
 
 Создание приглашения для нового пользователя
 
@@ -287,7 +361,7 @@ console.log(result.inviteUrl);
 getUsers(params?: GetUsersParams): Promise<GetUsersResponse>;
 ```
 
-Defined in: [modules/general/index.ts:224](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L224)
+Defined in: [modules/general/index.ts:276](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L276)
 
 Получение списка пользователей продавца
 
@@ -352,7 +426,7 @@ for (const user of result.users) {
 updateUserAccess(data: UpdateUserAccessRequest): Promise<void>;
 ```
 
-Defined in: [modules/general/index.ts:270](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L270)
+Defined in: [modules/general/index.ts:322](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L322)
 
 Изменение доступов пользователей
 
@@ -423,7 +497,7 @@ await sdk.general.updateUserAccess({
 deleteUser(deletedUserID: number): Promise<void>;
 ```
 
-Defined in: [modules/general/index.ts:304](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L304)
+Defined in: [modules/general/index.ts:356](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L356)
 
 Удаление пользователя
 
@@ -484,7 +558,7 @@ await sdk.general.deleteUser(12345);
 getJamSubscription(): Promise<JamSubscriptionDetails>;
 ```
 
-Defined in: [modules/general/index.ts:346](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L346)
+Defined in: [modules/general/index.ts:398](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L398)
 
 Получение информации о подписке Джем (Jam)
 
@@ -545,7 +619,7 @@ if (jam.state === 'active') {
 getSellerRating(): Promise<SellerRatingResponse>;
 ```
 
-Defined in: [modules/general/index.ts:374](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L374)
+Defined in: [modules/general/index.ts:426](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L426)
 
 Получить рейтинг продавца и количество отзывов
 
@@ -596,7 +670,7 @@ console.log(`Rating: ${rating.valuation} (${rating.feedbackCount} reviews)`);
 getTariffConstructorOptions(params?: GetTariffConstructorOptionsParams): Promise<PlanBuilderOptionsInfo>;
 ```
 
-Defined in: [modules/general/index.ts:417](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/general/index.ts#L417)
+Defined in: [modules/general/index.ts:469](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/general/index.ts#L469)
 
 Получение информации об опциях и пакетах опций Конструктора тарифов (Plan Builder)
 

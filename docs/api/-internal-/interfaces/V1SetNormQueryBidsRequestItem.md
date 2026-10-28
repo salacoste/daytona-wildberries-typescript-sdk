@@ -2,7 +2,7 @@
 
 # Interface: V1SetNormQueryBidsRequestItem
 
-Defined in: [types/promotion.types.ts:1863](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L1863)
+Defined in: [types/promotion.types.ts:1863](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L1863)
 
 Элемент запроса на установку ставки для поискового кластера (V1, валюта кабинета).
 
@@ -14,7 +14,7 @@ task-170
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advertid"></a> `advertId` | `number` | ID кампании | [types/promotion.types.ts:1865](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L1865) |
-| <a id="nmid"></a> `nmId` | `number` | Артикул WB | [types/promotion.types.ts:1867](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L1867) |
-| <a id="normquery"></a> `normQuery` | `string` | Поисковый кластер — группа похожих поисковых запросов | [types/promotion.types.ts:1869](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L1869) |
-| <a id="bidminorunits"></a> `bidMinorUnits` | `number` | Ставка в минорных единицах валюты — 0.01 базовой единицы [валюты кабинета продавца](https://cmp.wildberries.ru/campaigns/finances). Допустимый шаг ставки возвращается методом GET /api/advert/v1/config. | [types/promotion.types.ts:1875](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L1875) |
+| <a id="advertid"></a> `advertId` | `number` | ID кампании | [types/promotion.types.ts:1865](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L1865) |
+| <a id="nmid"></a> `nmId` | `number` | Артикул WB | [types/promotion.types.ts:1867](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L1867) |
+| <a id="normquery"></a> `normQuery` | `string` | Поисковый кластер — группа похожих поисковых запросов | [types/promotion.types.ts:1869](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L1869) |
+| <a id="bidminorunits"></a> `bidMinorUnits` | `number` | Ставка в минорных единицах валюты — 0.01 базовой единицы [валюты кабинета продавца](https://cmp.wildberries.ru/campaigns/finances). Допустимый шаг ставки возвращается методом GET /api/advert/v1/config. | [types/promotion.types.ts:1875](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L1875) |

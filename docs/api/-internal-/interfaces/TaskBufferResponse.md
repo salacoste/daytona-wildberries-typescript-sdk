@@ -2,7 +2,7 @@
 
 # Interface: TaskBufferResponse
 
-Defined in: [types/products.types.ts:760](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L760)
+Defined in: [types/products.types.ts:760](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L760)
 
 Response for buffer upload tasks (GET /api/v2/buffer/tasks)
 
@@ -10,6 +10,6 @@ Response for buffer upload tasks (GET /api/v2/buffer/tasks)
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | [`SupplierTaskMetadataBuffer`](SupplierTaskMetadataBuffer.md) | Buffer upload task metadata | [types/products.types.ts:762](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L762) |
-| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:764](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L764) |
-| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:766](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L766) |
+| <a id="data"></a> `data?` | [`SupplierTaskMetadataBuffer`](SupplierTaskMetadataBuffer.md) | Buffer upload task metadata | [types/products.types.ts:762](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L762) |
+| <a id="error"></a> `error?` | `boolean` | Error flag | [types/products.types.ts:764](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L764) |
+| <a id="errortext"></a> `errorText?` | `string` | Error description | [types/products.types.ts:766](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L766) |

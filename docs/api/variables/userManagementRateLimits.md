@@ -6,4 +6,4 @@
 const userManagementRateLimits: Record<string, RateLimitConfig>;
 ```
 
-Defined in: [config/user-management-rate-limits.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/config/user-management-rate-limits.ts#L16)
+Defined in: [config/user-management-rate-limits.ts:16](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/config/user-management-rate-limits.ts#L16)

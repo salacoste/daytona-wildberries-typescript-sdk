@@ -10,7 +10,7 @@ description: Единая аналитика по возвратам FBO/FBS и 
 ## Проблема
 
 Wildberries не предоставляет единый эндпоинт со всеми данными, необходимыми для аналитики возвратов:
-- `getAnalyticsGoodsReturn()` возвращает FBO-возвраты с причинами, но без поля `orderType`
+- `getAnalyticsV1GoodsReturn()` возвращает FBO-возвраты с причинами, но без поля `orderType`
 - Возвраты FBS получаются из истории статусов `ordersFBS`
 - Выкупы берутся из `getStocksReportProducts()` (отдельный API)
 - Финансовая сверка находится в строках `getSalesReportsDetailed()`
@@ -39,9 +39,12 @@ import { enrichReturnsWithType } from 'daytona-wildberries-typescript-sdk';
 import type { WbReturn } from 'daytona-wildberries-typescript-sdk';
 
 // Получить FBO-возвраты
-const fbo = await sdk.reports.getAnalyticsGoodsReturn({
+const fbo = await sdk.reports.getAnalyticsV1GoodsReturn({
   dateFrom: '2026-04-01',
   dateTo: '2026-04-30',
+  status: 'active',
+  limit: 1000,
+  offset: 0,
 });
 
 // Опционально: сформировать FBS-возвраты из истории статусов заказов
@@ -109,7 +112,7 @@ import {
 async function buildReturnsDashboard(sdk: WildberriesSDK, dateFrom: string, dateTo: string) {
   // 1. Параллельно получить все источники данных
   const [fbo, stocks /* , fbsOrders */] = await Promise.all([
-    sdk.reports.getAnalyticsGoodsReturn({ dateFrom, dateTo }),
+    sdk.reports.getAnalyticsV1GoodsReturn({ dateFrom, dateTo, status: 'active', limit: 1000, offset: 0 }),
     sdk.analytics.getStocksReportProducts({ /* ... */ }),
     // sdk.ordersFBS.getOrders({ dateFrom: epochSeconds(dateFrom) }),
   ]);

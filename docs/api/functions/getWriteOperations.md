@@ -6,7 +6,7 @@
 function getWriteOperations(): string[];
 ```
 
-Defined in: [config/operation-metadata.ts:3167](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/config/operation-metadata.ts#L3167)
+Defined in: [config/operation-metadata.ts:3157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/config/operation-metadata.ts#L3157)
 
 Get all write operations (not readonly)
 

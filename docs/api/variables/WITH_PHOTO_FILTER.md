@@ -10,7 +10,7 @@ const WITH_PHOTO_FILTER: {
 };
 ```
 
-Defined in: [modules/products/index.ts:73](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/products/index.ts#L73)
+Defined in: [modules/products/index.ts:73](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/products/index.ts#L73)
 
 Filter values for [ProductsModule.getCardsList](../classes/ProductsModule.md#getcardslist) `data.settings.filter.withPhoto`.
 
@@ -25,9 +25,9 @@ automatically — `WITH_PHOTO_FILTER.NO_PHOTO` resolves to `2` (the new value) i
 
 | Name | Type | Default value | Description | Defined in |
 | ------ | ------ | ------ | ------ | ------ |
-| <a id="all"></a> `ALL` | `-1` | `-1` | All cards regardless of photo state. Same semantic before and after 2026-06-16. | [modules/products/index.ts:75](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/products/index.ts#L75) |
-| <a id="with_photo"></a> `WITH_PHOTO` | `1` | `1` | Only cards WITH photo. Same semantic before and after 2026-06-16. | [modules/products/index.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/products/index.ts#L77) |
-| <a id="no_photo"></a> `NO_PHOTO` | `2` | `2` | Only cards WITHOUT photo. NEW value `2` in v3.14.0+ — replaces legacy `0` semantic post-2026-06-16. | [modules/products/index.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/products/index.ts#L79) |
+| <a id="all"></a> `ALL` | `-1` | `-1` | All cards regardless of photo state. Same semantic before and after 2026-06-16. | [modules/products/index.ts:75](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/products/index.ts#L75) |
+| <a id="with_photo"></a> `WITH_PHOTO` | `1` | `1` | Only cards WITH photo. Same semantic before and after 2026-06-16. | [modules/products/index.ts:77](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/products/index.ts#L77) |
+| <a id="no_photo"></a> `NO_PHOTO` | `2` | `2` | Only cards WITHOUT photo. NEW value `2` in v3.14.0+ — replaces legacy `0` semantic post-2026-06-16. | [modules/products/index.ts:79](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/products/index.ts#L79) |
 
 ## Since
 

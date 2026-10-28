@@ -2,7 +2,7 @@
 
 # Interface: V1GetNormQueryStatsResponseItem
 
-Defined in: [types/promotion.types.ts:1047](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L1047)
+Defined in: [types/promotion.types.ts:1047](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L1047)
 
 Элемент ответа с ежедневной статистикой
 
@@ -10,6 +10,6 @@ Defined in: [types/promotion.types.ts:1047](https://github.com/salacoste/daytona
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advertid"></a> `advertId` | `number` | ID кампании | [types/promotion.types.ts:1049](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L1049) |
-| <a id="nmid"></a> `nmId` | `number` | Артикул WB | [types/promotion.types.ts:1051](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L1051) |
-| <a id="dailystats"></a> `dailyStats` | [`V1GetNormQueryStatsResponseItemDailyStat`](V1GetNormQueryStatsResponseItemDailyStat.md)[] | Детализация статистики по дням | [types/promotion.types.ts:1053](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L1053) |
+| <a id="advertid"></a> `advertId` | `number` | ID кампании | [types/promotion.types.ts:1049](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L1049) |
+| <a id="nmid"></a> `nmId` | `number` | Артикул WB | [types/promotion.types.ts:1051](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L1051) |
+| <a id="dailystats"></a> `dailyStats` | [`V1GetNormQueryStatsResponseItemDailyStat`](V1GetNormQueryStatsResponseItemDailyStat.md)[] | Детализация статистики по дням | [types/promotion.types.ts:1053](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L1053) |

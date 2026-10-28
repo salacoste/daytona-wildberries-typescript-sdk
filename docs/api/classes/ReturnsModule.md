@@ -2,7 +2,7 @@
 
 # Class: ReturnsModule
 
-Defined in: [modules/returns/index.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/returns/index.ts#L215)
+Defined in: [modules/returns/index.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/returns/index.ts#L215)
 
 Returns aggregator module — combines FBO, FBS, and Finance sources into a
 unified `ReturnItem[]` with full partial-failure tolerance.
@@ -34,7 +34,7 @@ new ReturnsModule(
    finances: FinancesModule): ReturnsModule;
 ```
 
-Defined in: [modules/returns/index.ts:225](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/returns/index.ts#L225)
+Defined in: [modules/returns/index.ts:225](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/returns/index.ts#L225)
 
 Constructor parameters `_client` and `_ordersFBS` are reserved for
 v3.10.1 FBS status history implementation. The `_` prefix satisfies
@@ -62,7 +62,7 @@ documented in story 13.2.
 getReturns(params: ReturnsApiRequest): Promise<ReturnsApiResponse>;
 ```
 
-Defined in: [modules/returns/index.ts:330](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/returns/index.ts#L330)
+Defined in: [modules/returns/index.ts:330](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/returns/index.ts#L330)
 
 Unified return analytics aggregator.
 
@@ -115,7 +115,7 @@ v3.10.0
 getReturnByOrderId(orderId: string, params: ReturnByOrderIdParams): Promise<ReturnItem | null>;
 ```
 
-Defined in: [modules/returns/index.ts:463](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/returns/index.ts#L463)
+Defined in: [modules/returns/index.ts:463](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/returns/index.ts#L463)
 
 Convenience: fetch a single return record by WB orderId.
 
@@ -166,7 +166,7 @@ v3.10.0
 getReturnStats(params: ReturnStatsParams): Promise<ReturnStatsResult>;
 ```
 
-Defined in: [modules/returns/index.ts:513](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/returns/index.ts#L513)
+Defined in: [modules/returns/index.ts:513](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/returns/index.ts#L513)
 
 Convenience: aggregate return statistics grouped by nmId / category / orderType.
 

@@ -2,7 +2,7 @@
 
 # Interface: StatusHistoryResponse
 
-Defined in: [types/orders-fbs.types.ts:350](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L350)
+Defined in: [types/orders-fbs.types.ts:420](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L420)
 
 Response containing cross-border status history
 
@@ -10,4 +10,4 @@ Response containing cross-border status history
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders?` | [`StatusHistoryItem`](StatusHistoryItem.md)[] | List of order status histories | [types/orders-fbs.types.ts:352](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L352) |
+| <a id="orders"></a> `orders?` | [`StatusHistoryItem`](StatusHistoryItem.md)[] | List of order status histories | [types/orders-fbs.types.ts:422](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L422) |

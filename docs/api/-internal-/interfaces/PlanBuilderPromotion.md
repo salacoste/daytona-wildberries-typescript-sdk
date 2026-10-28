@@ -2,7 +2,7 @@
 
 # Interface: PlanBuilderPromotion
 
-Defined in: [types/general.types.ts:323](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L323)
+Defined in: [types/general.types.ts:379](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L379)
 
 Promo applied to a Plan Builder option.
 Returned when the option is activated via a promo and the promo period has not expired.
@@ -15,5 +15,5 @@ Returned when the option is activated via a promo and the promo period has not e
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="commissionrate"></a> `commissionRate` | `number` | Cost of activating the option through a promo, % of turnover | [types/general.types.ts:325](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L325) |
-| <a id="expiresat"></a> `expiresAt` | `string` | End date of the promo price (ISO 8601) | [types/general.types.ts:327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L327) |
+| <a id="commissionrate"></a> `commissionRate` | `number` | Cost of activating the option through a promo, % of turnover | [types/general.types.ts:381](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L381) |
+| <a id="expiresat"></a> `expiresAt` | `string` | End date of the promo price (ISO 8601) | [types/general.types.ts:383](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L383) |

@@ -2,7 +2,7 @@
 
 # Interface: StoreContactRequestBody
 
-Defined in: [types/products.types.ts:13](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L13)
+Defined in: [types/products.types.ts:13](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L13)
 
 Контакты склада продавца
 
@@ -10,4 +10,4 @@ Defined in: [types/products.types.ts:13](https://github.com/salacoste/daytona-wi
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="contacts"></a> `contacts?` | \{ `comment?`: `string`; `phone?`: `string`; \}[] | [types/products.types.ts:14](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L14) |
+| <a id="contacts"></a> `contacts?` | \{ `comment?`: `string`; `phone?`: `string`; \}[] | [types/products.types.ts:14](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L14) |

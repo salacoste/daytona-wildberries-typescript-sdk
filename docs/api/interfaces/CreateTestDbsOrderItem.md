@@ -2,7 +2,7 @@
 
 # Interface: CreateTestDbsOrderItem
 
-Defined in: [types/orders-dbs.types.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L37)
+Defined in: [types/orders-dbs.types.ts:37](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-dbs.types.ts#L37)
 
 Product and quantity for one test DBS assembly order.
 
@@ -10,5 +10,5 @@ Product and quantity for one test DBS assembly order.
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="sku"></a> `sku` | `string` | Seller SKU. The rendered official contract shows no length or pattern bound. | [types/orders-dbs.types.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L39) |
-| <a id="amount"></a> `amount` | `number` | Integer quantity. The rendered official contract shows only a maximum of 10. | [types/orders-dbs.types.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L41) |
+| <a id="sku"></a> `sku` | `string` | Seller SKU. The rendered official contract shows no length or pattern bound. | [types/orders-dbs.types.ts:39](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-dbs.types.ts#L39) |
+| <a id="amount"></a> `amount` | `number` | Integer quantity. The rendered official contract shows only a maximum of 10. | [types/orders-dbs.types.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-dbs.types.ts#L41) |

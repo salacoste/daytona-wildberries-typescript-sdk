@@ -2,7 +2,7 @@
 
 # Interface: SupplyCreateResponse
 
-Defined in: [types/orders-fbs.types.ts:392](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L392)
+Defined in: [types/orders-fbs.types.ts:462](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L462)
 
 Response after creating a new supply
 
@@ -10,4 +10,4 @@ Response after creating a new supply
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `string` | Created supply ID | [types/orders-fbs.types.ts:394](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L394) |
+| <a id="id"></a> `id?` | `string` | Created supply ID | [types/orders-fbs.types.ts:464](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L464) |

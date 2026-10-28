@@ -2,7 +2,7 @@
 
 # Interface: TrbxStickerRequest
 
-Defined in: [types/orders-fbs.types.ts:158](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L158)
+Defined in: [types/orders-fbs.types.ts:205](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L205)
 
 Request body for retrieving box stickers
 
@@ -10,4 +10,4 @@ Request body for retrieving box stickers
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="trbxids"></a> `trbxIds` | `string`[] | List of box IDs | [types/orders-fbs.types.ts:160](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L160) |
+| <a id="trbxids"></a> `trbxIds` | `string`[] | List of box IDs | [types/orders-fbs.types.ts:207](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L207) |

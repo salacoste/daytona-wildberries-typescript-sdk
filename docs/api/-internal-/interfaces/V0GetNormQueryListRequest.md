@@ -2,7 +2,7 @@
 
 # Interface: V0GetNormQueryListRequest
 
-Defined in: [types/promotion.types.ts:962](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L962)
+Defined in: [types/promotion.types.ts:962](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L962)
 
 Запрос списка активных и неактивных поисковых кластеров (v0)
 
@@ -13,4 +13,4 @@ POST /adv/v0/normquery/list — возвращает списки активны
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="items"></a> `items` | [`V0GetNormQueryListRequestItem`](V0GetNormQueryListRequestItem.md)[] | Массив элементов запроса (макс. 100) | [types/promotion.types.ts:964](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L964) |
+| <a id="items"></a> `items` | [`V0GetNormQueryListRequestItem`](V0GetNormQueryListRequestItem.md)[] | Массив элементов запроса (макс. 100) | [types/promotion.types.ts:964](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L964) |

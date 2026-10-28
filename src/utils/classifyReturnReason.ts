@@ -18,7 +18,7 @@ export type ReturnReasonCode =
  *
  * Pure function — no side effects. Returns 'other' for unknown reasons.
  *
- * @param reason - Free-text Russian reason string from WB API (e.g., GoodsReturnItem.reason)
+ * @param reason - Free-text Russian reason string from WB API (e.g., the reason / returnReason field of a return record)
  * @returns Standardized ReturnReasonCode
  *
  * @example

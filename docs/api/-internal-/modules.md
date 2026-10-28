@@ -165,6 +165,10 @@
 | [NewsTag](interfaces/NewsTag.md) | News tag structure |
 | [NewsResponse](interfaces/NewsResponse.md) | Response structure for news endpoint |
 | [NewsRequestParams](interfaces/NewsRequestParams.md) | Parameters for news endpoint request |
+| [GetNotificationsParams](interfaces/GetNotificationsParams.md) | Parameters for the seller-portal notifications request |
+| [SellerNotificationLinkData](interfaces/SellerNotificationLinkData.md) | Notification button data |
+| [SellerNotification](interfaces/SellerNotification.md) | Seller-portal notification item |
+| [GetNotificationsResponse](interfaces/GetNotificationsResponse.md) | Response for GET /api/communications/v1/notifications |
 | [SellerInfoResponse](interfaces/SellerInfoResponse.md) | Response structure for seller info endpoint |
 | [AccessItem](interfaces/AccessItem.md) | Access permission item |
 | [InviteInfo](interfaces/InviteInfo.md) | Invite information |
@@ -274,6 +278,9 @@
 | [MetaCustomsDeclarationRequest](interfaces/MetaCustomsDeclarationRequest.md) | Request body for attaching a customs declaration number to an order |
 | [SupplyCreateRequest](interfaces/SupplyCreateRequest.md) | Request body for creating a new supply |
 | [AddOrdersToSupplyRequest](interfaces/AddOrdersToSupplyRequest.md) | Request body for adding orders to a supply |
+| [TransferSupplyOrdersRequest](interfaces/TransferSupplyOrdersRequest.md) | Request body for moving assembly orders from delivery back to assembly. |
+| [TransferOrderToAssembly](interfaces/TransferOrderToAssembly.md) | Per-order result of moving an assembly order from delivery back to assembly. Maps to swagger schema: v3.TransferOrderToAssembly |
+| [TransferOrdersToAssemblyResponse](interfaces/TransferOrdersToAssemblyResponse.md) | Response for PATCH /api/marketplace/v3/fbs/supplies/{supplyId}/orders/transfer. Maps to swagger schema: v3.TransferOrdersToAssemblyResponse |
 | [TrbxCreateRequest](interfaces/TrbxCreateRequest.md) | Request body for creating boxes (trbx) in a supply |
 | [TrbxDeleteRequest](interfaces/TrbxDeleteRequest.md) | Request body for deleting boxes from a supply |
 | [TrbxStickerRequest](interfaces/TrbxStickerRequest.md) | Request body for retrieving box stickers |
@@ -329,6 +336,9 @@
 | [ShippingPoint](interfaces/ShippingPoint.md) | Supply shipping point — the point the supply is shipped to. Maps to swagger schema: ShippingPoint |
 | [ShippingPointsParams](interfaces/ShippingPointsParams.md) | Query parameters for GET /api/marketplace/v3/fbs/shipping-points Maps to the inline parameters of the shipping-points operation |
 | [ShippingPointsResponse](interfaces/ShippingPointsResponse.md) | Response for GET /api/marketplace/v3/fbs/shipping-points Maps to swagger schema: ShippingPointsResponse |
+| [SupplyShippingPoint](interfaces/SupplyShippingPoint.md) | Supply shipping point returned by the per-supply shipping-points method — the points available for the SPECIFIED supply. Unlike the deprecated global [ShippingPoint](interfaces/ShippingPoint.md): no `cargoTypes` filter (per-supply availability replaces it), `officeType` adds `pfc`/`gpp`, and each point reports whether it is available for this supply (`available`). Maps to swagger schema: SupplyShippingPoint |
+| [SupplyShippingPointsParams](interfaces/SupplyShippingPointsParams.md) | Query parameters for GET /api/marketplace/v3/fbs/supplies/{supplyId}/shipping-points |
+| [SupplyShippingPointsResponse](interfaces/SupplyShippingPointsResponse.md) | Response for GET /api/marketplace/v3/fbs/supplies/{supplyId}/shipping-points Maps to swagger schema: SupplyShippingPointsResponse |
 | [UpdateSupplyShippingMethod](interfaces/UpdateSupplyShippingMethod.md) | Per-supply shipping parameters entry. Maps to swagger schema: UpdateSupplyShippingMethod |
 | [UpdateSuppliesShippingMethodRequest](interfaces/UpdateSuppliesShippingMethodRequest.md) | Request body for PATCH /api/marketplace/v3/fbs/supplies/shipping-method Maps to swagger schema: UpdateSuppliesShippingMethodRequest |
 | [SupplyShippingMethodError](interfaces/SupplyShippingMethodError.md) | Per-supply error entry in the shipping-method response. Maps to swagger schema: ReplyBatchError |
@@ -550,8 +560,6 @@
 | [BannedProductsBlockedResponse](interfaces/BannedProductsBlockedResponse.md) | Response for getBannedProductsBlocked |
 | [BannedProductShadowedItem](interfaces/BannedProductShadowedItem.md) | Banned product item for shadowed products report |
 | [BannedProductsShadowedResponse](interfaces/BannedProductsShadowedResponse.md) | Response for getBannedProductsShadowed |
-| [GoodsReturnItem](interfaces/GoodsReturnItem.md) | Goods return report item |
-| [GoodsReturnResponse](interfaces/GoodsReturnResponse.md) | Response for getAnalyticsGoodsReturn |
 | [GetAnalyticsV1GoodsReturnParams](interfaces/GetAnalyticsV1GoodsReturnParams.md) | Query parameters for getAnalyticsV1GoodsReturn |
 | [GoodsReturnV1Item](interfaces/GoodsReturnV1Item.md) | Item of the goods-return report (v1, analytics) |
 | [GoodsReturnV1Response](interfaces/GoodsReturnV1Response.md) | Response for getAnalyticsV1GoodsReturn |
@@ -580,6 +588,7 @@
 | [CommissionUzbekistan](interfaces/CommissionUzbekistan.md) | - |
 | [CommissionUAE](interfaces/CommissionUAE.md) | - |
 | [ModelsAcceptanceCoefficient](interfaces/ModelsAcceptanceCoefficient-1.md) | Acceptance coefficient for warehouse supplies Used by getAcceptanceCoefficients endpoint Returns tariffs for supplies to specific warehouses for the next 14 days |
+| [FboReturnInput](interfaces/FboReturnInput.md) | Minimal FBO return shape — what consumers should pass for FBO returns. Structural type: satisfies both the legacy goods-return report items (removed from the SDK in v5.0.0 — WB disabled the endpoint on 2026-10-26) and the current `GoodsReturnV1Item` records from `getAnalyticsV1GoodsReturn().report` (map `returnReason` → `reason` when feeding v1 data). |
 
 ## Type Aliases
 
@@ -621,6 +630,7 @@
 | [SpotStatus](type-aliases/SpotStatus.md) | SPOT status — stage of the DOPP (Declaration of Upcoming Supply) formation. Maps to swagger schema: SupplySpotData.status |
 | [ShippingPointCargoType](type-aliases/ShippingPointCargoType.md) | Type of items a shipping point can accept: - `1` — small-sized items - `2` — over dimensional cargo (ODC) - `3` — dimensional cargo+ (CD+) Maps to swagger schema: ShippingPoint.cargoTypes items |
 | [ShippingPointOfficeType](type-aliases/ShippingPointOfficeType.md) | Shipping point type: - `sc` — sorting center - `sw` — warehouse - `pp` — pickup point Maps to swagger schema: ShippingPoint.officeType |
+| [SupplyShippingPointOfficeType](type-aliases/SupplyShippingPointOfficeType.md) | Shipping point type for the per-supply shipping-points method: - `sc` — sorting center - `sw` — warehouse - `pp` — pickup point - `pfc` — partner fulfillment center - `gpp` — items acceptance point |
 | [SupplyShippingType](type-aliases/SupplyShippingType.md) | Type of shipping to the shipping point: - `selfShipping` — shipping at the seller's expense - `transportCompany` — delivery via a transport company. For this shipping type the electronic waybill ID (ETrN) must also be attached to the supply — see `updateSuppliesWaybill()` Maps to swagger schema: UpdateSupplyShippingMethod.shippingType |
 | [ModelsHandySupplyStatus](type-aliases/ModelsHandySupplyStatus.md) | - |
 | [Goods](type-aliases/Goods.md) | Товары, цены и скидки для них. Максимум 1 000 товаров. Цена и скидка не могут быть пустыми одновременно. |

@@ -2,7 +2,7 @@
 
 # Interface: ReconcileAcceptanceDeltaResult
 
-Defined in: [utils/reconcileAcceptanceDelta.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/utils/reconcileAcceptanceDelta.ts#L38)
+Defined in: [utils/reconcileAcceptanceDelta.ts:38](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/utils/reconcileAcceptanceDelta.ts#L38)
 
 Aggregated acceptance reconciliation result.
 
@@ -14,8 +14,8 @@ v4.1.0
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="items"></a> `items` | [`AcceptanceDeltaItem`](AcceptanceDeltaItem.md)[] | Sorted by nmId ascending. | [utils/reconcileAcceptanceDelta.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/utils/reconcileAcceptanceDelta.ts#L40) |
-| <a id="totaldeclared"></a> `totalDeclared` | `number` | - | [utils/reconcileAcceptanceDelta.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/utils/reconcileAcceptanceDelta.ts#L41) |
-| <a id="totalaccepted"></a> `totalAccepted` | `number` | - | [utils/reconcileAcceptanceDelta.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/utils/reconcileAcceptanceDelta.ts#L42) |
-| <a id="totaldelta"></a> `totalDelta` | `number` | - | [utils/reconcileAcceptanceDelta.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/utils/reconcileAcceptanceDelta.ts#L43) |
-| <a id="discrepancycount"></a> `discrepancyCount` | `number` | Number of items where hasDiscrepancy === true. | [utils/reconcileAcceptanceDelta.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/utils/reconcileAcceptanceDelta.ts#L45) |
+| <a id="items"></a> `items` | [`AcceptanceDeltaItem`](AcceptanceDeltaItem.md)[] | Sorted by nmId ascending. | [utils/reconcileAcceptanceDelta.ts:40](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/utils/reconcileAcceptanceDelta.ts#L40) |
+| <a id="totaldeclared"></a> `totalDeclared` | `number` | - | [utils/reconcileAcceptanceDelta.ts:41](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/utils/reconcileAcceptanceDelta.ts#L41) |
+| <a id="totalaccepted"></a> `totalAccepted` | `number` | - | [utils/reconcileAcceptanceDelta.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/utils/reconcileAcceptanceDelta.ts#L42) |
+| <a id="totaldelta"></a> `totalDelta` | `number` | - | [utils/reconcileAcceptanceDelta.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/utils/reconcileAcceptanceDelta.ts#L43) |
+| <a id="discrepancycount"></a> `discrepancyCount` | `number` | Number of items where hasDiscrepancy === true. | [utils/reconcileAcceptanceDelta.ts:45](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/utils/reconcileAcceptanceDelta.ts#L45) |

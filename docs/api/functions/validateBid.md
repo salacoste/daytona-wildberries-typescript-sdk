@@ -6,7 +6,7 @@
 function validateBid(recommendations: BidsRecommendationsResponse, bidKopecks: number): void;
 ```
 
-Defined in: [utils/bid-validation.ts:86](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/utils/bid-validation.ts#L86)
+Defined in: [utils/bid-validation.ts:86](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/utils/bid-validation.ts#L86)
 
 Validate a desired bid against an article's recommendation range.
 

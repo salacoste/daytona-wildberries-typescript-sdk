@@ -10,7 +10,7 @@ This guide covers three pure helpers added in **v3.9.3** for reconciling Wildber
 ## The Problem
 
 Wildberries doesn't expose a single endpoint with all the data you need for return analytics:
-- `getAnalyticsGoodsReturn()` returns FBO returns with reasons but no `orderType` field
+- `getAnalyticsV1GoodsReturn()` returns FBO returns with reasons but no `orderType` field
 - FBS returns are derived from `ordersFBS` status history
 - Buyouts come from `getStocksReportProducts()` (separate API)
 - Finance reconciliation lives in `getSalesReportsDetailed()` lines
@@ -38,10 +38,13 @@ The `ReturnReasonCode` union covers 8 categories: `damage`, `defect`, `wrong_siz
 import { enrichReturnsWithType } from 'daytona-wildberries-typescript-sdk';
 import type { WbReturn } from 'daytona-wildberries-typescript-sdk';
 
-// Fetch FBO returns
-const fbo = await sdk.reports.getAnalyticsGoodsReturn({
+// Fetch FBO returns (v1 report — the legacy goods-return endpoint was removed in v5.0.0)
+const fbo = await sdk.reports.getAnalyticsV1GoodsReturn({
   dateFrom: '2026-04-01',
   dateTo: '2026-04-30',
+  status: 'active',
+  limit: 1000,
+  offset: 0,
 });
 
 // Optional: shape FBS returns from your order status history
@@ -109,7 +112,7 @@ import {
 async function buildReturnsDashboard(sdk: WildberriesSDK, dateFrom: string, dateTo: string) {
   // 1. Fetch all sources in parallel
   const [fbo, stocks /* , fbsOrders */] = await Promise.all([
-    sdk.reports.getAnalyticsGoodsReturn({ dateFrom, dateTo }),
+    sdk.reports.getAnalyticsV1GoodsReturn({ dateFrom, dateTo, status: 'active', limit: 1000, offset: 0 }),
     sdk.analytics.getStocksReportProducts({ /* ... */ }),
     // sdk.ordersFBS.getOrders({ dateFrom: epochSeconds(dateFrom) }),
   ]);

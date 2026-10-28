@@ -3,12 +3,13 @@ import {
   enrichReturnsWithType,
   type WbReturn,
   type FbsReturnInput,
+  type FboReturnInput,
 } from '../../../src/utils/enrichReturnsWithType';
-import type { GoodsReturnItem } from '../../../src/types/reports.types';
+// FBO input is a structural type since v5.0.0 (legacy goods-return report removed)
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
-function makeFboItem(overrides: Partial<GoodsReturnItem> = {}): GoodsReturnItem {
+function makeFboItem(overrides: Partial<FboReturnInput> = {}): FboReturnInput {
   return {
     nmId: 100,
     orderId: 200,
@@ -33,7 +34,7 @@ function makeFbsItem(overrides: Partial<FbsReturnInput> = {}): FbsReturnInput {
 describe('enrichReturnsWithType', () => {
   // 1. FBO-only → all marked fbo, sorted desc
   it('marks all FBO items as orderType fbo and sorts by returnDate descending', () => {
-    const fboReturns: GoodsReturnItem[] = [
+    const fboReturns: FboReturnInput[] = [
       makeFboItem({ nmId: 1, orderId: 10, completedDt: '2024-01-01T00:00:00' }),
       makeFboItem({ nmId: 2, orderId: 20, completedDt: '2024-03-01T00:00:00' }),
       makeFboItem({ nmId: 3, orderId: 30, completedDt: '2024-02-01T00:00:00' }),
@@ -68,7 +69,7 @@ describe('enrichReturnsWithType', () => {
 
   // 3. Mixed FBO + FBS → both types present, sorted desc
   it('returns mixed orderTypes sorted by returnDate descending', () => {
-    const fboReturns: GoodsReturnItem[] = [
+    const fboReturns: FboReturnInput[] = [
       makeFboItem({ nmId: 1, orderId: 10, completedDt: '2024-01-15T00:00:00' }),
     ];
     const fbsReturns: FbsReturnInput[] = [
@@ -93,7 +94,7 @@ describe('enrichReturnsWithType', () => {
 
   // 5. FBO item missing nmId → skipped
   it('skips FBO items that are missing nmId', () => {
-    const fboReturns: GoodsReturnItem[] = [
+    const fboReturns: FboReturnInput[] = [
       makeFboItem({ nmId: undefined, orderId: 10, completedDt: '2024-01-01T00:00:00' }),
       makeFboItem({ nmId: 99, orderId: 11, completedDt: '2024-01-02T00:00:00' }),
     ];
@@ -106,7 +107,7 @@ describe('enrichReturnsWithType', () => {
 
   // 6. FBO item with no completedDt but readyToReturnDt → uses readyToReturnDt
   it('falls back to readyToReturnDt when completedDt is absent', () => {
-    const fboReturns: GoodsReturnItem[] = [
+    const fboReturns: FboReturnInput[] = [
       makeFboItem({
         nmId: 55,
         orderId: 55,
@@ -123,7 +124,7 @@ describe('enrichReturnsWithType', () => {
 
   // 7. reasonCode correctly derived via classifyReturnReason
   it('derives reasonCode "defect" for reason "Брак товара"', () => {
-    const fboReturns: GoodsReturnItem[] = [makeFboItem({ reason: 'Брак товара' })];
+    const fboReturns: FboReturnInput[] = [makeFboItem({ reason: 'Брак товара' })];
 
     const result = enrichReturnsWithType(fboReturns);
 
@@ -150,14 +151,14 @@ describe('enrichReturnsWithType', () => {
 
   // bonus: FBO items missing orderId are skipped
   it('skips FBO items that are missing orderId', () => {
-    const fboReturns: GoodsReturnItem[] = [makeFboItem({ nmId: 1, orderId: undefined })];
+    const fboReturns: FboReturnInput[] = [makeFboItem({ nmId: 1, orderId: undefined })];
 
     expect(enrichReturnsWithType(fboReturns)).toHaveLength(0);
   });
 
   // bonus: FBO items missing all date fields are skipped
   it('skips FBO items where all date fields are undefined', () => {
-    const fboReturns: GoodsReturnItem[] = [
+    const fboReturns: FboReturnInput[] = [
       makeFboItem({
         nmId: 1,
         orderId: 1,
@@ -172,7 +173,7 @@ describe('enrichReturnsWithType', () => {
 
   // bonus: warehouseName mapped from dstOfficeAddress for FBO
   it('maps dstOfficeAddress to warehouseName for FBO items', () => {
-    const fboReturns: GoodsReturnItem[] = [makeFboItem({ dstOfficeAddress: 'Склад Коледино' })];
+    const fboReturns: FboReturnInput[] = [makeFboItem({ dstOfficeAddress: 'Склад Коледино' })];
 
     const result = enrichReturnsWithType(fboReturns);
 

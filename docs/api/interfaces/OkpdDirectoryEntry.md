@@ -2,7 +2,7 @@
 
 # Interface: OkpdDirectoryEntry
 
-Defined in: [types/products.types.ts:968](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L968)
+Defined in: [types/products.types.ts:968](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L968)
 
 OKPD2 entry returned by the OKPD2 directory methods.
 
@@ -10,5 +10,5 @@ OKPD2 entry returned by the OKPD2 directory methods.
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="okpd2"></a> `okpd2` | `string` | OKPD2 code. | [types/products.types.ts:970](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L970) |
-| <a id="description"></a> `description` | `string` | Description of the goods covered by the code. | [types/products.types.ts:972](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L972) |
+| <a id="okpd2"></a> `okpd2` | `string` | OKPD2 code. | [types/products.types.ts:970](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L970) |
+| <a id="description"></a> `description` | `string` | Description of the goods covered by the code. | [types/products.types.ts:972](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L972) |

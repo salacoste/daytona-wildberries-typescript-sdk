@@ -2,7 +2,7 @@
 
 # Interface: PickupMetaDetailsOrder
 
-Defined in: [types/in-store-pickup.types.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L212)
+Defined in: [types/in-store-pickup.types.ts:212](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L212)
 
 Per-order result in the meta/details response.
 
@@ -10,7 +10,7 @@ Per-order result in the meta/details response.
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="orderid"></a> `orderId` | `number` | [types/in-store-pickup.types.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L213) |
-| <a id="iserror"></a> `isError` | `boolean` | [types/in-store-pickup.types.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L214) |
-| <a id="errors"></a> `errors?` | \{ `code`: `number`; `detail`: `string`; \}[] | [types/in-store-pickup.types.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L215) |
-| <a id="metadetails"></a> `metaDetails` | [`PickupMetaDetail`](PickupMetaDetail.md)[] | [types/in-store-pickup.types.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L216) |
+| <a id="orderid"></a> `orderId` | `number` | [types/in-store-pickup.types.ts:213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L213) |
+| <a id="iserror"></a> `isError` | `boolean` | [types/in-store-pickup.types.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L214) |
+| <a id="errors"></a> `errors?` | \{ `code`: `number`; `detail`: `string`; \}[] | [types/in-store-pickup.types.ts:215](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L215) |
+| <a id="metadetails"></a> `metaDetails` | [`PickupMetaDetail`](PickupMetaDetail.md)[] | [types/in-store-pickup.types.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L216) |

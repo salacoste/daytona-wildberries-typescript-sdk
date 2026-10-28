@@ -2,7 +2,7 @@
 
 # Interface: AccessItem
 
-Defined in: [types/general.types.ts:108](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L108)
+Defined in: [types/general.types.ts:164](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L164)
 
 Access permission item
 
@@ -10,5 +10,5 @@ Access permission item
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="code"></a> `code` | [`AccessCode`](../type-aliases/AccessCode.md) | Section code | [types/general.types.ts:110](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L110) |
-| <a id="disabled"></a> `disabled` | `boolean` | true - access denied, false - access allowed | [types/general.types.ts:112](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L112) |
+| <a id="code"></a> `code` | [`AccessCode`](../type-aliases/AccessCode.md) | Section code | [types/general.types.ts:166](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L166) |
+| <a id="disabled"></a> `disabled` | `boolean` | true - access denied, false - access allowed | [types/general.types.ts:168](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L168) |

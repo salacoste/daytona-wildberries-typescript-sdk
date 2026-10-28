@@ -2,7 +2,7 @@
 
 # Class: OrdersFbwModule
 
-Defined in: [modules/orders-fbw/index.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L42)
+Defined in: [modules/orders-fbw/index.ts:42](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L42)
 
 ## Constructors
 
@@ -12,7 +12,7 @@ Defined in: [modules/orders-fbw/index.ts:42](https://github.com/salacoste/dayton
 new OrdersFbwModule(client: BaseClient): OrdersFbwModule;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L43)
+Defined in: [modules/orders-fbw/index.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L43)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ createAcceptanceOption(data: ModelsGood[], options?: {
 }): Promise<ModelsOptionsResultModel>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L61)
+Defined in: [modules/orders-fbw/index.ts:61](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L61)
 
 Опции приёмки
 
@@ -85,7 +85,7 @@ console.log(result);
 warehouses(): Promise<ModelsWarehousesResultItems[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:86](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L86)
+Defined in: [modules/orders-fbw/index.ts:86](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L86)
 
 Список складов
 
@@ -128,7 +128,7 @@ console.log(result);
 transitTariffs(): Promise<ModelsTransitTariff[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:107](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L107)
+Defined in: [modules/orders-fbw/index.ts:107](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L107)
 
 Транзитные направления
 
@@ -174,7 +174,7 @@ listSupplies(data: ModelsSuppliesFiltersRequest, options?: {
 }): Promise<ModelsSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L130)
+Defined in: [modules/orders-fbw/index.ts:130](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L130)
 
 Список поставок
 
@@ -228,7 +228,7 @@ getSupply(ID: number, options?: {
 }): Promise<ModelsSupplyDetails>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L157)
+Defined in: [modules/orders-fbw/index.ts:157](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L157)
 
 Детали поставки
 
@@ -283,7 +283,7 @@ getSuppliesGood(ID: number, options?: {
 }): Promise<ModelsGoodInSupply[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L180)
+Defined in: [modules/orders-fbw/index.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L180)
 
 Товары поставки
 
@@ -336,7 +336,7 @@ console.log(result);
 getSuppliesPackage(ID: number): Promise<ModelsBox[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:205](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L205)
+Defined in: [modules/orders-fbw/index.ts:205](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L205)
 
 Упаковка поставки
 
@@ -385,7 +385,7 @@ console.log(result);
 getSupplyDiscrepancies(supplyId: number): Promise<ModelsItemDiscrepancyResponse[]>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:261](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L261)
+Defined in: [modules/orders-fbw/index.ts:261](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L261)
 
 Расхождения при приёмке поставки
 
@@ -475,7 +475,7 @@ for (const pkg of discrepancies) {
 createDraft(): Promise<ModelsDraftCreateResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:290](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L290)
+Defined in: [modules/orders-fbw/index.ts:290](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L290)
 
 Создать черновик поставки
 
@@ -532,7 +532,7 @@ listDrafts(options?: {
 }): Promise<ModelsListDraftsResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:330](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L330)
+Defined in: [modules/orders-fbw/index.ts:330](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L330)
 
 Список черновиков поставок
 
@@ -602,7 +602,7 @@ for (const draft of drafts) {
 deleteDraft(draftId: string): Promise<void>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L366)
+Defined in: [modules/orders-fbw/index.ts:366](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L366)
 
 Удалить черновик поставки
 
@@ -666,7 +666,7 @@ console.log('Черновик удалён');
 getDraftItems(draftId: string): Promise<ModelsListDraftItemsResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:402](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L402)
+Defined in: [modules/orders-fbw/index.ts:402](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L402)
 
 Товары в черновике поставки
 
@@ -735,7 +735,7 @@ for (const item of items) {
 addDraftItems(draftId: string, data: ModelsDraftAdditemsRequest): Promise<ModelsDraftAddItemsErrorResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:452](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L452)
+Defined in: [modules/orders-fbw/index.ts:452](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L452)
 
 Добавить товары в черновик поставки
 
@@ -822,7 +822,7 @@ if (results.length > 0) {
 deleteDraftItems(draftId: string, data: ModelsDraftDeleteitemsRequest): Promise<ModelsDraftDeleteItemsErrorResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:498](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L498)
+Defined in: [modules/orders-fbw/index.ts:498](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L498)
 
 Удалить товары из черновика поставки
 
@@ -895,7 +895,7 @@ await sdk.ordersFBW.deleteDraftItems(draftId, { skus: ['2000000512907'] });
 getClientInfo(orderIds: number[]): Promise<GetDBWClientInfoResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L539)
+Defined in: [modules/orders-fbw/index.ts:539](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L539)
 
 Получение информации о покупателе для заказов DBW
 
@@ -960,7 +960,7 @@ for (const order of result.orders ?? []) {
 deleteMetaBulk(request: DBWDeleteMetaBulkRequest): Promise<DBWDeleteMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L577)
+Defined in: [modules/orders-fbw/index.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L577)
 
 Удалить идентификаторы маркировки у нескольких заказов DBW (массовая операция).
 
@@ -1028,7 +1028,7 @@ for (const order of result.orders) {
 setSgtinBulk(request: DBWSetSgtinBulkRequest): Promise<DBWSetMetaBulkResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:618](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L618)
+Defined in: [modules/orders-fbw/index.ts:618](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L618)
 
 Задать SGTIN-коды для нескольких заказов DBW (массовая операция).
 
@@ -1098,7 +1098,7 @@ if (result.errors?.length) {
 deliverBulk(orderIds: number[]): Promise<BulkStatusChangeResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:674](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L674)
+Defined in: [modules/orders-fbw/index.ts:674](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L674)
 
 Передать несколько заказов DBW в доставку (массовая операция).
 
@@ -1183,7 +1183,7 @@ for (const order of result.results ?? []) {
 checkMetaValidation(request: DBWCheckMetaValidationRequest): Promise<DBWCheckMetaValidationResponse>;
 ```
 
-Defined in: [modules/orders-fbw/index.ts:738](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/modules/orders-fbw/index.ts#L738)
+Defined in: [modules/orders-fbw/index.ts:738](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/modules/orders-fbw/index.ts#L738)
 
 Проверить идентификаторы маркировки DBW-заказов перед передачей в доставку (предварительная валидация).
 

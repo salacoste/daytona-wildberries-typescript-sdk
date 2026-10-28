@@ -2,7 +2,7 @@
 
 # Interface: PastPeriodItemRating
 
-Defined in: [types/analytics.types.ts:1856](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1856)
+Defined in: [types/analytics.types.ts:1856](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/analytics.types.ts#L1856)
 
 Previous period for comparison. Day count must be less than or equal to `currentPeriod`.
 
@@ -10,5 +10,5 @@ Previous period for comparison. Day count must be less than or equal to `current
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="start"></a> `start` | `string` | Start date of the period (`YYYY-MM-DD`). No later than `end`. | [types/analytics.types.ts:1858](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1858) |
-| <a id="end"></a> `end` | `string` | End date of the period (`YYYY-MM-DD`). No later than the day before `currentPeriod.start`. | [types/analytics.types.ts:1860](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/analytics.types.ts#L1860) |
+| <a id="start"></a> `start` | `string` | Start date of the period (`YYYY-MM-DD`). No later than `end`. | [types/analytics.types.ts:1858](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/analytics.types.ts#L1858) |
+| <a id="end"></a> `end` | `string` | End date of the period (`YYYY-MM-DD`). No later than the day before `currentPeriod.start`. | [types/analytics.types.ts:1860](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/analytics.types.ts#L1860) |

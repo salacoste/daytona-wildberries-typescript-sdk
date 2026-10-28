@@ -1,4 +1,3 @@
-import type { GoodsReturnItem } from '../types/reports.types';
 import { classifyReturnReason, type ReturnReasonCode } from './classifyReturnReason';
 
 /**
@@ -50,28 +49,56 @@ export interface FbsReturnInput {
 }
 
 /**
- * Builds a unified WbReturn[] from FBO returns (sdk.reports.getAnalyticsGoodsReturn)
- * and optional FBS returns (derived from sdk.ordersFBS status history).
+ * Minimal FBO return shape — what consumers should pass for FBO returns.
+ * Structural type: satisfies both the legacy goods-return report items (removed
+ * from the SDK in v5.0.0 — WB disabled the endpoint on 2026-10-26) and the
+ * current `GoodsReturnV1Item` records from `getAnalyticsV1GoodsReturn().report`
+ * (map `returnReason` → `reason` when feeding v1 data).
+ *
+ * @since v5.0.0
+ */
+export interface FboReturnInput {
+  nmId?: number;
+  orderId?: number;
+  /** Дата получения возврата продавцом (v1: completedDt) */
+  completedDt?: string;
+  /** Дата готовности к возврату (v1: readyToReturnDt) */
+  readyToReturnDt?: string;
+  /** Дата заказа на возврат (v1: orderDt) */
+  orderDt?: string;
+  /** Причина возврата (v1: returnReason) */
+  reason?: string;
+  /** Адрес ПВЗ назначения (v1: dstOfficeAddress) */
+  dstOfficeAddress?: string;
+}
+
+/**
+ * Builds a unified WbReturn[] from FBO returns and optional FBS returns
+ * (derived from sdk.ordersFBS status history).
  *
  * Records missing required fields (nmId, orderId, return date) are silently skipped.
  *
  * Pure function — no network calls.
  *
- * @param fboReturns - FBO returns from getAnalyticsGoodsReturn().report
+ * @param fboReturns - FBO returns — pass `getAnalyticsV1GoodsReturn().report`
+ *   items mapped to `FboReturnInput` (the v1 field for the reason is `returnReason`)
  * @param fbsReturns - Optional FBS return records (consumer-shaped from order status history)
  * @returns Unified array sorted by returnDate descending
  *
  * @example
  * ```typescript
- * const fbo = await sdk.reports.getAnalyticsGoodsReturn({ dateFrom, dateTo });
- * const unified = enrichReturnsWithType(fbo.report ?? [], myFbsReturns);
+ * const page = await sdk.reports.getAnalyticsV1GoodsReturn({
+ *   dateFrom, dateTo, status: 'active', limit: 1000, offset: 0,
+ * });
+ * const fbo = page.report.map(r => ({ ...r, reason: r.returnReason }));
+ * const unified = enrichReturnsWithType(fbo, myFbsReturns);
  * console.log(`Total: ${unified.length}, FBO: ${unified.filter(r => r.orderType === 'fbo').length}`);
  * ```
  *
  * @since v3.9.3
  */
 export function enrichReturnsWithType(
-  fboReturns: GoodsReturnItem[],
+  fboReturns: FboReturnInput[],
   fbsReturns: FbsReturnInput[] = []
 ): WbReturn[] {
   const result: WbReturn[] = [];

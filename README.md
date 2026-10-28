@@ -51,7 +51,7 @@ Transform 11 OpenAPI specifications into a production-ready SDK with 14 modules,
 - 🆕 **CPC daily limits**, **supply discrepancies + drafts CRUD** (FBW), **SPOT** (EAEU imports), **shipping methods** (mandatory from **2026-10-01** — deliver 409 without them), **card `documents` object** (8 register types + validation verdicts), **seller-warehouses stocks report**, **CPC bid recommendations**, typed **409 `CustomsDeclarationIsRequiredError`**.
 - ℹ️ **3-month window** on `orders()` (effective 2026-08-06) — older FBS orders only via `getOrdersArchive()`.
 
-📖 Full guides: **[WB API Changes — October 2026](./docs/guides/wb-api-changes-2026-10.md)** · [September 2026](./docs/guides/wb-api-changes-2026-09.md) · 313 public methods · 2,619 tests.
+📖 Full guides: **[WB API Changes — October 2026](./docs/guides/wb-api-changes-2026-10.md)** · [September 2026](./docs/guides/wb-api-changes-2026-09.md) · 312 public methods · 2,619 tests.
 
 v4.2.0: `getSupplies()` alias + `reconcileAcceptanceDelta()` helper.
 
@@ -262,7 +262,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 | Metric | Value |
 |--------|-------|
 | **API Modules** | 14 (100%) |
-| **API Methods** | 313 implemented |
+| **API Methods** | 312 implemented |
 | **Test Suite** | 2,456 tests passing |
 | **Documentation** | 45+ guides, 22 examples |
 | **Bundle Size** | ~110KB gzipped (ESM full) |
@@ -585,7 +585,7 @@ const reportFile = await longTimeoutSdk.analytics.getDownloadsFile(downloadId);
 | Метрика | Значение |
 |---------|----------|
 | **API модули** | 14 (100%) |
-| **API методы** | 313 реализовано |
+| **API методы** | 312 реализовано |
 | **Тесты** | 2 456 тестов проходят |
 | **Документация** | 45+ руководств, 22 примера |
 | **Размер бандла** | ~110KB gzipped (ESM полностью) |

@@ -2,7 +2,7 @@
 
 # Interface: CreateTestDbsOrdersRequest
 
-Defined in: [types/orders-dbs.types.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L57)
+Defined in: [types/orders-dbs.types.ts:57](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-dbs.types.ts#L57)
 
 Request body for `ordersDBS.createTestOrders()`.
 
@@ -10,6 +10,6 @@ Request body for `ordersDBS.createTestOrders()`.
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="orders"></a> `orders` | [`CreateTestDbsOrderItem`](CreateTestDbsOrderItem.md)[] | One through ten test orders. | [types/orders-dbs.types.ts:59](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L59) |
-| <a id="deliverytype"></a> `deliveryType?` | [`DbsTestDeliveryType`](../type-aliases/DbsTestDeliveryType.md) | Test delivery model. The official rendered contract displays `dbs` as the default when omitted; the SDK sends omission unchanged. | [types/orders-dbs.types.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L64) |
-| <a id="address"></a> `address?` | [`CreateTestDbsOrdersAddress`](CreateTestDbsOrdersAddress.md) | Delivery address. When omitted, the official documentation describes a WB-provided default Moscow address; this has not been runtime-tested here. | [types/orders-dbs.types.ts:69](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-dbs.types.ts#L69) |
+| <a id="orders"></a> `orders` | [`CreateTestDbsOrderItem`](CreateTestDbsOrderItem.md)[] | One through ten test orders. | [types/orders-dbs.types.ts:59](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-dbs.types.ts#L59) |
+| <a id="deliverytype"></a> `deliveryType?` | [`DbsTestDeliveryType`](../type-aliases/DbsTestDeliveryType.md) | Test delivery model. The official rendered contract displays `dbs` as the default when omitted; the SDK sends omission unchanged. | [types/orders-dbs.types.ts:64](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-dbs.types.ts#L64) |
+| <a id="address"></a> `address?` | [`CreateTestDbsOrdersAddress`](CreateTestDbsOrdersAddress.md) | Delivery address. When omitted, the official documentation describes a WB-provided default Moscow address; this has not been runtime-tested here. | [types/orders-dbs.types.ts:69](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-dbs.types.ts#L69) |

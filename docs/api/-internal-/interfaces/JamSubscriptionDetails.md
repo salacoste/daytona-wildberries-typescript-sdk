@@ -2,7 +2,7 @@
 
 # Interface: JamSubscriptionDetails
 
-Defined in: [types/general.types.ts:269](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L269)
+Defined in: [types/general.types.ts:325](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L325)
 
 Detailed Jam subscription information from GET /api/common/v1/subscriptions
 
@@ -19,8 +19,8 @@ Detailed Jam subscription information from GET /api/common/v1/subscriptions
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="state"></a> `state?` | `"active"` \| `"inactive"` | Subscription state: 'active' when active, 'inactive' when expired or cancelled | [types/general.types.ts:271](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L271) |
-| <a id="activationsource"></a> `activationSource?` | `"constructor"` \| `"jam"` | How the subscription was activated: 'constructor' (Plan Builder) or 'jam' (Jam Subscription) | [types/general.types.ts:273](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L273) |
-| <a id="level"></a> `level?` | `"standard"` \| `"advanced"` \| `"premium"` | Subscription level | [types/general.types.ts:275](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L275) |
-| <a id="since"></a> `since?` | `string` | Date of first subscription activation (ISO 8601) | [types/general.types.ts:277](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L277) |
-| <a id="till"></a> `till?` | `string` | End date of current/last paid period (ISO 8601) | [types/general.types.ts:279](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L279) |
+| <a id="state"></a> `state?` | `"active"` \| `"inactive"` | Subscription state: 'active' when active, 'inactive' when expired or cancelled | [types/general.types.ts:327](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L327) |
+| <a id="activationsource"></a> `activationSource?` | `"constructor"` \| `"jam"` | How the subscription was activated: 'constructor' (Plan Builder) or 'jam' (Jam Subscription) | [types/general.types.ts:329](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L329) |
+| <a id="level"></a> `level?` | `"standard"` \| `"advanced"` \| `"premium"` | Subscription level | [types/general.types.ts:331](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L331) |
+| <a id="since"></a> `since?` | `string` | Date of first subscription activation (ISO 8601) | [types/general.types.ts:333](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L333) |
+| <a id="till"></a> `till?` | `string` | End date of current/last paid period (ISO 8601) | [types/general.types.ts:335](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L335) |

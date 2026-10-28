@@ -2,7 +2,7 @@
 
 # Interface: DeleteCardsFromTrashResponse
 
-Defined in: [types/products.types.ts:1491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1491)
+Defined in: [types/products.types.ts:1491](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L1491)
 
 Response from [ProductsModule.deleteCardsFromTrash](../classes/ProductsModule.md#deletecardsfromtrash).
 
@@ -18,7 +18,7 @@ on success (WB does not return the deleted nmIDs back).
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | `Record`\<`string`, `never`\> | - | [types/products.types.ts:1492](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1492) |
-| <a id="error"></a> `error?` | `boolean` | - | [types/products.types.ts:1493](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1493) |
-| <a id="errortext"></a> `errorText?` | `string` | - | [types/products.types.ts:1494](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1494) |
-| <a id="additionalerrors"></a> `additionalErrors?` | `Record`\<`string`, `string`\> | Per-card error details (when partial failure). Keys are card identifiers (e.g., nmID as string), values are error messages. WB sandbox returns `{}` on full-success; this shape accommodates the per-card-error case documented in the JSDoc above. NOTE: Intentional divergence from `createCardsRecover`'s `Record<string, never>` — this field's JSDoc semantics ("per-card errors") require a value type of `string`, not `never`. `Record<string, never>` can only represent `{}` and cannot hold any per-card error map. See story-task-139 Implementation Notes for rationale. | [types/products.types.ts:1505](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1505) |
+| <a id="data"></a> `data?` | `Record`\<`string`, `never`\> | - | [types/products.types.ts:1492](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L1492) |
+| <a id="error"></a> `error?` | `boolean` | - | [types/products.types.ts:1493](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L1493) |
+| <a id="errortext"></a> `errorText?` | `string` | - | [types/products.types.ts:1494](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L1494) |
+| <a id="additionalerrors"></a> `additionalErrors?` | `Record`\<`string`, `string`\> | Per-card error details (when partial failure). Keys are card identifiers (e.g., nmID as string), values are error messages. WB sandbox returns `{}` on full-success; this shape accommodates the per-card-error case documented in the JSDoc above. NOTE: Intentional divergence from `createCardsRecover`'s `Record<string, never>` — this field's JSDoc semantics ("per-card errors") require a value type of `string`, not `never`. `Record<string, never>` can only represent `{}` and cannot hold any per-card error map. See story-task-139 Implementation Notes for rationale. | [types/products.types.ts:1505](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L1505) |

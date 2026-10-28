@@ -22,7 +22,6 @@ import type {
   GetAnalyticsV1GoodsReturnParams,
   GetTasksResponse,
   GoodsLabelingResponse,
-  GoodsReturnResponse,
   GoodsReturnV1Response,
   MeasurementPenaltiesParams,
   MeasurementPenaltiesResponse,
@@ -559,49 +558,11 @@ export class ReportsModule {
   }
 
   /**
-   * Получить отчёт
-   *
-   * Метод возвращает отчёт о [возвратах товаров продавцу](https://seller.wildberries.ru/analytics-reports/goods-return). <br><br> Можно получить отчёт максимум за 31 день. <div class="description_limit"> <a href="/openapi/api-information#tag/Vvedenie/Limity-zaprosov">Лимит запросов</a> на один аккаунт продавца: | Период | Лимит | Интервал | Всплеск | | --- | --- | --- | --- | | 1 минута | 1 запрос | 1 минута | 10 запросов | </div>
-   *
-   * **WB отключает этот метод 26 октября 2026 года** ([релиз-нот](https://dev.wildberries.ru/en/release-notes?id=577)).
-   * Используйте {@link ReportsModule.getAnalyticsV1GoodsReturn} — новая версия
-   * умеет фильтровать по статусу (`active`/`archive`), поддерживает пагинацию
-   * и возвращает общий счётчик `count` за период.
-   *
-   * @param [options] - Query parameters
-   * @returns Успешно
-   * @throws {AuthenticationError} When API key is invalid (401/403)
-   * @throws {RateLimitError} When rate limit exceeded (429)
-   * @throws {ValidationError} When request data is invalid (400/422)
-   * @throws {NetworkError} When network request fails or times out
-   * @deprecated WB отключает GET /api/v1/analytics/goods-return 26 октября 2026 года.
-   * Используйте {@link ReportsModule.getAnalyticsV1GoodsReturn}. Метод будет удалён в v5.
-   * @example
-   * const result = await sdk.reports.getAnalyticsGoodsReturn({});
-   * console.log(result);
-   */
-  async getAnalyticsGoodsReturn(options?: {
-    dateFrom: string;
-    dateTo: string;
-  }): Promise<GoodsReturnResponse> {
-    warnOnce(
-      'reports.getAnalyticsGoodsReturn:deprecated',
-      'reports.getAnalyticsGoodsReturn (GET /api/v1/analytics/goods-return) is deprecated — ' +
-        'WB disables the endpoint on 2026-10-26. Use sdk.reports.getAnalyticsV1GoodsReturn() ' +
-        'instead (status filter + pagination). See docs/guides/migration-v4.md (Looking ahead: v5).'
-    );
-    return this.client.get<GoodsReturnResponse>(
-      'https://seller-analytics-api.wildberries.ru/api/v1/analytics/goods-return',
-      { params: options, rateLimitKey: 'reports.analyticsGoodsReturn' }
-    );
-  }
-
-  /**
    * Получить отчёт (v1, аналитика) — Возврат и перемещение товаров
    *
    * Новая версия отчёта о [возвратах товаров продавцу](https://seller.wildberries.ru/return-transfer-reports).
-   * Заменяет {@link ReportsModule.getAnalyticsGoodsReturn}, который WB отключит
-   * 26 октября 2026 года.
+   * Заменяет удалённый в v5 метод `getAnalyticsGoodsReturn` — WB отключил
+   * старый эндпоинт 26 октября 2026 года.
    *
    * Отличия от старой версии:
    * - параметр `status` — раздельное получение активных (`active`) и архивных
@@ -816,8 +777,6 @@ export type {
   BannedProductsBlockedResponse,
   BannedProductShadowedItem,
   BannedProductsShadowedResponse,
-  GoodsReturnItem,
-  GoodsReturnResponse,
   MeasurementPenaltiesParams,
   WarehouseMeasurementsV2Params,
   DeductionsParams,

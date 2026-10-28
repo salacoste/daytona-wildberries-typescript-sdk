@@ -6,7 +6,7 @@
 function extractBidRange(recommendations: BidsRecommendationsResponse): BidRange | null;
 ```
 
-Defined in: [utils/bid-validation.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/utils/bid-validation.ts#L43)
+Defined in: [utils/bid-validation.ts:43](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/utils/bid-validation.ts#L43)
 
 Compute the effective bid range for an article from a recommendations response.
 

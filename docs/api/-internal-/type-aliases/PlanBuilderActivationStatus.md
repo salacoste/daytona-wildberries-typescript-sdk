@@ -6,7 +6,7 @@
 type PlanBuilderActivationStatus = "active" | "pendingActivation" | "pendingDeactivation";
 ```
 
-Defined in: [types/general.types.ts:301](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/general.types.ts#L301)
+Defined in: [types/general.types.ts:357](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/general.types.ts#L357)
 
 Activation status of a Plan Builder (Tariff Constructor) option or package.
 

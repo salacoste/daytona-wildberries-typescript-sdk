@@ -2,7 +2,7 @@
 
 # Interface: ModelsErrorTableListPublicRespV2
 
-Defined in: [types/products.types.ts:574](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L574)
+Defined in: [types/products.types.ts:574](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L574)
 
 Данные ответа
 
@@ -10,5 +10,5 @@ Defined in: [types/products.types.ts:574](https://github.com/salacoste/daytona-w
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="items"></a> `items` | [`ModelsErrorTableListPublicRespV2Item`](ModelsErrorTableListPublicRespV2Item.md)[] | Пакеты данных | [types/products.types.ts:576](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L576) |
-| <a id="cursor"></a> `cursor` | [`ViewerContractPublicErrorsCursorOutput`](ViewerContractPublicErrorsCursorOutput.md) | - | [types/products.types.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L577) |
+| <a id="items"></a> `items` | [`ModelsErrorTableListPublicRespV2Item`](ModelsErrorTableListPublicRespV2Item.md)[] | Пакеты данных | [types/products.types.ts:576](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L576) |
+| <a id="cursor"></a> `cursor` | [`ViewerContractPublicErrorsCursorOutput`](ViewerContractPublicErrorsCursorOutput.md) | - | [types/products.types.ts:577](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L577) |

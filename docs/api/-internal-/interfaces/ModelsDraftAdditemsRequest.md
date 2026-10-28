@@ -2,7 +2,7 @@
 
 # Interface: ModelsDraftAdditemsRequest
 
-Defined in: [types/orders-fbw.types.ts:702](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L702)
+Defined in: [types/orders-fbw.types.ts:702](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbw.types.ts#L702)
 
 Тело запроса `addDraftItems()` — добавление товаров в черновик поставки.
 Максимум 1000 элементов в массиве `items`.
@@ -15,4 +15,4 @@ task-193
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="items"></a> `items` | [`ModelsItem`](ModelsItem.md)[] | Список товаров (максимум 1000) | [types/orders-fbw.types.ts:704](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbw.types.ts#L704) |
+| <a id="items"></a> `items` | [`ModelsItem`](ModelsItem.md)[] | Список товаров (максимум 1000) | [types/orders-fbw.types.ts:704](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbw.types.ts#L704) |

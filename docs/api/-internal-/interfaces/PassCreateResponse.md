@@ -2,7 +2,7 @@
 
 # Interface: PassCreateResponse
 
-Defined in: [types/orders-fbs.types.ts:178](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L178)
+Defined in: [types/orders-fbs.types.ts:225](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L225)
 
 Response after creating a seller pass
 
@@ -10,4 +10,4 @@ Response after creating a seller pass
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="id"></a> `id?` | `number` | Created pass ID | [types/orders-fbs.types.ts:180](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L180) |
+| <a id="id"></a> `id?` | `number` | Created pass ID | [types/orders-fbs.types.ts:227](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L227) |

@@ -2,7 +2,7 @@
 
 # Interface: SupplierTaskMetadataBuffer
 
-Defined in: [types/products.types.ts:407](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L407)
+Defined in: [types/products.types.ts:407](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L407)
 
 Данные ответа
 
@@ -10,9 +10,9 @@ Defined in: [types/products.types.ts:407](https://github.com/salacoste/daytona-w
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="uploadid"></a> `uploadID?` | `number` | ID загрузки | [types/products.types.ts:409](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L409) |
-| <a id="status"></a> `status?` | `number` | - | [types/products.types.ts:410](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L410) |
-| <a id="uploaddate"></a> `uploadDate?` | `string` | - | [types/products.types.ts:411](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L411) |
-| <a id="activationdate"></a> `activationDate?` | `string` | - | [types/products.types.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L412) |
-| <a id="overallgoodsnumber"></a> `overAllGoodsNumber?` | `number` | Всего товаров | [types/products.types.ts:414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L414) |
-| <a id="successgoodsnumber"></a> `successGoodsNumber?` | `number` | Товаров без ошибок (0, потому что загрузка в обработке) | [types/products.types.ts:416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L416) |
+| <a id="uploadid"></a> `uploadID?` | `number` | ID загрузки | [types/products.types.ts:409](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L409) |
+| <a id="status"></a> `status?` | `number` | - | [types/products.types.ts:410](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L410) |
+| <a id="uploaddate"></a> `uploadDate?` | `string` | - | [types/products.types.ts:411](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L411) |
+| <a id="activationdate"></a> `activationDate?` | `string` | - | [types/products.types.ts:412](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L412) |
+| <a id="overallgoodsnumber"></a> `overAllGoodsNumber?` | `number` | Всего товаров | [types/products.types.ts:414](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L414) |
+| <a id="successgoodsnumber"></a> `successGoodsNumber?` | `number` | Товаров без ошибок (0, потому что загрузка в обработке) | [types/products.types.ts:416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L416) |

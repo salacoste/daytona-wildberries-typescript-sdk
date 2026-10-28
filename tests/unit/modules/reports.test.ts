@@ -67,18 +67,6 @@ describe('ReportsModule', () => {
 
         expect(result).toEqual(mockResponse);
       });
-
-      it('getAnalyticsGoodsReturn returns GoodsReturnResponse', async () => {
-        const mockResponse = { data: [{ nmId: 123 }] };
-        mockClient.get.mockResolvedValue(mockResponse);
-
-        const result = await module.getAnalyticsGoodsReturn({
-          dateFrom: '2026-01-01',
-          dateTo: '2026-01-31',
-        });
-
-        expect(result).toEqual(mockResponse);
-      });
     });
   });
 
@@ -354,15 +342,6 @@ describe('ReportsModule', () => {
         /* eslint-enable no-console */
       });
 
-      it('getAnalyticsGoodsReturn passes rateLimitKey', async () => {
-        mockClient.get.mockResolvedValue({});
-        await module.getAnalyticsGoodsReturn({ dateFrom: '2026-01-01', dateTo: '2026-01-31' });
-
-        expect(mockClient.get).toHaveBeenCalledWith(
-          `${ANALYTICS_URL}/api/v1/analytics/goods-return`,
-          expect.objectContaining({ rateLimitKey: 'reports.analyticsGoodsReturn' })
-        );
-      });
     });
 
     // ==========================================================================
@@ -468,22 +447,6 @@ describe('ReportsModule', () => {
         });
       });
 
-      describe('getAnalyticsGoodsReturn (deprecated 2026-10-26)', () => {
-        it('warns once with the 2026-10-26 shutdown notice and points to getAnalyticsV1GoodsReturn', async () => {
-          const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-          try {
-            mockClient.get.mockResolvedValue({ report: [] });
-            await module.getAnalyticsGoodsReturn({ dateFrom: '2026-01-01', dateTo: '2026-01-31' });
-            await module.getAnalyticsGoodsReturn({ dateFrom: '2026-02-01', dateTo: '2026-02-28' });
-
-            expect(warnSpy).toHaveBeenCalledTimes(1);
-            expect(warnSpy.mock.calls[0][0]).toContain('2026-10-26');
-            expect(warnSpy.mock.calls[0][0]).toContain('getAnalyticsV1GoodsReturn');
-          } finally {
-            warnSpy.mockRestore();
-          }
-        });
-      });
     });
 
     describe('Brand share reports', () => {
@@ -664,8 +627,8 @@ describe('ReportsModule', () => {
       expect(typeof module.getBannedProductsBlocked).toBe('function');
       expect(typeof module.getBannedProductsShadowed).toBe('function');
 
-      // Goods return (1)
-      expect(typeof module.getAnalyticsGoodsReturn).toBe('function');
+      // Goods return v1 (1)
+      expect(typeof module.getAnalyticsV1GoodsReturn).toBe('function');
 
       // New EPIC 44 endpoints (3)
       expect(typeof module.getMeasurementPenalties).toBe('function');

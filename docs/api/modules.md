@@ -1,4 +1,4 @@
-# Wildberries API TypeScript SDK v4.7.0
+# Wildberries API TypeScript SDK v5.0.0
 
 Wildberries API TypeScript SDK
 Main entry point
@@ -203,7 +203,7 @@ Main entry point
 | [compareTariffs](functions/compareTariffs.md) | Compare tariffs between inventory storage (tariffs/box) and supply (acceptance/coefficients) APIs |
 | [warnOnce](functions/warnOnce.md) | Emit a deprecation warning for a method, at most once per process. |
 | [resetDeprecationWarnings](functions/resetDeprecationWarnings.md) | Reset all deprecation warning flags. **Test helper only.** |
-| [enrichReturnsWithType](functions/enrichReturnsWithType.md) | Builds a unified WbReturn[] from FBO returns (sdk.reports.getAnalyticsGoodsReturn) and optional FBS returns (derived from sdk.ordersFBS status history). |
+| [enrichReturnsWithType](functions/enrichReturnsWithType.md) | Builds a unified WbReturn[] from FBO returns and optional FBS returns (derived from sdk.ordersFBS status history). |
 | [parseMetaValidationFail](functions/parseMetaValidationFail.md) | Extracts marking-code validation failure details from an unknown caught value. |
 | [parseMoneyAmount](functions/parseMoneyAmount.md) | Parse a money amount string from v1 finance reports to a JavaScript number. |
 | [reconcileAcceptanceDelta](functions/reconcileAcceptanceDelta.md) | Reconciles declared vs accepted quantity per nmId for FBO acceptance. |

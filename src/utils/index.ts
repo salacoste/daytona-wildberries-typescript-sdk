@@ -36,7 +36,12 @@ export {
 
 export { classifyReturnReason, type ReturnReasonCode } from './classifyReturnReason';
 
-export { enrichReturnsWithType, type WbReturn, type FbsReturnInput } from './enrichReturnsWithType';
+export {
+  enrichReturnsWithType,
+  type WbReturn,
+  type FbsReturnInput,
+  type FboReturnInput,
+} from './enrichReturnsWithType';
 
 export { classifyFbsReturnCategory, type FbsStatusEvent } from './classifyFbsReturnCategory';
 

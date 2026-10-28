@@ -2,7 +2,7 @@
 
 # Interface: UserAccess
 
-Defined in: [types/user-management.types.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/user-management.types.ts#L214)
+Defined in: [types/user-management.types.ts:214](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/user-management.types.ts#L214)
 
 Настройки доступа для конкретного пользователя
 
@@ -10,5 +10,5 @@ Defined in: [types/user-management.types.ts:214](https://github.com/salacoste/da
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="userid"></a> `userId?` | `number` | ID пользователя | [types/user-management.types.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/user-management.types.ts#L216) |
-| <a id="access"></a> `access?` | [`AccessItem`](AccessItem.md)[] | Настройки доступа к разделам профиля продавца | [types/user-management.types.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/user-management.types.ts#L218) |
+| <a id="userid"></a> `userId?` | `number` | ID пользователя | [types/user-management.types.ts:216](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/user-management.types.ts#L216) |
+| <a id="access"></a> `access?` | [`AccessItem`](AccessItem.md)[] | Настройки доступа к разделам профиля продавца | [types/user-management.types.ts:218](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/user-management.types.ts#L218) |

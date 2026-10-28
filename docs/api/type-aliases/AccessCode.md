@@ -26,7 +26,7 @@ type AccessCode =
   | "brandzoneSubscribe";
 ```
 
-Defined in: [types/user-management.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/user-management.types.ts#L35)
+Defined in: [types/user-management.types.ts:35](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/user-management.types.ts#L35)
 
 Код раздела профиля продавца, к которому пользователь получит доступ.
 

@@ -97,11 +97,10 @@ const chrtId = cards.cards[0].sizes[0].chrtID; // → use in stocks calls
   `cargoType` filter, and a per-point `available` flag (false when a pickup point
   is overloaded on the planned date).
 
-- **reports `getAnalyticsGoodsReturn()`** — WB disables
+- **reports `getAnalyticsGoodsReturn()`** — **REMOVED in v5.0.0.** WB disabled
   `GET /api/v1/analytics/goods-return` on **2026-10-26**
   ([release note](https://dev.wildberries.ru/en/release-notes?id=577)).
-  The method is now `@deprecated` and emits a one-time runtime warning; it will be
-  **removed in v5**. Migrate to `getAnalyticsV1GoodsReturn()`
+  Migrate to `getAnalyticsV1GoodsReturn()`
   (`GET /api/analytics/v1/item-returns`): `status=active|archive` filter instead of the
   `isStatusActive` field, `limit`/`offset` pagination, `count` total for the period
   (window ≤ 31 days); field renames `barcode`→`sku`, `status`→`returnStatus`,

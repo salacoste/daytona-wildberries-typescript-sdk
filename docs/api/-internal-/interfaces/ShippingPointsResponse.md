@@ -2,7 +2,7 @@
 
 # Interface: ShippingPointsResponse
 
-Defined in: [types/orders-fbs.types.ts:1156](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L1156)
+Defined in: [types/orders-fbs.types.ts:1228](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L1228)
 
 Response for GET /api/marketplace/v3/fbs/shipping-points
 Maps to swagger schema: ShippingPointsResponse
@@ -11,4 +11,4 @@ Maps to swagger schema: ShippingPointsResponse
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="shippingpoints"></a> `shippingPoints` | [`ShippingPoint`](ShippingPoint.md)[] | Shipping points list | [types/orders-fbs.types.ts:1158](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L1158) |
+| <a id="shippingpoints"></a> `shippingPoints` | [`ShippingPoint`](ShippingPoint.md)[] | Shipping points list | [types/orders-fbs.types.ts:1230](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L1230) |

@@ -2,7 +2,7 @@
 
 # Interface: FinalPriceError
 
-Defined in: [types/in-store-pickup.types.ts:442](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L442)
+Defined in: [types/in-store-pickup.types.ts:442](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L442)
 
 Per-order error from [InStorePickupModule.getOrdersFinalPrice](../../classes/InStorePickupModule.md#getordersfinalprice).
 Known values: `404`/`NotFound`, `400`/`StatusMismatch`,
@@ -16,5 +16,5 @@ task-203
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="code"></a> `code` | `number` | Error code: `404` (NotFound), `400` (StatusMismatch), `422` (PriceNotCalculated). | [types/in-store-pickup.types.ts:444](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L444) |
-| <a id="detail"></a> `detail` | `string` | Error description: `NotFound`, `StatusMismatch`, or `PriceNotCalculated`. | [types/in-store-pickup.types.ts:446](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/in-store-pickup.types.ts#L446) |
+| <a id="code"></a> `code` | `number` | Error code: `404` (NotFound), `400` (StatusMismatch), `422` (PriceNotCalculated). | [types/in-store-pickup.types.ts:444](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L444) |
+| <a id="detail"></a> `detail` | `string` | Error description: `NotFound`, `StatusMismatch`, or `PriceNotCalculated`. | [types/in-store-pickup.types.ts:446](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/in-store-pickup.types.ts#L446) |

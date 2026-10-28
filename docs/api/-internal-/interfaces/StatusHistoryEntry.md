@@ -2,7 +2,7 @@
 
 # Interface: StatusHistoryEntry
 
-Defined in: [types/orders-fbs.types.ts:332](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L332)
+Defined in: [types/orders-fbs.types.ts:402](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L402)
 
 Individual status entry in status history
 
@@ -10,5 +10,5 @@ Individual status entry in status history
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="date"></a> `date?` | `string` | Status timestamp | [types/orders-fbs.types.ts:334](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L334) |
-| <a id="code"></a> `code?` | `string` | Status code | [types/orders-fbs.types.ts:336](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/orders-fbs.types.ts#L336) |
+| <a id="date"></a> `date?` | `string` | Status timestamp | [types/orders-fbs.types.ts:404](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L404) |
+| <a id="code"></a> `code?` | `string` | Status code | [types/orders-fbs.types.ts:406](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/orders-fbs.types.ts#L406) |

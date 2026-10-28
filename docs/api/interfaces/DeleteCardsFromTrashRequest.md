@@ -2,7 +2,7 @@
 
 # Interface: DeleteCardsFromTrashRequest
 
-Defined in: [types/products.types.ts:1477](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1477)
+Defined in: [types/products.types.ts:1477](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L1477)
 
 Request body for [ProductsModule.deleteCardsFromTrash](../classes/ProductsModule.md#deletecardsfromtrash).
 
@@ -20,4 +20,4 @@ environment.
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="nmids"></a> `nmIDs?` | `number`[] | Array of product card IDs (nmID) currently in trash to delete permanently. | [types/products.types.ts:1479](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/products.types.ts#L1479) |
+| <a id="nmids"></a> `nmIDs?` | `number`[] | Array of product card IDs (nmID) currently in trash to delete permanently. | [types/products.types.ts:1479](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/products.types.ts#L1479) |

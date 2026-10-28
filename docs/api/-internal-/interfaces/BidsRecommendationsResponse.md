@@ -2,7 +2,7 @@
 
 # Interface: BidsRecommendationsResponse
 
-Defined in: [types/promotion.types.ts:2209](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2209)
+Defined in: [types/promotion.types.ts:2209](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2209)
 
 Response from GET /api/advert/v0/bids/recommendations
 
@@ -20,9 +20,9 @@ The response shape depends on the campaign payment type (discriminated by
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="advertid"></a> `advertId` | `number` | Campaign ID | [types/promotion.types.ts:2211](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2211) |
-| <a id="nmid"></a> `nmId` | `number` | WB article ID | [types/promotion.types.ts:2213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2213) |
-| <a id="paymenttype"></a> `paymentType?` | `"cpm"` \| `"cpc"` | Payment type: `cpm` — for impressions; `cpc` — for clicks. **Since** task-200 (WB news 2026-09) | [types/promotion.types.ts:2219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2219) |
-| <a id="base"></a> `base?` | [`BaseBidRecommendation`](BaseBidRecommendation.md) | Recommended base bids for the product card (CPM campaigns) | [types/promotion.types.ts:2221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2221) |
-| <a id="normqueries"></a> `normQueries?` | [`NormQueryBidRecommendation`](NormQueryBidRecommendation.md)[] | Recommended bids per search cluster (CPM campaigns) | [types/promotion.types.ts:2223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2223) |
-| <a id="levels"></a> `levels?` | [`CpcBidRecommendationLevel`](CpcBidRecommendationLevel.md)[] | Recommended bids per listing position range (CPC campaigns). **Since** task-200 (WB news 2026-09) | [types/promotion.types.ts:2229](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2229) |
+| <a id="advertid"></a> `advertId` | `number` | Campaign ID | [types/promotion.types.ts:2211](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2211) |
+| <a id="nmid"></a> `nmId` | `number` | WB article ID | [types/promotion.types.ts:2213](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2213) |
+| <a id="paymenttype"></a> `paymentType?` | `"cpm"` \| `"cpc"` | Payment type: `cpm` — for impressions; `cpc` — for clicks. **Since** task-200 (WB news 2026-09) | [types/promotion.types.ts:2219](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2219) |
+| <a id="base"></a> `base?` | [`BaseBidRecommendation`](BaseBidRecommendation.md) | Recommended base bids for the product card (CPM campaigns) | [types/promotion.types.ts:2221](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2221) |
+| <a id="normqueries"></a> `normQueries?` | [`NormQueryBidRecommendation`](NormQueryBidRecommendation.md)[] | Recommended bids per search cluster (CPM campaigns) | [types/promotion.types.ts:2223](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2223) |
+| <a id="levels"></a> `levels?` | [`CpcBidRecommendationLevel`](CpcBidRecommendationLevel.md)[] | Recommended bids per listing position range (CPC campaigns). **Since** task-200 (WB news 2026-09) | [types/promotion.types.ts:2229](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2229) |

@@ -2,7 +2,7 @@
 
 # Interface: V0GetDailyLimitsResponse
 
-Defined in: [types/promotion.types.ts:2416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2416)
+Defined in: [types/promotion.types.ts:2416](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2416)
 
 Ответ метода GET /api/advert/v0/daily-limits — текущие настройки дневных
 лимитов CPC-кампаний.
@@ -15,4 +15,4 @@ task-186
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="adverts"></a> `adverts` | [`V0DailyLimitAdvert`](V0DailyLimitAdvert.md)[] | Настройки дневных лимитов по запрошенным кампаниям | [types/promotion.types.ts:2418](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2418) |
+| <a id="adverts"></a> `adverts` | [`V0DailyLimitAdvert`](V0DailyLimitAdvert.md)[] | Настройки дневных лимитов по запрошенным кампаниям | [types/promotion.types.ts:2418](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2418) |

@@ -2,7 +2,7 @@
 
 # Interface: GetSearchClusterStatsResponse
 
-Defined in: [types/promotion.types.ts:2093](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2093)
+Defined in: [types/promotion.types.ts:2093](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2093)
 
 Response with search cluster statistics
 
@@ -10,4 +10,4 @@ Response with search cluster statistics
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="stats"></a> `stats` | [`GetSearchClusterStatsItem`](GetSearchClusterStatsItem.md)[] | Array of statistics per campaign/product | [types/promotion.types.ts:2095](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/promotion.types.ts#L2095) |
+| <a id="stats"></a> `stats` | [`GetSearchClusterStatsItem`](GetSearchClusterStatsItem.md)[] | Array of statistics per campaign/product | [types/promotion.types.ts:2095](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/promotion.types.ts#L2095) |

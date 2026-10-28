@@ -2,7 +2,7 @@
 
 # Interface: MeasurementPenaltiesResponse
 
-Defined in: [types/reports.types.ts:997](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/reports.types.ts#L997)
+Defined in: [types/reports.types.ts:944](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/reports.types.ts#L944)
 
 Response for getMeasurementPenalties
 Uses the Penalty interface for report items
@@ -15,6 +15,6 @@ EPIC 44 - Response type for getMeasurementPenalties
 
 | Property | Type | Defined in |
 | ------ | ------ | ------ |
-| <a id="data"></a> `data?` | \{ `reports?`: [`Penalty`](Penalty.md)[]; `total?`: `number`; \} | [types/reports.types.ts:998](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/reports.types.ts#L998) |
-| `data.reports?` | [`Penalty`](Penalty.md)[] | [types/reports.types.ts:999](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/reports.types.ts#L999) |
-| `data.total?` | `number` | [types/reports.types.ts:1000](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/reports.types.ts#L1000) |
+| <a id="data"></a> `data?` | \{ `reports?`: [`Penalty`](Penalty.md)[]; `total?`: `number`; \} | [types/reports.types.ts:945](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/reports.types.ts#L945) |
+| `data.reports?` | [`Penalty`](Penalty.md)[] | [types/reports.types.ts:946](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/reports.types.ts#L946) |
+| `data.total?` | `number` | [types/reports.types.ts:947](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/reports.types.ts#L947) |

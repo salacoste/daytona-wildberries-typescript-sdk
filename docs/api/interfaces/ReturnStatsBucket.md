@@ -2,7 +2,7 @@
 
 # Interface: ReturnStatsBucket
 
-Defined in: [types/returns.types.ts:193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/returns.types.ts#L193)
+Defined in: [types/returns.types.ts:193](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/returns.types.ts#L193)
 
 Single bucket in a return statistics aggregation.
 
@@ -14,7 +14,7 @@ v3.10.0
 
 | Property | Type | Description | Defined in |
 | ------ | ------ | ------ | ------ |
-| <a id="key"></a> `key` | `string` | Group key value (string for category/orderType, number stringified for nmId) | [types/returns.types.ts:195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/returns.types.ts#L195) |
-| <a id="count"></a> `count` | `number` | Number of returns in this bucket | [types/returns.types.ts:197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/returns.types.ts#L197) |
-| <a id="totalamount"></a> `totalAmount` | `number` | Sum of returnAmount values (skipping undefined) in this bucket | [types/returns.types.ts:199](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/returns.types.ts#L199) |
-| <a id="pendingfinancecount"></a> `pendingFinanceCount` | `number` | Number of records with returnAmount === undefined (finance not yet materialized) | [types/returns.types.ts:201](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/1fc8230122b571d1635d0133aaabce64876925c6/src/types/returns.types.ts#L201) |
+| <a id="key"></a> `key` | `string` | Group key value (string for category/orderType, number stringified for nmId) | [types/returns.types.ts:195](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/returns.types.ts#L195) |
+| <a id="count"></a> `count` | `number` | Number of returns in this bucket | [types/returns.types.ts:197](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/returns.types.ts#L197) |
+| <a id="totalamount"></a> `totalAmount` | `number` | Sum of returnAmount values (skipping undefined) in this bucket | [types/returns.types.ts:199](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/returns.types.ts#L199) |
+| <a id="pendingfinancecount"></a> `pendingFinanceCount` | `number` | Number of records with returnAmount === undefined (finance not yet materialized) | [types/returns.types.ts:201](https://github.com/salacoste/daytona-wildberries-typescript-sdk/blob/3ce675e492cd5960aae55fda3b868d835d9b9218/src/types/returns.types.ts#L201) |

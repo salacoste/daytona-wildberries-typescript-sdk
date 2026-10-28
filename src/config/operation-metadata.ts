@@ -2893,16 +2893,6 @@ export const operationMetadata: Record<string, OperationMetadata> = {
     rateLimitKey: 'reports.getBannedProductsShadowed',
   },
 
-  /**
-   * Get analytics goods return
-   * x-readonly-method: true, x-category: contentanalytics
-   */
-  'reports.getAnalyticsGoodsReturn': {
-    readonly: true,
-    category: 'contentanalytics',
-    rateLimitKey: 'reports.getAnalyticsGoodsReturn',
-  },
-
   // ============================================================================
   // Finances Module Operations
   // From: wildberries_api_doc/13-finances.yaml
