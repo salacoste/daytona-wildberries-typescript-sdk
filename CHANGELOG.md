@@ -7,6 +7,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.8.0] - 2026-10-28
+
+### Added
+
+- **general**: `getNotifications(params?)` — seller-portal notifications
+  (GET `/api/communications/v1/notifications`, WB news 2026-10-27). Notifications
+  from the seller portal in Russian, newest first; **RF-only sellers** (403
+  `countryError` otherwise). Cursor pagination via `from` (pass the `date` of
+  the last notification), `timezone` (IANA, default `Europe/Moscow`), `limit`
+  5–100 (default 10). Rate limit: 1 req/min, burst 10. Types:
+  `GetNotificationsParams`, `SellerNotification`, `SellerNotificationLinkData`,
+  `GetNotificationsResponse`. Task: task-239.
+- **ordersFBS**: `getSupplyShippingPoints(supplyId, params)` — per-supply
+  shipping points (GET `/api/marketplace/v3/fbs/supplies/{supplyId}/shipping-points`,
+  WB news 2026-10-20). Points available **for the specified supply**;
+  `officeType` comma-list (`sc|sw|pp|pfc|gpp`) replaces the `cargoType`
+  filter; per-point `available` flag (`false` when a pickup point is
+  overloaded on the planned date); `shippingDt` required for cargoType 1/3.
+  404 supply not found; 409 no assembly orders. New types
+  `SupplyShippingPoint`/`Params`/`Response` + `SupplyShippingPointOfficeType`
+  (shape intentionally differs from the legacy `ShippingPoint`). Task: task-240.
+- **ordersFBS**: `transferSupplyOrders(supplyId, data)` — move assembly orders
+  from delivery (`complete`) back to assembly (`confirm`), e.g. from a closed
+  supply to an open one (PATCH `.../supplies/{supplyId}/orders/transfer`,
+  WB news 2026-10-14). Eligibility pre-check: new **`isTransferable`** field on
+  order statuses; per-order results carry `success` + new sticker ID or
+  `error { code, detail }`. Tasks: task-241.
+- **ordersFBS**: `Order.trackNumber` — track number for Cross-Border orders
+  (WB news 2026-10-15). Task: task-242.
+- **general**: `SellerInfoResponse.country` — seller account registration
+  country (e.g. `'ru'`; WB news 2026-10-14). Task: task-243.
+
+### Deprecated
+
+- **ordersFBS**: `getShippingPoints()` — WB disables
+  `GET /api/marketplace/v3/fbs/shipping-points` on **2026-11-20**
+  ([release note](https://dev.wildberries.ru/en/release-notes?id=585)). The
+  method emits a one-time runtime deprecation warning pointing to
+  `getSupplyShippingPoints()`; physical removal targeted at v5 (task-245,
+  bundled with the getAdvBudget and goods-return removals).
+
+### Changed
+
+- **docs/spec**: sandbox shutdown mirrors (WB disables 2026-11-05) — 19 dying
+  sandbox server entries stripped from the raw-yaml mirror with shutdown
+  notes; ping tables cleaned in both mirrors. No runtime impact: the SDK's
+  only sandbox call (`ordersDBS.createTestOrders()` →
+  `marketplace-api-sandbox`) survives, as do the content / discounts-prices /
+  feedbacks sandboxes. Note: the WB announcement email lists
+  `supplies-api.wildberries.ru` (production!) — a WB typo, double-confirmed
+  against the release notes and the sandbox docs page. Task: task-244.
+- **docs**: October 2026 guide (EN/RU, sidebar-registered) + migration-v4
+  v5 entry for `getShippingPoints`; swagger shards synced (notifications,
+  seller-info `tin`+`country`, shipping-points v2, transfer, `trackNumber`,
+  `isTransferable`+`isCancellable` backfill); validate_shards 52/52 ✓.
+
+SDK totals: 309 public methods, 2,619 tests.
+
 ## [4.7.0] - 2026-10-12
 
 ### Added
