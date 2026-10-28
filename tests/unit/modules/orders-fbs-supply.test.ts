@@ -13,7 +13,10 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OrdersFbsModule } from '../../../src/modules/orders-fbs';
+import { resetDeprecationWarnings } from '../../../src/utils/deprecation';
 import type { BaseClient } from '../../../src/client/base-client';
+
+/* eslint-disable @typescript-eslint/no-deprecated -- intentionally testing getShippingPoints, deprecated 2026-11-20 (task-240/task-245) */
 
 describe('OrdersFbsModule — Supply Management & Specialized Operations', () => {
   let mockClient: {
@@ -602,6 +605,74 @@ describe('OrdersFbsModule — Supply Management & Specialized Operations', () =>
       expect(result.shippingPoints[0].fulfillment).toBe(true);
     });
 
+    it('getSupplyShippingPoints should fetch per-supply shipping points filtered by city + officeType', async () => {
+      const mockResponse = {
+        shippingPoints: [
+          {
+            id: 100,
+            name: 'Москва Морской',
+            address: 'г Москва, Морской Проспект 54',
+            city: 'Москва',
+            officeType: 'pfc' as const,
+            latitude: 37.588898,
+            longitude: 55.386871,
+            fulfillment: true,
+            available: true,
+          },
+          {
+            id: 101,
+            name: 'Москва Коломенская',
+            address: 'г Москва, Проспект Андропова 26',
+            city: 'Москва',
+            officeType: 'pp' as const,
+            latitude: 37.653453,
+            longitude: 55.687129,
+            fulfillment: false,
+            // pickup point overloaded on the planned date
+            available: false,
+          },
+        ],
+      };
+
+      mockClient.get.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbs.getSupplyShippingPoints('WB-GI-100', {
+        city: 'Москва',
+        officeType: 'sc,pp',
+      });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/WB-GI-100/shipping-points',
+        {
+          params: { city: 'Москва', officeType: 'sc,pp' },
+          rateLimitKey: 'orders-fbs.getSupplyShippingPoints',
+        }
+      );
+      expect(result).toEqual(mockResponse);
+      expect(result.shippingPoints).toHaveLength(2);
+      expect(result.shippingPoints[0].officeType).toBe('pfc');
+      expect(result.shippingPoints[0].available).toBe(true);
+      expect(result.shippingPoints[1].available).toBe(false);
+    });
+
+    it('getSupplyShippingPoints should pass optional shippingDt through', async () => {
+      mockClient.get.mockResolvedValue({ shippingPoints: [] });
+
+      await ordersFbs.getSupplyShippingPoints('WB-GI-200', {
+        city: 'Санкт-Петербург',
+        officeType: 'sc',
+        shippingDt: '2026-11-05',
+      });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/WB-GI-200/shipping-points',
+        {
+          params: { city: 'Санкт-Петербург', officeType: 'sc', shippingDt: '2026-11-05' },
+          rateLimitKey: 'orders-fbs.getSupplyShippingPoints',
+        }
+      );
+    });
+
     it('updateShippingMethod should PATCH shipping parameters for a list of supplies', async () => {
       const mockResults = {
         results: [
@@ -716,6 +787,88 @@ describe('OrdersFbsModule — Supply Management & Specialized Operations', () =>
         'SupplyAlreadyScanned',
         'NotFound',
       ]);
+    });
+  });
+
+  describe('transferSupplyOrders (task-241)', () => {
+    it('should PATCH orders back to assembly with orderIds + newSupplyId', async () => {
+      const mockResponse = {
+        transferredOrders: [
+          {
+            orderId: 5678954321,
+            oldStickerId: 9876543210,
+            newStickerId: 1234567890,
+            success: true,
+          },
+          {
+            orderId: 5457166056,
+            oldStickerId: 0,
+            newStickerId: 0,
+            error: {
+              code: 409,
+              detail:
+                'Failed to assign the assembly order to the supply. Make sure that the assembly task and the supply meet all the necessary requirements.',
+            },
+          },
+        ],
+      };
+      mockClient.patch.mockResolvedValue(mockResponse);
+
+      const result = await ordersFbs.transferSupplyOrders('WB-GI-100', {
+        orderIds: [5678954321, 5457166056],
+        newSupplyId: 'WB-GI-200',
+      });
+
+      expect(mockClient.patch).toHaveBeenCalledWith(
+        'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/WB-GI-100/orders/transfer',
+        { orderIds: [5678954321, 5457166056], newSupplyId: 'WB-GI-200' },
+        expect.objectContaining({ rateLimitKey: 'orders-fbs.patchSuppliesOrdersTransfer' })
+      );
+      expect(result.transferredOrders).toHaveLength(2);
+      expect(result.transferredOrders![0].success).toBe(true);
+      expect(result.transferredOrders![0].newStickerId).toBe(1234567890);
+      expect(result.transferredOrders![1].error?.code).toBe(409);
+      expect(result.transferredOrders![1].newStickerId).toBe(0);
+    });
+  });
+
+  // ============================================================================
+  // SHIPPING POINTS DEPRECATION (task-240, WB disables old endpoint 2026-11-20)
+  // ============================================================================
+
+  describe('getShippingPoints deprecation (task-240)', () => {
+    beforeEach(() => {
+      resetDeprecationWarnings();
+    });
+
+    it('warns once with the 2026-11-20 shutdown notice and points to getSupplyShippingPoints', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      try {
+        mockClient.get.mockResolvedValue({ shippingPoints: [] });
+        await ordersFbs.getShippingPoints({ city: 'Москва', cargoType: 1 });
+        await ordersFbs.getShippingPoints({ city: 'Казань', cargoType: 2 });
+
+        expect(warnSpy).toHaveBeenCalledTimes(1);
+        expect(warnSpy.mock.calls[0][0]).toContain('2026-11-20');
+        expect(warnSpy.mock.calls[0][0]).toContain('getSupplyShippingPoints');
+      } finally {
+        warnSpy.mockRestore();
+      }
+    });
+
+    it('getSupplyShippingPoints does not emit a deprecation warning', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      try {
+        mockClient.get.mockResolvedValue({ shippingPoints: [] });
+        await ordersFbs.getSupplyShippingPoints('WB-GI-100', {
+          city: 'Москва',
+          officeType: 'sc,pp',
+        });
+
+        expect(warnSpy).not.toHaveBeenCalled();
+      } finally {
+        warnSpy.mockRestore();
+      }
     });
   });
 });

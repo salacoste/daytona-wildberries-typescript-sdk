@@ -65,7 +65,7 @@ Ensure your API key has the following permissions enabled:
 
 > ⚠️ **3-month window (WB news, effective the night of 2026-08-05→06):** `orders()` returns only assembly orders created less than 3 months ago. For older orders use `getOrdersArchive({ year, month, next, limit })` — paginate until `next` is `null`.
 
-### Supplies (8 methods)
+### Supplies (9 methods)
 
 | Method | Description | Rate Limit |
 |--------|-------------|------------|
@@ -76,6 +76,7 @@ Ensure your API key has the following permissions enabled:
 | `updateSuppliesDeliver(supplyId)` | Transfer supply to delivery (validates metadata, see below) | 300 req/min |
 | `getSuppliesBarcode(supplyId, options?)` | Get supply QR code | 300 req/min |
 | `addOrdersToSupply(supplyId, data)` | Add multiple orders to supply (bulk) | 300 req/min |
+| `transferSupplyOrders(supplyId, data)` | Move assembly orders from delivery (`complete`) back to assembly (`confirm`) — e.g. to an open supply; check `isTransferable` in statuses first (task-241) | 300 req/min |
 | `getSupplyOrderIds(supplyId)` | Get order IDs in a supply | 300 req/min |
 
 ### Passes (5 methods)
@@ -133,11 +134,12 @@ Ensure your API key has the following permissions enabled:
 | `getSuppliesSpotList(data)` | Get SPOT data + DOPP status for up to 100 supplies | 300 req/min |
 | `getSupplySpotStickers(supplyId)` | Get the supply SPOT QR code (PNG, base64) | 300 req/min |
 
-### Shipping (3 methods)
+### Shipping (4 methods)
 
 | Method | Description | Rate Limit |
 |--------|-------------|------------|
-| `getShippingPoints(params)` | List supply shipping points by city + cargo type (RF sellers) | 300 req/min |
+| `getSupplyShippingPoints(supplyId, params)` | Shipping points available for the specified supply, with per-point `available` flag (task-240) | 300 req/min |
+| `getShippingPoints(params)` | **Deprecated** (WB disables 2026-11-20, removal in v5): global list by city + cargo type — use `getSupplyShippingPoints()` | 300 req/min |
 | `updateShippingMethod(data)` | Set shipping type/date/point for up to 100 supplies (mandatory from 2026-10-01) | 300 req/min |
 | `updateSuppliesWaybill(data)` | Attach electronic waybill (ETrN) IDs for up to 100 transport-company supplies (mandatory from 2026-10-01; WB may still 404 until it enables the method) | 300 req/min |
 

@@ -178,6 +178,13 @@ export const ordersFbsRateLimits: Record<string, RateLimitConfig> = {
     burstLimit: 20,
     penaltyMultiplier: 10,
   },
+  // PATCH /api/marketplace/v3/fbs/supplies/{supplyId}/orders/transfer — move assembly orders back to assembly (task-241)
+  'orders-fbs.patchSuppliesOrdersTransfer': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
   /** GET /api/marketplace/v3/supplies/{supplyId}/order-ids — Get supply order IDs */
   'orders-fbs.getMarketplaceSuppliesOrderIds': {
     requestsPerMinute: 300,
@@ -286,8 +293,15 @@ export const ordersFbsRateLimits: Record<string, RateLimitConfig> = {
   },
 
   // === SHIPPING (supply shipping parameters) — 300 req/min, 200ms interval, burst 20 (4XX = 10 requests) ===
-  /** GET /api/marketplace/v3/fbs/shipping-points — List supply shipping points */
+  /** GET /api/marketplace/v3/fbs/shipping-points — List supply shipping points (deprecated: WB disables on 2026-11-20) */
   'orders-fbs.getShippingPoints': {
+    requestsPerMinute: 300,
+    intervalSeconds: 0.2,
+    burstLimit: 20,
+    penaltyMultiplier: 10,
+  },
+  /** GET /api/marketplace/v3/fbs/supplies/{supplyId}/shipping-points — per-supply shipping points (task-240) */
+  'orders-fbs.getSupplyShippingPoints': {
     requestsPerMinute: 300,
     intervalSeconds: 0.2,
     burstLimit: 20,

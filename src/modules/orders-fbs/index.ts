@@ -5,6 +5,7 @@
  */
 
 import { BaseClient } from '../../client/base-client';
+import { warnOnce } from '../../utils/deprecation';
 import type {
   PassOffice,
   Pass,
@@ -57,6 +58,10 @@ import type {
   SupplySpotStickerResponse,
   ShippingPointsParams,
   ShippingPointsResponse,
+  SupplyShippingPointsParams,
+  SupplyShippingPointsResponse,
+  TransferOrdersToAssemblyResponse,
+  TransferSupplyOrdersRequest,
   UpdateSuppliesShippingMethodRequest,
   UpdateSuppliesResponse,
   UpdateSuppliesWaybillRequest,
@@ -1100,6 +1105,61 @@ export class OrdersFbsModule {
   }
 
   /**
+   * Transfer orders from supply to assembly
+   *
+   * Moves assembly orders from the `complete` status — in delivery — back to
+   * the `confirm` status — in assembly. Use it to move an assembly order from
+   * a closed supply to an open one.
+   *
+   * An assembly order can be moved from delivery to assembly only when ALL
+   * conditions are met:
+   * - the assembly order is in the `complete` status — in delivery;
+   * - the supply the order is moved to (`newSupplyId`) is **not** transferred
+   *   to delivery;
+   * - the assembly order has not previously been moved from delivery to
+   *   assembly.
+   *
+   * Check eligibility beforehand via `getOrderStatuses()` — the
+   * `isTransferable` field. The result is returned per order: each
+   * `transferredOrders[]` entry carries either `success: true` with the new
+   * sticker ID, or `error { code, detail }`.
+   *
+   * **Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a
+   * 4XX response counts as 10 requests.
+   *
+   * @param supplyId - ID of the supply the orders are moved FROM
+   * @param data - Order IDs and the target supply ID
+   * @returns Per-order transfer results
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesSupplyIdOrdersTransfer}
+   * @since task-241
+   *
+   * @example
+   * ```typescript
+   * const result = await sdk.ordersFBS.transferSupplyOrders('WB-GI-100', {
+   *   orderIds: [5678954321, 5457166056],
+   *   newSupplyId: 'WB-GI-200',
+   * });
+   * for (const order of result.transferredOrders ?? []) {
+   *   if (!order.success) console.error(order.orderId, order.error?.detail);
+   * }
+   * ```
+   */
+  async transferSupplyOrders(
+    supplyId: string,
+    data: TransferSupplyOrdersRequest
+  ): Promise<TransferOrdersToAssemblyResponse> {
+    return this.client.patch<TransferOrdersToAssemblyResponse>(
+      `https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/${supplyId}/orders/transfer`,
+      data,
+      { rateLimitKey: 'orders-fbs.patchSuppliesOrdersTransfer' }
+    );
+  }
+
+  /**
    * Get assembly task IDs in a supply
    *
    * Returns a list of assembly task IDs assigned to a supply.
@@ -1335,6 +1395,10 @@ export class OrdersFbsModule {
    * Use the returned `id` values as `shippingPointId` when setting the supply
    * shipping method via `updateShippingMethod()`.
    *
+   * **WB disables this method on November 20, 2026** ([release note](https://dev.wildberries.ru/en/release-notes?id=585)).
+   * Use {@link OrdersFbsModule.getSupplyShippingPoints} — it returns the points
+   * available for the specified supply.
+   *
    * **Availability**: for sellers registered in the Russian Federation only,
    * since 2026-09-01.
    *
@@ -1353,6 +1417,8 @@ export class OrdersFbsModule {
    * @throws {RateLimitError} When rate limit exceeded (429)
    * @throws {ValidationError} When request data is invalid (400)
    * @throws {NetworkError} When network request fails or times out
+   * @deprecated WB отключает GET /api/marketplace/v3/fbs/shipping-points 20 ноября 2026 года.
+   * Используйте {@link OrdersFbsModule.getSupplyShippingPoints}. Метод будет удалён в v5 (task-245).
    * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsShippingPoints}
    * @since task-198
    *
@@ -1366,9 +1432,70 @@ export class OrdersFbsModule {
    * ```
    */
   async getShippingPoints(params: ShippingPointsParams): Promise<ShippingPointsResponse> {
+    warnOnce(
+      'orders-fbs.getShippingPoints:deprecated',
+      'ordersFBS.getShippingPoints (GET /api/marketplace/v3/fbs/shipping-points) is deprecated — ' +
+        'WB disables the endpoint on 2026-11-20. Use ' +
+        'sdk.ordersFBS.getSupplyShippingPoints(supplyId, { city, officeType }) instead. ' +
+        'See docs/guides/wb-api-changes-2026-10.md.'
+    );
     return this.client.get<ShippingPointsResponse>(
       'https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/shipping-points',
       { params, rateLimitKey: 'orders-fbs.getShippingPoints' }
+    );
+  }
+
+  /**
+   * Get supply shipping points (per-supply)
+   *
+   * Returns the shipping points available for the **specified supply**, filtered
+   * by Russian locality (`city`, Cyrillic) and point type (`officeType` —
+   * comma-separated list of `sc`, `sw`, `pp`, `pfc`, `gpp`). Unlike the
+   * deprecated global list, per-supply availability replaces the `cargoType`
+   * filter: each point reports `available` (`false` for a pickup point
+   * overloaded on the planned shipping date).
+   *
+   * `shippingDt` (YYYY-MM-DD) is required for supplies of small-sized items
+   * (`cargoType: 1`) and dimensional cargo+ (`cargoType: 3`); when passed,
+   * only points that can ship the supply on that date are returned.
+   *
+   * Use the returned `id` values as `shippingPointId` in
+   * `updateShippingMethod()`.
+   *
+   * Replaces the deprecated {@link OrdersFbsModule.getShippingPoints}
+   * (GET `/api/marketplace/v3/fbs/shipping-points`), which WB disables on
+   * **November 20, 2026**.
+   *
+   * **Rate limit**: 300 req/min, 200 ms interval, burst 20. One request with a
+   * 4XX response counts as 10 requests.
+   *
+   * @param supplyId - Supply ID (e.g. 'WB-GI-100')
+   * @param params - Filters: `city` (required), `officeType` (required, comma-list), `shippingDt` (optional)
+   * @returns Promise resolving to the shipping points available for this supply
+   * @throws {WBAPIError} 404 — supply not found; 409 — no assembly orders in the supply
+   * @throws {AuthenticationError} When API key is invalid (401/403)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/getV3FbsSuppliesSupplyIdShippingPoints}
+   * @since task-240
+   *
+   * @example
+   * ```typescript
+   * const { shippingPoints } = await sdk.ordersFBS.getSupplyShippingPoints(
+   *   'WB-GI-100',
+   *   { city: 'Москва', officeType: 'sc,pp' }
+   * );
+   * const ok = shippingPoints.filter(p => p.available);
+   * ```
+   */
+  async getSupplyShippingPoints(
+    supplyId: string,
+    params: SupplyShippingPointsParams
+  ): Promise<SupplyShippingPointsResponse> {
+    return this.client.get<SupplyShippingPointsResponse>(
+      `https://marketplace-api.wildberries.ru/api/marketplace/v3/fbs/supplies/${supplyId}/shipping-points`,
+      { params, rateLimitKey: 'orders-fbs.getSupplyShippingPoints' }
     );
   }
 
@@ -1380,7 +1507,7 @@ export class OrdersFbsModule {
    * separately (`results[]` with `success` or `error`, e.g. `NotFound`,
    * `InvalidShippingDt`, `FulfillmentRequired`).
    *
-   * Get `shippingPointId` from `getShippingPoints()`. The shipping method can be
+   * Get `shippingPointId` from `getSupplyShippingPoints()`. The shipping method can be
    * updated only until the supply and its boxes are scanned at the shipping
    * point — after that this method returns a 409 error.
    *

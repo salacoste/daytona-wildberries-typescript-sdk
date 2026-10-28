@@ -142,6 +142,53 @@ export interface AddOrdersToSupplyRequest {
   orders: number[];
 }
 
+/**
+ * Request body for moving assembly orders from delivery back to assembly.
+ * @see task-241
+ */
+export interface TransferSupplyOrdersRequest {
+  /** Assembly order IDs to move back to assembly */
+  orderIds: number[];
+  /**
+   * ID of the supply the orders are moved TO. The supply must NOT be
+   * transferred to delivery
+   */
+  newSupplyId: string;
+}
+
+/**
+ * Per-order result of moving an assembly order from delivery back to assembly.
+ * Maps to swagger schema: v3.TransferOrderToAssembly
+ * @see task-241
+ */
+export interface TransferOrderToAssembly {
+  /** Assembly order ID */
+  orderId: number;
+  /** Sticker ID in the old (closed) supply; `0` on error */
+  oldStickerId: number;
+  /** New sticker ID in the target supply; `0` on error */
+  newStickerId: number;
+  /** Whether the order was moved successfully (only `true` on success entries) */
+  success?: boolean;
+  /** Error details when the order could not be moved */
+  error?: {
+    /** Internal error code (e.g. 409) */
+    code: number;
+    /** Error details */
+    detail: string;
+  };
+}
+
+/**
+ * Response for PATCH /api/marketplace/v3/fbs/supplies/{supplyId}/orders/transfer.
+ * Maps to swagger schema: v3.TransferOrdersToAssemblyResponse
+ * @see task-241
+ */
+export interface TransferOrdersToAssemblyResponse {
+  /** Per-order transfer results */
+  transferredOrders?: TransferOrderToAssembly[];
+}
+
 /** Request body for creating boxes (trbx) in a supply */
 export interface TrbxCreateRequest {
   /** Number of boxes to create */
@@ -268,6 +315,29 @@ export interface OrderStatusItem {
    * ```
    */
   isCancellable?: boolean;
+  /**
+   * Whether this assembly task can be moved from delivery (`complete`) back
+   * to assembly (`confirm`) via `transferSupplyOrders()`. `true` only when
+   * all conditions hold: the task is in `complete`; the target supply is not
+   * transferred to delivery; the task has not been moved back before.
+   *
+   * Use this field as a pre-check to avoid unnecessary API calls and 4xx errors.
+   *
+   * @since task-241
+   * @see {@link https://dev.wildberries.ru/docs/openapi/orders-fbs#tag/fbsSupplies/operation/patchV3FbsSuppliesSupplyIdOrdersTransfer}
+   * @example
+   * ```typescript
+   * for (const status of statuses) {
+   *   if (status.isTransferable) {
+   *     await sdk.ordersFBS.transferSupplyOrders(fromSupplyId, {
+   *       orderIds: [status.id!],
+   *       newSupplyId: 'WB-GI-200',
+   *     });
+   *   }
+   * }
+   * ```
+   */
+  isTransferable?: boolean;
 }
 
 /** Response containing order statuses */
@@ -523,6 +593,8 @@ export interface Order {
   comment?: string;
   /** Whether this is a zero-stock order (can be cancelled without penalty) */
   isZeroOrder?: boolean;
+  /** Track number for Cross-Border orders (e.g. 'NRU56565656') @since task-242 */
+  trackNumber?: string;
   /** Order options */
   options?: {
     /** Whether this is a B2B sale */
@@ -1159,6 +1231,85 @@ export interface ShippingPointsResponse {
 }
 
 /**
+ * Shipping point type for the per-supply shipping-points method:
+ * - `sc` — sorting center
+ * - `sw` — warehouse
+ * - `pp` — pickup point
+ * - `pfc` — partner fulfillment center
+ * - `gpp` — items acceptance point
+ * @see task-240
+ */
+export type SupplyShippingPointOfficeType = 'sc' | 'sw' | 'pp' | 'pfc' | 'gpp';
+
+/**
+ * Supply shipping point returned by the per-supply shipping-points method —
+ * the points available for the SPECIFIED supply. Unlike the deprecated
+ * global {@link ShippingPoint}: no `cargoTypes` filter (per-supply availability
+ * replaces it), `officeType` adds `pfc`/`gpp`, and each point reports whether
+ * it is available for this supply (`available`).
+ * Maps to swagger schema: SupplyShippingPoint
+ * @see task-240
+ */
+export interface SupplyShippingPoint {
+  /** Shipping point ID — use as `shippingPointId` in `updateShippingMethod()` */
+  id: number;
+  /** Name (e.g. 'Москва Морской') */
+  name: string;
+  /** Address (e.g. 'г Москва, Морской Проспект 54') */
+  address: string;
+  /** Locality */
+  city: string;
+  /** Shipping point type (sorting center / warehouse / pickup point / partner fulfillment center / items acceptance point) */
+  officeType: SupplyShippingPointOfficeType;
+  /** Latitude */
+  latitude: number;
+  /** Longitude */
+  longitude: number;
+  /**
+   * Whether the **Fulfillment in SC** service for FBS supplies is available
+   * at this shipping point
+   */
+  fulfillment: boolean;
+  /**
+   * Whether the shipping point is available for this supply. `false` for a
+   * pickup point overloaded on the planned supply shipping date
+   */
+  available: boolean;
+}
+
+/**
+ * Query parameters for GET /api/marketplace/v3/fbs/supplies/{supplyId}/shipping-points
+ * @see task-240
+ */
+export interface SupplyShippingPointsParams {
+  /** Locality for shipping the supply, Cyrillic (e.g. 'Москва') */
+  city: string;
+  /**
+   * Shipping point types to return — comma-separated list of
+   * `sc`, `sw`, `pp`, `pfc`, `gpp` (e.g. 'sc,pp')
+   */
+  officeType: string;
+  /**
+   * Planned supply shipping date (`YYYY-MM-DD`). Required for supplies of
+   * small-sized items (`cargoType: 1`) and dimensional cargo+ (`cargoType: 3`);
+   * when passed, only points that can ship the supply on that date are returned
+   */
+  shippingDt?: string;
+  /** Index signature for compatibility with Record<string, unknown> */
+  [key: string]: unknown;
+}
+
+/**
+ * Response for GET /api/marketplace/v3/fbs/supplies/{supplyId}/shipping-points
+ * Maps to swagger schema: SupplyShippingPointsResponse
+ * @see task-240
+ */
+export interface SupplyShippingPointsResponse {
+  /** Shipping points list for the supply */
+  shippingPoints: SupplyShippingPoint[];
+}
+
+/**
  * Type of shipping to the shipping point:
  * - `selfShipping` — shipping at the seller's expense
  * - `transportCompany` — delivery via a transport company. For this shipping type the
@@ -1177,7 +1328,7 @@ export interface UpdateSupplyShippingMethod {
   supplyId: string;
   /** Planned supply shipping date, format `YYYY-MM-DD` */
   shippingDt: string;
-  /** Shipping point ID — get it via `getShippingPoints()` */
+  /** Shipping point ID — get it via `getSupplyShippingPoints()` */
   shippingPointId: number;
   /** Type of shipping to the shipping point */
   shippingType: SupplyShippingType;

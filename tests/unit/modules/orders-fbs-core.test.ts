@@ -115,6 +115,22 @@ describe('OrdersFbsModule — Core Order & Supply Lifecycle', () => {
   // orders()
   // ============================================================================
 
+  describe('orders trackNumber field (task-242)', () => {
+    it('should pass through trackNumber for Cross-Border orders', async () => {
+      mockClient.get.mockResolvedValue({
+        orders: [
+          { id: 1, trackNumber: 'NRU56565656', crossBorderType: 1 },
+          { id: 2 /* domestic order — field omitted */ },
+        ],
+      });
+
+      const result = await ordersFbs.orders({ limit: 100, next: 0 });
+
+      expect(result.orders![0].trackNumber).toBe('NRU56565656');
+      expect(result.orders![1].trackNumber).toBeUndefined();
+    });
+  });
+
   describe('orders', () => {
     it('should call GET on the correct URL and return orders with pagination', async () => {
       const mockResponse = {
@@ -230,6 +246,26 @@ describe('OrdersFbsModule — Core Order & Supply Lifecycle', () => {
         expect.any(Object),
         expect.objectContaining({ rateLimitKey: 'orders-fbs.postOrdersStatus' })
       );
+    });
+
+    it('should accept isTransferable field in OrderStatusItem (task-241)', async () => {
+      const mockResponse = {
+        orders: [
+          { id: 200, supplierStatus: 'complete', wbStatus: 'waiting', isTransferable: false },
+          { id: 201, supplierStatus: 'complete', wbStatus: 'waiting', isTransferable: true },
+          {
+            id: 202,
+            supplierStatus: 'confirm',
+            wbStatus: 'sorted' /* isTransferable omitted — pre-task-241 payload */,
+          },
+        ],
+      };
+      mockClient.post.mockResolvedValue(mockResponse);
+      const result = await ordersFbs.getOrderStatuses({ orders: [200, 201, 202] });
+      expect(result.orders).toHaveLength(3);
+      expect(result.orders![0].isTransferable).toBe(false);
+      expect(result.orders![1].isTransferable).toBe(true);
+      expect(result.orders![2].isTransferable).toBeUndefined();
     });
 
     it('should accept isCancellable field in OrderStatusItem (v3.11.0)', async () => {
