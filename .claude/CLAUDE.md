@@ -144,10 +144,10 @@ The SDK exposes **14 public modules** on the `WildberriesSDK` instance (`sdk.*`)
 | # | `sdk.*` property | Module class | Domain | Methods (~) | Key Features |
 |---|---|---|---|---|---|
 | 1 | `sdk.general` | `GeneralModule` | common-api | 11 | Ping, server time, news, seller info, seller notifications, auth utilities |
-| 2 | `sdk.products` | `ProductsModule` | content-api | 51 | Categories, product cards, characteristics, media, pricing, warehouse, stock |
+| 2 | `sdk.products` | `ProductsModule` | content-api | 54 | Categories, product cards, characteristics, media, pricing, warehouse, stock, TN VED/OKPD2 directories |
 | 3 | `sdk.ordersFBS` | `OrdersFbsModule` | marketplace-api | 44 | Seller-warehouse (FBS) fulfillment, order status, shipping, order transfer, marking codes |
 | 4 | `sdk.ordersFBW` | `OrdersFbwModule` | marketplace-api | 19 | WB-warehouse (FBO/FBW) supply, acceptance coefficients, transit tariffs |
-| 5 | `sdk.ordersDBS` | `OrdersDbsModule` | marketplace-api | 21 | Delivery-by-Seller orders, bulk status ops, B2B, marking metadata, final prices |
+| 5 | `sdk.ordersDBS` | `OrdersDbsModule` | marketplace-api | 22 | Delivery-by-Seller orders, bulk status ops, B2B, marking metadata, final prices, sandbox test orders |
 | 6 | `sdk.finances` | `FinancesModule` | finance-api / statistics-api | 11 | Balance, realization reports, documents (list/download) |
 | 7 | `sdk.analytics` | `AnalyticsModule` | seller-analytics-api | 21 | Sales funnel v3, search queries, stock history, CSV reports, item rating v2, real-time order feed |
 | 8 | `sdk.communications` | `CommunicationsModule` | common-api | 25 | Customer chat, product Q&A, reviews, pinned reviews |
@@ -158,7 +158,7 @@ The SDK exposes **14 public modules** on the `WildberriesSDK` instance (`sdk.*`)
 | 13 | `sdk.userManagement` | `UserManagementModule` | common-api | 4 | Invitations, user listing, access rights, deletion |
 | 14 | `sdk.returns` | `ReturnsModule` | aggregator (since v3.10.0) | 3 | Unified FBO+FBS+Finance return analytics, partial-failure tolerant |
 
-**Total: 309 public methods across the 14 modules.**
+**Total: 313 public methods across the 14 modules.**
 
 **Supplemental module (NOT a public `sdk.*` property):** `src/modules/1_0_0/` — 5 legacy methods (`getContentTags`, `getAdvAdvert`, `createAdvFullstat`, `getAdvFullstats`, `getCalendarPromotions`) retained for backward compatibility.
 

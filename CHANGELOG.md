@@ -63,7 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   seller-info `tin`+`country`, shipping-points v2, transfer, `trackNumber`,
   `isTransferable`+`isCancellable` backfill); validate_shards 52/52 ✓.
 
-SDK totals: 309 public methods, 2,619 tests.
+SDK totals: 313 public methods, 2,619 tests.
 
 ## [4.7.0] - 2026-10-12
 
