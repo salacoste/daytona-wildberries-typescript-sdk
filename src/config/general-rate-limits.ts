@@ -24,6 +24,12 @@ export const generalRateLimits: Record<string, RateLimitConfig> = {
     intervalSeconds: 60,
     burstLimit: 10,
   },
+  // GET /api/communications/v1/notifications — seller-portal notifications (task-239)
+  'general.notifications': {
+    requestsPerMinute: 1,
+    intervalSeconds: 60,
+    burstLimit: 10,
+  },
   'general.sellerInfo': {
     requestsPerMinute: 1,
     intervalSeconds: 60,

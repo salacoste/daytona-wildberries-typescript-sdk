@@ -10,7 +10,7 @@ The General module provides essential utility endpoints for API connectivity tes
 | **SDK Namespace** | `sdk.general.*` |
 | **Base URLs** | `https://common-api.wildberries.ru`, `https://user-management-api.wildberries.ru` |
 | **Source Swagger** | `wildberries_api_doc/01-general.yaml` |
-| **Methods** | 10 (all active) |
+| **Methods** | 11 (all active) |
 | **Swagger Endpoints** | 9 (all implemented) |
 | **Authentication** | API Key (Header) — see [Token Types](#token-types) for details |
 
@@ -628,6 +628,7 @@ const result = await sdk.general.ping();
 | `ping()` | 6 | 10 seconds | 3 |
 | `news()` | 1 | 60 seconds | 10 |
 | `sellerInfo()` | 1 | 60 seconds | 10 |
+| `getNotifications()` | 1 | 60 seconds | 10 |
 | `getJamSubscription()` | 1 | 60 seconds | 10 |
 | `getSellerRating()` | 1 | 60 seconds | 1 |
 | `createInvite()` | 60 | 1 second | 5 |

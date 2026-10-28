@@ -113,6 +113,76 @@ describe('GeneralModule', () => {
     });
   });
 
+  describe('getNotifications() (task-239)', () => {
+    const mockNotificationsResponse = {
+      data: [
+        {
+          date: '2025-02-13T11:18:09.308Z',
+          id: '9f70d38a-2f66-4ba6-82bd-1e513ac03b0d',
+          text: 'Обработайте заказ...',
+          title: 'У вас новый заказ',
+          linkData: {
+            linkHref: 'https://seller.wildberries.ru/supply-plan-upload/orders',
+            linkText: 'К заказу',
+          },
+        },
+        {
+          date: '2025-02-13T10:10:10.100Z',
+          id: 'b1e2f3a4-5b6c-4d7e-8f90-1a2b3c4d5e6f',
+          text: 'Проверьте остатки',
+          title: 'Остатки закончились',
+        },
+      ],
+    };
+
+    it('should call the notifications endpoint with params and rateLimitKey', async () => {
+      mockClient.get.mockResolvedValue(mockNotificationsResponse);
+
+      const result = await generalModule.getNotifications({
+        from: '2025-02-13T11:18:09.308Z',
+        timezone: 'Europe/Moscow',
+        limit: 10,
+      });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://common-api.wildberries.ru/api/communications/v1/notifications',
+        {
+          params: { from: '2025-02-13T11:18:09.308Z', timezone: 'Europe/Moscow', limit: 10 },
+          rateLimitKey: 'general.notifications',
+        }
+      );
+      expect(result).toEqual(mockNotificationsResponse);
+      expect(result.data).toHaveLength(2);
+      expect(result.data[0].linkData?.linkText).toBe('К заказу');
+      expect(result.data[1].linkData).toBeUndefined();
+    });
+
+    it('should work without parameters', async () => {
+      mockClient.get.mockResolvedValue(mockNotificationsResponse);
+
+      await generalModule.getNotifications();
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://common-api.wildberries.ru/api/communications/v1/notifications',
+        { params: undefined, rateLimitKey: 'general.notifications' }
+      );
+    });
+
+    it('should support cursor pagination via from', async () => {
+      mockClient.get.mockResolvedValue({ data: [] });
+
+      await generalModule.getNotifications({ from: mockNotificationsResponse.data[1].date });
+
+      expect(mockClient.get).toHaveBeenCalledWith(
+        'https://common-api.wildberries.ru/api/communications/v1/notifications',
+        {
+          params: { from: '2025-02-13T10:10:10.100Z' },
+          rateLimitKey: 'general.notifications',
+        }
+      );
+    });
+  });
+
   describe('news()', () => {
     const mockNewsResponse = {
       data: [
@@ -232,6 +302,23 @@ describe('GeneralModule', () => {
 
       // Act & Assert
       await expect(generalModule.news(options)).rejects.toThrow(RateLimitError);
+    });
+  });
+
+  describe('sellerInfo() country field (task-243)', () => {
+    it('should pass through the country field', async () => {
+      mockClient.get.mockResolvedValue({
+        name: 'ИП Кружинин В. Р.',
+        sid: 'e8923014-e233-47q8-898e-3cc86d67ea61',
+        tradeMark: 'Flax Store',
+        tin: '1234567890',
+        country: 'ru',
+      });
+
+      const result = await generalModule.sellerInfo();
+
+      expect(result.country).toBe('ru');
+      expect(result.tradeMark).toBe('Flax Store');
     });
   });
 

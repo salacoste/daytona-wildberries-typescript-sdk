@@ -59,6 +59,60 @@ export interface NewsRequestParams {
 }
 
 /**
+ * Parameters for the seller-portal notifications request
+ * @see task-239
+ */
+export interface GetNotificationsParams {
+  /**
+   * Фильтр по дате и времени: в ответе только уведомления, полученные ДО
+   * указанного момента. Для пагинации передавайте `date` последнего
+   * уведомления из предыдущего ответа. Для самых свежих — не передавайте
+   */
+  from?: string;
+  /** Часовой пояс в формате IANA (по умолчанию Europe/Moscow) */
+  timezone?: string;
+  /** Количество уведомлений в ответе (5–100, по умолчанию 10) */
+  limit?: number;
+}
+
+/**
+ * Notification button data
+ * @see task-239
+ */
+export interface SellerNotificationLinkData {
+  /** URL кнопки уведомления */
+  linkHref: string;
+  /** Текст кнопки уведомления */
+  linkText: string;
+}
+
+/**
+ * Seller-portal notification item
+ * @see task-239
+ */
+export interface SellerNotification {
+  /** Дата и время отправки уведомления */
+  date: string;
+  /** ID уведомления (UUID) */
+  id: string;
+  /** Текст уведомления */
+  text: string;
+  /** Заголовок уведомления */
+  title: string;
+  /** Данные кнопки уведомления (присутствует не всегда) */
+  linkData?: SellerNotificationLinkData;
+}
+
+/**
+ * Response for GET /api/communications/v1/notifications
+ * @see task-239
+ */
+export interface GetNotificationsResponse {
+  /** Список уведомлений (от новых к старым) */
+  data: SellerNotification[];
+}
+
+/**
  * Response structure for seller info endpoint
  */
 export interface SellerInfoResponse {
@@ -70,6 +124,8 @@ export interface SellerInfoResponse {
   tradeMark?: string;
   /** ИНН продавца (Taxpayer Identification Number) */
   tin?: string;
+  /** Страна регистрации аккаунта продавца (например 'ru') @since task-243 */
+  country?: string;
 }
 
 // ============================================================================

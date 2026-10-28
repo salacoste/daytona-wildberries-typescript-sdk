@@ -9,6 +9,8 @@ import type {
   PingResponse,
   NewsResponse,
   NewsRequestParams,
+  GetNotificationsParams,
+  GetNotificationsResponse,
   SellerInfoResponse,
   CreateInviteRequest,
   CreateInviteResponse,
@@ -109,6 +111,56 @@ export class GeneralModule {
       {
         params: options ? { ...options } : undefined,
         rateLimitKey: 'general.communicationsNews',
+      }
+    );
+  }
+
+  /**
+   * Получение уведомлений кабинета продавца
+   *
+   * Возвращает список уведомлений портала продавца
+   * ([seller.wildberries.ru](https://seller.wildberries.ru)) на русском языке.
+   * Уведомления в ответе упорядочены от новых к старым.
+   *
+   * **Доступно только продавцам из Российской Федерации** — для остальных
+   * метод вернёт 403 (`code: countryError`, «Seller is not from Russia»).
+   *
+   * Пагинация — курсорная, через параметр `from`:
+   * 1. Первый запрос — без `from`.
+   * 2. В следующих запросах передавайте `date` последнего уведомления
+   *    из предыдущего ответа.
+   *
+   * Rate limit:
+   * | Период | Лимит | Интервал | Всплеск |
+   * | --- | --- | --- | --- |
+   * | 1 мин | 1 запрос | 1 мин | 10 запросов |
+   *
+   * @readonly
+   * @param [params] - Параметры запроса
+   * @param [params.from] - Дата и время (ISO 8601): только уведомления, полученные ДО этого момента
+   * @param [params.timezone] - Часовой пояс IANA (по умолчанию Europe/Moscow)
+   * @param [params.limit] - Количество уведомлений (5–100, по умолчанию 10)
+   * @returns Список уведомлений
+   * @throws {AuthenticationError} When API key is invalid (401)
+   * @throws {RateLimitError} When rate limit exceeded (429)
+   * @throws {ValidationError} When request data is invalid (400)
+   * @throws {NetworkError} When network request fails or times out
+   * @see {@link https://dev.wildberries.ru/docs/openapi/api-information#tag/newsApi/operation/getV1Notifications}
+   * @since task-239
+   * @example
+   * ```typescript
+   * const result = await sdk.general.getNotifications({ limit: 20 });
+   * for (const n of result.data) {
+   *   console.log(n.title, n.date);
+   * }
+   * ```
+   */
+  async getNotifications(params?: GetNotificationsParams): Promise<GetNotificationsResponse> {
+    return this.client.get<GetNotificationsResponse>(
+      'https://common-api.wildberries.ru/api/communications/v1/notifications',
+      {
+        params: params ? { ...params } : undefined,
+        rateLimitKey: 'general.notifications',
       }
     );
   }
