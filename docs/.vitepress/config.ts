@@ -258,6 +258,7 @@ export default defineConfigWithTheme<DocumentationThemeConfig>({
             items: [
               { text: 'Overview', link: '/guides/' },
               { text: '🚨 Migration v4.0.0 — Breaking Removals', link: '/guides/migration-v4' },
+              { text: '📣 WB API Changes — October 2026', link: '/guides/wb-api-changes-2026-10' },
               { text: '📣 WB API Changes — September 2026', link: '/guides/wb-api-changes-2026-09' },
               { text: '🔄 Migration v3.0 - Complete Guide', link: '/guides/migration-v3' },
               { text: '⚠️ Migration v2.7 - Analytics v3 Sales Funnel', link: '/guides/migration-v2.7-analytics-v3' },
@@ -521,6 +522,7 @@ export default defineConfigWithTheme<DocumentationThemeConfig>({
             items: [
               { text: 'Обзор', link: '/ru/guides/' },
               { text: '🚨 Миграция v4.0.0 — Критические удаления', link: '/guides/migration-v4' },
+              { text: '📣 Изменения WB API — октябрь 2026', link: '/ru/guides/wb-api-changes-2026-10' },
               { text: '📣 Изменения WB API — сентябрь 2026', link: '/ru/guides/wb-api-changes-2026-09' },
               { text: '🔄 Миграция v3.0 - Полное руководство', link: '/ru/guides/migration-v3' },
               { text: '⚠️ Миграция v2.7 - Аналитика v3 (Воронка продаж)', link: '/ru/guides/migration-v2.7-analytics-v3' },

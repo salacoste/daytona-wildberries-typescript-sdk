@@ -87,6 +87,16 @@ const chrtId = cards.cards[0].sizes[0].chrtID; // → use in stocks calls
 
 ## Looking ahead: v5
 
+- **ordersFBS `getShippingPoints()`** — WB disables
+  `GET /api/marketplace/v3/fbs/shipping-points` on **2026-11-20**
+  ([release note](https://dev.wildberries.ru/en/release-notes?id=585)).
+  The method is now `@deprecated` and emits a one-time runtime warning; it will be
+  **removed in v5**. Migrate to `getSupplyShippingPoints(supplyId, params)`
+  (`GET /api/marketplace/v3/fbs/supplies/{supplyId}/shipping-points`): points
+  available for the specified supply, `officeType` comma-list instead of the
+  `cargoType` filter, and a per-point `available` flag (false when a pickup point
+  is overloaded on the planned date).
+
 - **reports `getAnalyticsGoodsReturn()`** — WB disables
   `GET /api/v1/analytics/goods-return` on **2026-10-26**
   ([release note](https://dev.wildberries.ru/en/release-notes?id=577)).
